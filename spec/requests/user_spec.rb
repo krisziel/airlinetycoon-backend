@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'airline request#' do
+describe 'user request#' do
 
   it 'expects to be logged out' do
     post '/user/autologin',
@@ -21,7 +21,7 @@ describe 'airline request#' do
     expect(login["status"]).to eq('noairline')
   end
 
-  it 'expects to have an airline' do
+  it 'expects to have the user\'s airline returned after autologin' do
     get '/user/manuallogin'
     Airline.create!({
       name: "INnoVation Airlines",
@@ -38,12 +38,17 @@ describe 'airline request#' do
     expect(login["name"]).to eq('INnoVation Airlines')
   end
 
-  it 'can create an airline' do
-    
-  end
-
-  it 'can get a list of all airlines' do
-
+  it 'can create an user' do
+    post '/user/create', {
+      user:{
+        email: 'kz@kziel.com',
+        name: 'Kris',
+        username: 'kziel',
+        password: 'kziel'
+      }
+    }
+    user = JSON.parse(response.body)
+    expect(user["username"]).to eq('kziel')
   end
 
 end

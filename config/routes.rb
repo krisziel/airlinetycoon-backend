@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   post 'airline/create' => 'airline#create'
   post 'user/autologin' => 'user#autologin'
+  post 'user/create' => 'user#create'
   get 'user/manuallogin' => 'user#manuallogin'
 
   resources :aircrafts

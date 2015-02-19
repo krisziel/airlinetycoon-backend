@@ -10,6 +10,6 @@ describe 'the airlinetycoon API' do
     }
 
     airline = JSON.parse(response.body)
-    expect(airline['name']).to eq('INnoVation Airlines')
+    expect(airline["name"]).to eq('INnoVation Airlines')
   end
 end
