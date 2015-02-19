@@ -13,9 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20150213165353) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "airlines", force: true do |t|
     t.string   "name",       limit: 50, null: false
     t.string   "icao",       limit: 3,  null: false

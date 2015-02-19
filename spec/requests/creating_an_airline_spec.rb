@@ -5,11 +5,11 @@ describe 'the airlinetycoon API' do
 
     post '/airline/create',
     {
-      'airline[name]' => 'My Cool Airline',
-      'airline[iata]' => 'MCA'
+      'airline[name]' => 'INnoVation Airlines',
+      'airline[iata]' => 'INO'
     }
 
     airline = JSON.parse(response.body)
-    expect(airline['name']).to eq('My Cool Airline')
+    expect(airline['name']).to eq('INnoVation Airlines')
   end
 end
