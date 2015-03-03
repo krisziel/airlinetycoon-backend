@@ -35,4 +35,18 @@ describe 'airtycoon API -- airline#' do
     expect(airlines[1]["name"]).to eq("Jin Air")
   end
 
+  it 'returns an error when trying to create an airline with same name' do
+    Airline.create!({name:"Jin Air",icao:"JNX",user_id:1,game_id:1,money:5})
+    post '/airlines/',
+    {
+      'airline[name]' => 'Jin Air',
+      'airline[icao]' => 'JNX',
+      'airline[game_id]' => 1,
+      'airline[user_id]' => 2
+    }
+    airlines = JSON.parse(response.body)
+    expect(airlines["name"]).to eq(["An airline with that name already exists"])
+    expect(airlines["icao"]).to eq(["An airline with that icao code already exists"])
+  end
+
 end

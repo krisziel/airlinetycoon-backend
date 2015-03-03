@@ -48,6 +48,7 @@ class UserController < ApplicationController
         name: user.name,
         username: user.username
       }
+      cookies.signed[:airtycoon_user] = user.id
     else
       response = user.errors.message
     end

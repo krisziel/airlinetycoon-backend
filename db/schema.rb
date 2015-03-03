@@ -14,20 +14,21 @@
 ActiveRecord::Schema.define(version: 20150303104438) do
 
   create_table "airlines", force: true do |t|
-    t.string   "name",       limit: 50, null: false
-    t.string   "icao",       limit: 3,  null: false
-    t.integer  "money",      limit: 8,  null: false
-    t.integer  "game_id",               null: false
-    t.integer  "user_id",               null: false
+    t.string   "name",        limit: 50, null: false
+    t.string   "icao",        limit: 3,  null: false
+    t.integer  "money",       limit: 8,  null: false
+    t.integer  "game_id",                null: false
+    t.integer  "user_id",                null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "alliance_id"
   end
 
   create_table "alliance_memberships", force: true do |t|
     t.integer  "airline_id"
     t.integer  "alliance_id"
-    t.boolean  "status"
-    t.integer  "position"
+    t.boolean  "status",      default: false
+    t.integer  "position",    default: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end

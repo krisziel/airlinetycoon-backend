@@ -52,4 +52,12 @@ describe 'airtycoon API -- user#' do
     expect(user["username"]).to eq('kziel')
   end
 
+  it 'returns an error when a user with the same email is created' do
+    User.create!({name:"Kris",email:"krisziel@mac.com",username:"kziel",password:"kziel"})
+    get 'user/manuallogin'
+    login = JSON.parse(response.body)
+    expect(login["username"]).to eq(["has already been taken"])
+    expect(login["email"]).to eq(["has already been taken"])
+  end
+
 end

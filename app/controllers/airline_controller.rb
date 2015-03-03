@@ -26,10 +26,15 @@ class AirlineController < ApplicationController
     params[:airline][:money] = 5000000000
     airline = Airline.new(airline_params)
     if airline.save
-      render json: airline
+      response = {
+        name: airline.name,
+        icao: airline.icao,
+        id: airline.id
+      }
     else
-      render json: {message:"error creating airline"}
+      response = airline.errors.messages
     end
+    render json: response
   end
 
   private
