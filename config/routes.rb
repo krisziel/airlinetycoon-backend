@@ -2,12 +2,21 @@ Rails.application.routes.draw do
 
   root 'app#index'
 
-  post 'airline/create' => 'airline#create'
-  get 'airline/all' => 'airline#all'
+  post 'airlines' => 'airline#create'
+  get 'airlines' => 'airline#all'
+
+
   post 'user/autologin' => 'user#autologin'
-  post 'user/create' => 'user#create'
+  post 'user/' => 'user#create'
   get 'user/manuallogin' => 'user#manuallogin'
 
-  resources :aircrafts
+  get 'alliances' => 'alliance#all'
+  post 'alliances' => 'alliance#create'
+  get 'alliances/:id' => 'alliance#show'
+  delete 'alliances/:id' => 'alliance#delete'
+  post 'alliances/request/:id' => 'alliance#request'
+  post 'alliances/approve/:id' => 'alliance#approve'
+  post 'alliance/reject/:id' => 'alliance#reject'
+
 
 end

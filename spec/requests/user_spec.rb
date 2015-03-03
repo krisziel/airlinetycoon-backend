@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'user request#' do
+describe 'airtycoon API -- user#' do
 
   it 'expects to be logged out' do
     post '/user/autologin',
@@ -35,15 +35,16 @@ describe 'user request#' do
       game_id:1
     }
     login = JSON.parse(response.body)
-    expect(login["name"]).to eq('INnoVation Airlines')
+    expect(login["airline"]["name"]).to eq('INnoVation Airlines')
   end
 
   it 'can create an user' do
-    post '/user/create', {
+    post '/user/', {
       user:{
         email: 'kz@kziel.com',
         name: 'Kris',
         username: 'kziel',
+        email: 'krisziel@mac.com',
         password: 'kziel'
       }
     }

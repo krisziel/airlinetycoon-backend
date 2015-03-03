@@ -2,7 +2,24 @@ class AirlineController < ApplicationController
 
   def all
     airlines = Airline.all
-    render json: airlines
+    airline_list = []
+    airlines.each do |airline|
+      if airline.alliance
+        alliance = {
+          name: airline.alliance.name,
+          id: airline.alliance.id
+        }
+      else
+        alliance = nil
+      end
+      airline = {
+        name: airline.name,
+        icao: airline.icao,
+        alliance: alliance
+      }
+      airline_list.push(airline)
+    end
+    render json: airline_list
   end
 
   def create

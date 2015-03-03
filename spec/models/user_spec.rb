@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'user#' do
 
-  user_data = {name:"Kris",username:"kziel",password:"kziel"}
+  user_data = {name:"Kris",username:"kziel",password:"kziel",email:"krisziel@mac.com"}
 
   it 'is able to create a user' do
     user = User.create!(user_data)
@@ -10,7 +10,7 @@ describe 'user#' do
   end
 
   it 'is unable to create a userwith without name, username, and password' do
-    expect(User.create({name:"",username:"",password:""}).errors.messages.length).to eq(3)
+    expect(User.create({name:"",username:"",password:"",email:""}).errors.messages.length).to eq(4)
   end
 
   it 'can create an airline for a user' do

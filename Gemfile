@@ -5,7 +5,6 @@ gem 'rails', '4.1.8'
 gem 'sqlite3'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
-gem 'active_model_serializers'
 
 group :test do
   gem 'rspec-rails'
