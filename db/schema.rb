@@ -11,14 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150219183851) do
+ActiveRecord::Schema.define(version: 20150303032030) do
 
   create_table "airlines", force: true do |t|
-    t.string   "name",       limit: 50, null: false
-    t.string   "icao",       limit: 3,  null: false
-    t.integer  "money",      limit: 8,  null: false
-    t.integer  "game_id",               null: false
-    t.integer  "user_id",               null: false
+    t.string   "name",        limit: 50, null: false
+    t.string   "icao",        limit: 3,  null: false
+    t.integer  "money",       limit: 8,  null: false
+    t.integer  "game_id",                null: false
+    t.integer  "user_id",                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "alliance_id"
+  end
+
+  create_table "alliances", force: true do |t|
+    t.string   "name"
+    t.integer  "game_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

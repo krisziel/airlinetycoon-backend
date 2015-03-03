@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'user can fetch list of aircraft' do
+describe 'airlinetycoon API -- aircraft#' do
   it 'can get aircraft list' do
     get '/aircrafts'
     aircraft = JSON.parse(response.body)
