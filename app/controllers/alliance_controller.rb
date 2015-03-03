@@ -54,10 +54,7 @@ class AllianceController < ApplicationController
           message:'alliance created'
         }
       else
-        alliance = {
-          message:'error creating alliance',
-          errors:alliance.errors.messages
-        }
+        alliance = alliance.errors.messages
       end
     end
     render json: alliance
@@ -105,8 +102,47 @@ class AllianceController < ApplicationController
         }
       end
     else
+      airline.alliance = alliance
+      alliance = {
+        name:alliance.name,
+        id:alliance.id,
+        message:'membership requested'
+      }
     end
     render json: alliance
+  end
+
+  def approve_membership
+    alliance = Alliance.find(params[:id])
+    airline = User.find(cookies.signed[:airtycoon_user]).airlines.where({game_id:alliance.game_id})[0]
+    if airline.alliance_membership.status && airline.alliance_membership.position == 1
+      member = AllianceMembership.find(params[:membership_id])
+      requestor = Airline.find(member.airline_id)
+      alliance_membership = member.update({position:2,status:true})
+      if alliance_membership
+        membership = {
+          airline:{
+            name:requestor.name,
+            icao:requestor.icao,
+            id:requestor.id
+          },
+          alliance:{
+            name:alliance.name,
+            id:alliance.id
+          },
+          status:true,
+          position:2,
+          id:requestor.alliance_membership.status
+        }
+      else
+        membership = alliance_membership.errors.messages
+      end
+    else
+      membership = {
+        error:'Airline does not have permission'
+      }
+    end
+    render json: membership
   end
 
   private

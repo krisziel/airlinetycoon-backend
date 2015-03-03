@@ -15,8 +15,8 @@ Rails.application.routes.draw do
   get 'alliances/:id' => 'alliance#show'
   delete 'alliances/:id' => 'alliance#delete'
   post 'alliances/:id/request/' => 'alliance#request_membership'
-  post 'alliances/:id/approve/' => 'alliance#approve'
-  post 'alliances/:id/reject/' => 'alliance#reject'
+  post 'alliances/:id/approve/' => 'alliance#approve_membership'
+  post 'alliances/:id/reject/' => 'alliance#reject_membership'
 
 
 end
