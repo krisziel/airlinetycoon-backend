@@ -126,4 +126,50 @@ describe "airtyccon API -- alliance#" do
     expect(membership["status"]).to eq(false)
   end
 
+  it 'prevents non-admin from rejecting airlines' do
+    get 'user/manuallogin'
+    Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
+    Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
+    Alliance.create!({name:"Star Alliance", game_id:1})
+    AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:2})
+    AllianceMembership.create!({airline_id:2, alliance_id:1, status:false, position:2})
+    post 'alliances/1/reject',
+    {
+      membership_id:2
+    }
+    membership = JSON.parse(response.body)
+    expect(membership["error"]).to eq('Airline does not have permission')
+  end
+
+  it 'allows admin to eject airlines' do
+    get 'user/manuallogin'
+    Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
+    Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
+    Alliance.create!({name:"Star Alliance", game_id:1})
+    AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:1})
+    AllianceMembership.create!({airline_id:2, alliance_id:1, status:true, position:2})
+    post 'alliances/1/eject',
+    {
+      membership_id:2
+    }
+    membership = JSON.parse(response.body)
+    expect(membership["airline"]["name"]).to eq('Maru Airways')
+    expect(membership["status"]).to eq(false)
+  end
+
+  it 'prevents non-admin from ejecting airlines' do
+    get 'user/manuallogin'
+    Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
+    Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
+    Alliance.create!({name:"Star Alliance", game_id:1})
+    AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:2})
+    AllianceMembership.create!({airline_id:2, alliance_id:1, status:true, position:2})
+    post 'alliances/1/eject',
+    {
+      membership_id:2
+    }
+    membership = JSON.parse(response.body)
+    expect(membership["error"]).to eq('Airline does not have permission')
+  end
+
 end

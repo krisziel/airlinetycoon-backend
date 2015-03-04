@@ -176,6 +176,37 @@ class AllianceController < ApplicationController
     render json: membership
   end
 
+  def end_membership
+    alliance = Alliance.find(params[:id])
+    airline = User.find(cookies.signed[:airtycoon_user]).airlines.where({game_id:alliance.game_id})[0]
+    if airline.alliance_membership.status && airline.alliance_membership.position == 1
+      member = AllianceMembership.find(params[:membership_id])
+      requestor = Airline.find(member.airline_id)
+      alliance_membership = member.destroy
+      if alliance_membership
+        membership = {
+          airline:{
+            name:requestor.name,
+            icao:requestor.icao,
+            id:requestor.id
+          },
+          alliance:{
+            name:alliance.name,
+            id:alliance.id
+          },
+          status:false
+        }
+      else
+        membership = alliance_membership.errors.messages
+      end
+    else
+      membership = {
+        error:'Airline does not have permission'
+      }
+    end
+    render json: membership
+  end
+
   private
   def alliance_params
     params.require(:alliance).permit(:name, :game_id)

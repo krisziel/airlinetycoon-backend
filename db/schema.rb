@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150304000601) do
+ActiveRecord::Schema.define(version: 20150304053136) do
 
   create_table "aircrafts", force: true do |t|
     t.string   "manufacturer"
@@ -43,8 +43,8 @@ ActiveRecord::Schema.define(version: 20150304000601) do
   create_table "alliance_memberships", force: true do |t|
     t.integer  "airline_id"
     t.integer  "alliance_id"
-    t.boolean  "status",      default: false
-    t.integer  "position",    default: 2
+    t.boolean  "status"
+    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -52,6 +52,42 @@ ActiveRecord::Schema.define(version: 20150304000601) do
   create_table "alliances", force: true do |t|
     t.string   "name"
     t.integer  "game_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "configurations", force: true do |t|
+    t.string   "name"
+    t.integer  "aircraft_id"
+    t.integer  "airline_id"
+    t.integer  "f_count"
+    t.integer  "j_count"
+    t.integer  "p_count"
+    t.integer  "y_count"
+    t.integer  "f_seat"
+    t.integer  "j_seat"
+    t.integer  "p_seat"
+    t.integer  "y_seat"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "seats", force: true do |t|
+    t.string   "name"
+    t.string   "class"
+    t.float    "sqft"
+    t.integer  "rating"
+    t.integer  "price"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "user_aircrafts", force: true do |t|
+    t.integer  "aircraft_id"
+    t.integer  "airline_id"
+    t.integer  "configuration_id"
+    t.integer  "age"
+    t.boolean  "inuse"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
