@@ -1,7 +1,8 @@
 class AirlineController < ApplicationController
+  before_action :airline
 
   def all
-    airlines = Airline.all
+    airlines = Airline.where(game_id:params[:game_id])
     airline_list = []
     airlines.each do |airline|
       if airline.alliance

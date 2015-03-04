@@ -22,4 +22,20 @@ class AircraftController < ApplicationController
     render json: aircraft_list
   end
 
+  def seats
+    seats = Seat.all
+    seat_list = []
+    seats.each do |seat|
+      seat = {
+        name:seat.name,
+        service_class:seat.service_class,
+        rating:seat.rating,
+        price:seat.price,
+        sqft:seat.sqft
+      }
+      seat_list.push(seat)
+    end
+    render json: seat_list
+  end
+
 end

@@ -8,7 +8,7 @@ describe 'airtycoon API -- airline#' do
       'airline[name]' => 'INnoVation Airlines',
       'airline[icao]' => 'INO',
       'airline[game_id]' => 1,
-      'airline[user_id]' => 1,
+      'airline[user_id]' => 1
     }
     airline = JSON.parse(response.body)
     expect(airline["name"]).to eq('INnoVation Airlines')
@@ -29,7 +29,10 @@ describe 'airtycoon API -- airline#' do
       'airline[game_id]' => 1,
       'airline[user_id]' => 2
     }
-    get '/airlines/'
+    get '/airlines/',
+    {
+      game_id:1
+    }
     airlines = JSON.parse(response.body)
     expect(airlines[0]["name"]).to eq("INnoVation Airlines")
     expect(airlines[1]["name"]).to eq("Jin Air")

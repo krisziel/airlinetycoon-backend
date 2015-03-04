@@ -1,6 +1,6 @@
-class CreateConfigurations < ActiveRecord::Migration
+class CreateAircraftConfigurations < ActiveRecord::Migration
   def change
-    create_table :configurations do |t|
+    create_table :aircraft_configurations do |t|
       t.string :name
       t.integer :aircraft_id
       t.integer :airline_id

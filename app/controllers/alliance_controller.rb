@@ -1,4 +1,5 @@
 class AllianceController < ApplicationController
+  before_action :airline
 
   def all
     alliances = Alliance.all
@@ -19,8 +20,6 @@ class AllianceController < ApplicationController
       game_id:params[:game_id],
       name:params[:name]
     }
-    user = User.find(cookies.signed[:airtycoon_user])
-    airline = user.airlines.where({game_id:params[:game_id]})[0]
     if airline.alliance
       alliance = airline.alliance
       if airline.alliance_membership.status == false

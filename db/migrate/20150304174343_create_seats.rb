@@ -2,10 +2,10 @@ class CreateSeats < ActiveRecord::Migration
   def change
     create_table :seats do |t|
       t.string :name
-      t.string :class
+      t.string :service_class
       t.float :sqft
-      t.integer :rating
       t.integer :price
+      t.integer :rating
       t.timestamps
     end
   end
