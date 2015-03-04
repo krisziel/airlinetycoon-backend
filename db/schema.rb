@@ -11,17 +11,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150303104438) do
+ActiveRecord::Schema.define(version: 20150304000601) do
 
-  create_table "airlines", force: true do |t|
-    t.string   "name",        limit: 50, null: false
-    t.string   "icao",        limit: 3,  null: false
-    t.integer  "money",       limit: 8,  null: false
-    t.integer  "game_id",                null: false
-    t.integer  "user_id",                null: false
+  create_table "aircrafts", force: true do |t|
+    t.string   "manufacturer"
+    t.string   "name"
+    t.string   "iata"
+    t.string   "sqft"
+    t.string   "capacity"
+    t.integer  "price"
+    t.integer  "range"
+    t.integer  "speed"
+    t.integer  "turn_time"
+    t.integer  "fuel_capacity"
+    t.integer  "fuel_burn"
+    t.float    "discount"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "alliance_id"
+  end
+
+  create_table "airlines", force: true do |t|
+    t.string   "name",       limit: 50, null: false
+    t.string   "icao",       limit: 3,  null: false
+    t.integer  "money",      limit: 8,  null: false
+    t.integer  "game_id",               null: false
+    t.integer  "user_id",               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "alliance_memberships", force: true do |t|

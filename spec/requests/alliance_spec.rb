@@ -22,7 +22,7 @@ describe "airtyccon API -- alliance#" do
 
   it 'can request to join an alliance' do
     get 'user/manuallogin'
-    Airline.create!({name: "INnoVation Airlines",icao: "INO", money: 5000000000,game_id: 1, user_id: 1})
+    Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
     post 'alliances', {
       name:"Star",
       game_id:1
@@ -35,7 +35,7 @@ describe "airtyccon API -- alliance#" do
         password:"kris"
       }
     }
-    Airline.create!({name: "Maru Airways",icao: "MRU", money: 5000000000,game_id: 1, user_id: 2})
+    Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
     post 'alliances/1/request', {
       game_id:1
     }
@@ -45,10 +45,10 @@ describe "airtyccon API -- alliance#" do
 
   it 'returns an error if the airline is already in an alliance' do
     get 'user/manuallogin'
-    airline = Airline.create!({name: "INnoVation Airlines",icao: "INO", money: 5000000000,game_id: 1, user_id: 1})
-    alliance = Alliance.create!({name:"Star Alliance",game_id:1})
-    AllianceMembership.create!({airline_id:1,alliance_id:1})
-    alliance = Alliance.create!({name:"SK Telecom",game_id:1})
+    airline = Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
+    alliance = Alliance.create!({name:"Star Alliance", game_id:1})
+    AllianceMembership.create!({airline_id:1, alliance_id:1})
+    alliance = Alliance.create!({name:"SK Telecom", game_id:1})
     post 'alliances/2/request',
     {
       game_id:1
@@ -70,7 +70,7 @@ describe "airtyccon API -- alliance#" do
         password:"kris"
       }
     }
-    Airline.create!({name: "Maru Airways",icao: "MRU", money: 5000000000,game_id: 1, user_id: 2})
+    Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
     post 'alliances', {
       name:"Star Alliance",
       game_id:1
@@ -81,11 +81,11 @@ describe "airtyccon API -- alliance#" do
 
   it 'allows admin to approve airlines' do
     get 'user/manuallogin'
-    Airline.create!({name: "INnoVation Airlines",icao: "INO", money: 5000000000,game_id: 1, user_id: 1})
-    Airline.create!({name: "Maru Airways",icao: "MRU", money: 5000000000,game_id: 1, user_id: 2})
-    Alliance.create!({name: "Star Alliance", game_id: 1})
-    AllianceMembership.create!({airline_id:1,alliance_id:1,status:true,position:1})
-    AllianceMembership.create!({airline_id:2,alliance_id:1,status:false,position:2})
+    Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
+    Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
+    Alliance.create!({name:"Star Alliance", game_id:1})
+    AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:1})
+    AllianceMembership.create!({airline_id:2, alliance_id:1, status:false, position:2})
     post 'alliances/1/approve',
     {
       membership_id:2
@@ -97,11 +97,11 @@ describe "airtyccon API -- alliance#" do
 
   it 'prevents non-admin from approving airlines' do
     get 'user/manuallogin'
-    Airline.create!({name: "INnoVation Airlines",icao: "INO", money: 5000000000,game_id: 1, user_id: 1})
-    Airline.create!({name: "Maru Airways",icao: "MRU", money: 5000000000,game_id: 1, user_id: 2})
-    Alliance.create!({name: "Star Alliance", game_id: 1})
-    AllianceMembership.create!({airline_id:1,alliance_id:1,status:true,position:2})
-    AllianceMembership.create!({airline_id:2,alliance_id:1,status:false,position:2})
+    Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
+    Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
+    Alliance.create!({name:"Star Alliance", game_id:1})
+    AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:2})
+    AllianceMembership.create!({airline_id:2, alliance_id:1, status:false, position:2})
     post 'alliances/1/approve',
     {
       membership_id:2
@@ -110,7 +110,20 @@ describe "airtyccon API -- alliance#" do
     expect(membership["error"]).to eq('Airline does not have permission')
   end
 
-end
+  it 'allows admin to reject airlines' do
+    get 'user/manuallogin'
+    Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
+    Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
+    Alliance.create!({name:"Star Alliance", game_id:1})
+    AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:1})
+    AllianceMembership.create!({airline_id:2, alliance_id:1, status:false, position:2})
+    post 'alliances/1/reject',
+    {
+      membership_id:2
+    }
+    membership = JSON.parse(response.body)
+    expect(membership["airline"]["name"]).to eq('Maru Airways')
+    expect(membership["status"]).to eq(false)
+  end
 
-# Airline.create!({name: "INnoVation Airlines",icao: "INO", money: 5000000000,game_id: 1, user_id: 1})
-# Airline.create!({name: "Maru Airways",icao: "MRU", money: 5000000000,game_id: 2, user_id: 1})
+end

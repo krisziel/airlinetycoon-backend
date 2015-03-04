@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   post 'airlines' => 'airline#create'
   get 'airlines' => 'airline#all'
 
+  get 'aircraft' => 'aircraft#all'
 
   post 'user/autologin' => 'user#autologin'
   post 'user/' => 'user#create'
