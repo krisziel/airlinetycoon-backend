@@ -22,7 +22,9 @@ describe 'airtycoon API -- user#' do
   end
 
   it 'expects to have the user\'s airline returned after autologin' do
+    Game.create!(region:'me',year:'2Q2012')
     get '/user/manuallogin'
+    get '/games/manuallogin'
     Airline.create!({
       name: "INnoVation Airlines",
       icao: "INO",

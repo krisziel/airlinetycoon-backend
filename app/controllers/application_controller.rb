@@ -4,14 +4,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def airline
-    if params[:game_id]
+    if cookies.signed[:airtycoon_game]
       if cookies.signed[:airtycoon_user]
         user = User.find(cookies.signed[:airtycoon_user])
-        if user.airlines.where({game_id:params[:game_id]})
-          airline = user.airlines.where({game_id:params[:game_id]})[0]
-        else
-          airline = nil
-        end
+        airline = user.airlines.find_by(game_id:cookies.signed[:airtycoon_game])
       end
     else
       airline = nil
@@ -19,6 +15,15 @@ class ApplicationController < ActionController::Base
     airline
   end
 
-  helper_method :airline
+  def game
+    if cookies.signed[:airtycoon_game]
+      game = Game.find(cookies.signed[:airtycoon_game])
+    else
+      game = nil
+    end
+    game
+  end
+
+  helper_method :airline, :game
 
 end

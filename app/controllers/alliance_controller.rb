@@ -1,8 +1,8 @@
 class AllianceController < ApplicationController
-  before_action :airline
+  before_action :airline, :game
 
   def all
-    alliances = Alliance.all
+    alliances = Alliance.where(game_id:game.id)
     alliance_list = []
     alliances.each do |alliance|
       alliance = {
@@ -17,7 +17,7 @@ class AllianceController < ApplicationController
 
   def create
     params[:alliance] = {
-      game_id:params[:game_id],
+      game_id:game.id,
       name:params[:name]
     }
     if airline.alliance

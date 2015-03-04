@@ -1,5 +1,8 @@
 class Airline < ActiveRecord::Base
   belongs_to :user
+  belongs_to :game
+  has_many :configurations
+  has_many :user_aircrafts
   has_one :alliance_membership
   has_one :alliance, through: :alliance_membership
 

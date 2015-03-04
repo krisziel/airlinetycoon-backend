@@ -1,9 +1,13 @@
 require 'rails_helper'
 
-describe "airtyccon API -- alliance#" do
+describe "airtycoon API -- alliance#" do
+  before do
+    get 'user/manuallogin'
+    get 'games/manuallogin'
+    Game.create(region:'all',year:'2Q2015')
+  end
 
   it "can create a new alliance" do
-    get 'user/manuallogin'
     Airline.create!({
       name: "INnoVation Airlines",
       icao: "INO",
@@ -12,8 +16,7 @@ describe "airtyccon API -- alliance#" do
       user_id: 1
     })
     post 'alliances', {
-      name:"Star",
-      game_id:1
+      name:"Star"
     }
     alliance = JSON.parse(response.body)
     expect(alliance["name"]).to eq("Star")
@@ -21,11 +24,9 @@ describe "airtyccon API -- alliance#" do
   end
 
   it 'can request to join an alliance' do
-    get 'user/manuallogin'
     Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
     post 'alliances', {
-      name:"Star",
-      game_id:1
+      name:"Star"
     }
     post 'user',{
       user:{
@@ -44,7 +45,6 @@ describe "airtyccon API -- alliance#" do
   end
 
   it 'returns an error if the airline is already in an alliance' do
-    get 'user/manuallogin'
     airline = Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
     alliance = Alliance.create!({name:"Star Alliance", game_id:1})
     AllianceMembership.create!({airline_id:1, alliance_id:1})
@@ -58,7 +58,6 @@ describe "airtyccon API -- alliance#" do
   end
 
   it 'returns an error when trying to create an alliance with the same name' do
-    get 'user/manuallogin'
     Airline.create!({name: "INnoVation Airlines",icao: "INO", money: 5000000000,game_id: 1, user_id: 1})
     Alliance.create!({name: "Star Alliance", game_id: 1})
     AllianceMembership.create!({airline_id:1,alliance_id:1})
@@ -80,7 +79,6 @@ describe "airtyccon API -- alliance#" do
   end
 
   it 'allows admin to approve airlines' do
-    get 'user/manuallogin'
     Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
     Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
     Alliance.create!({name:"Star Alliance", game_id:1})
@@ -96,7 +94,6 @@ describe "airtyccon API -- alliance#" do
   end
 
   it 'prevents non-admin from approving airlines' do
-    get 'user/manuallogin'
     Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
     Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
     Alliance.create!({name:"Star Alliance", game_id:1})
@@ -111,7 +108,6 @@ describe "airtyccon API -- alliance#" do
   end
 
   it 'allows admin to reject airlines' do
-    get 'user/manuallogin'
     Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
     Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
     Alliance.create!({name:"Star Alliance", game_id:1})
@@ -127,7 +123,6 @@ describe "airtyccon API -- alliance#" do
   end
 
   it 'prevents non-admin from rejecting airlines' do
-    get 'user/manuallogin'
     Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
     Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
     Alliance.create!({name:"Star Alliance", game_id:1})
@@ -142,7 +137,6 @@ describe "airtyccon API -- alliance#" do
   end
 
   it 'allows admin to eject airlines' do
-    get 'user/manuallogin'
     Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
     Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
     Alliance.create!({name:"Star Alliance", game_id:1})
@@ -158,7 +152,6 @@ describe "airtyccon API -- alliance#" do
   end
 
   it 'prevents non-admin from ejecting airlines' do
-    get 'user/manuallogin'
     Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
     Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
     Alliance.create!({name:"Star Alliance", game_id:1})

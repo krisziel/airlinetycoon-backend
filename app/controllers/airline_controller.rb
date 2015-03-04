@@ -1,8 +1,8 @@
 class AirlineController < ApplicationController
-  before_action :airline
+  before_action :airline, :game
 
   def all
-    airlines = Airline.where(game_id:params[:game_id])
+    airlines = Airline.where(game_id:game.id)
     airline_list = []
     airlines.each do |airline|
       if airline.alliance
@@ -25,8 +25,10 @@ class AirlineController < ApplicationController
 
   def create
     params[:airline][:money] = 5000000000
+    params[:airline][:user_id] = cookies.signed[:airtycoon_user]
     airline = Airline.new(airline_params)
     if airline.save
+      cookies.signed[:airtycoon_game] = params[:airline][:game_id]
       response = {
         name: airline.name,
         icao: airline.icao,

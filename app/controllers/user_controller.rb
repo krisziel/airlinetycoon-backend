@@ -3,9 +3,8 @@ class UserController < ApplicationController
   def autologin
     user_id = cookies.signed[:airtycoon_user] || 0
     if user_id > 0
-      response = {test: user_id}
       user = User.find(user_id)
-      airline = Airline.where({user_id: user_id, game_id: params[:game_id].to_i})
+      airline = Airline.where({user_id: user_id, game_id: cookies.signed[:airtycoon_game]})
       if airline.length > 0
         airline = airline[0]
         if airline.alliance
