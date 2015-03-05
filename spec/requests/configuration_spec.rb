@@ -34,7 +34,7 @@ describe 'airtycoon API -- user_aircraft#' do
     {
       name:'High Density',
       aircraft_id:1,
-
+      
     }
   end
 
@@ -51,7 +51,7 @@ describe 'airtycoon API -- user_aircraft#' do
   end
 
   xit 'prevents the configuration from having more seats than aircraft capacity' do
-    
+
   end
 
 end

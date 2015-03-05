@@ -22,6 +22,7 @@ class ConfigurationController < ApplicationController
 
   def create
     seats = JSON.parse(params[:config][:seats])
+    params[:config][:airline_id] = airline.id
     config = params[:config]
     config[:f_count] = seats["f"]["count"]
     config[:j_count] = seats["j"]["count"]
@@ -32,10 +33,15 @@ class ConfigurationController < ApplicationController
     config[:p_seat] = seats["p"]["id"]
     config[:y_seat] = seats["y"]["id"]
     configuration = AircraftConfiguration.new(config_params)
-    if configuration.save
-      config_response = configuration
+    valid_config = validate_configuration configuration
+    if valid_config
+      if configuration.save
+        config_response = configuration
+      else
+        config_response = configuration.errors.messages
+      end
     else
-      config_response = configuration.errors.message
+      config_response = valid_config.errors.messages
     end
     render json: config_response
   end
@@ -43,6 +49,10 @@ class ConfigurationController < ApplicationController
   private
   def config_params
     params.require(:config).permit(:name, :airline_id, :aircraft_id, :f_count, :j_count, :p_count, :y_count, :f_seat, :j_seat, :p_seat, :y_seat)
+  end
+
+  def validate_configuration configuration
+
   end
 
   def config_serializer configuration
