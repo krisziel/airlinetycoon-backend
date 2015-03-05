@@ -11,8 +11,8 @@ describe 'airtycoon API -- user_aircraft#' do
     Aircraft.create(name:"777-300ER",manufacturer:"Boeing",iata:"77W",capacity:550,speed:550,turn_time:90,price:320000000,discount:2,fuel_capacity:47900,range:9100,sqft:2475)
     Seat.create(service_class:"y",name:"Economy",price:500,rating:7,sqft:4.5)
     Seat.create(service_class:"p",name:"Premium Economy",price:1000,rating:9,sqft:7)
-    AircraftConfiguration.create(name:"High Density",aircraft_id:1,airline_id:1,f_count:0,j_count:0,p_count:80,y_count:400,f_seat:nil,j_seat:nil,p_seat:2,y_seat:1)
-    AircraftConfiguration.create(name:"High Density",aircraft_id:2,airline_id:1,f_count:0,j_count:0,p_count:80,y_count:300,f_seat:nil,j_seat:nil,p_seat:2,y_seat:1)
+    AircraftConfiguration.create(name:"High Density",aircraft_id:1,airline_id:1,f_count:0,j_count:0,p_count:80,y_count:400,f_seat:0,j_seat:0,p_seat:2,y_seat:1)
+    AircraftConfiguration.create(name:"High Density",aircraft_id:2,airline_id:1,f_count:0,j_count:0,p_count:80,y_count:300,f_seat:0,j_seat:0,p_seat:2,y_seat:1)
   end
 
   it 'can retreive a list of configurations beloning to an airline' do
@@ -35,11 +35,11 @@ describe 'airtycoon API -- user_aircraft#' do
       config:{
         name:'Pretty High Density',
         aircraft_id:1,
-        seats:'{"f":{"count":0,"id":0},"j":{"count":0,"id":0},"p":{"count":80,"id":2},"y":{"count":400,"id":1}}'
+        seats:'{"f":{"count":0,"id":0},"j":{"count":0,"id":0},"p":{"count":80,"id":2},"y":{"count":300,"id":1}}'
       }
     }
     configuration = JSON.parse(response.body)
-    p configuration
+    expect(configuration["seats"]["y"]["count"]).to eq(300)
   end
 
   xit 'prevents a configuration designed for a different plane from being used' do
@@ -54,8 +54,17 @@ describe 'airtycoon API -- user_aircraft#' do
 
   end
 
-  xit 'prevents the configuration from having more seats than aircraft capacity' do
-
+  it 'prevents the configuration from having more seats than aircraft capacity' do
+    post 'aircraft/user/1/configs',
+    {
+      config:{
+        name:'Pretty High Density',
+        aircraft_id:1,
+        seats:'{"f":{"count":0,"id":0},"j":{"count":0,"id":0},"p":{"count":80,"id":2},"y":{"count":700,"id":1}}'
+      }
+    }
+    configuration = JSON.parse(response.body)
+    expect(configuration["seats"]["y"]["count"]).to eq(315)
   end
 
 end

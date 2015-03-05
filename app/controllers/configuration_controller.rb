@@ -34,14 +34,15 @@ class ConfigurationController < ApplicationController
     config[:y_seat] = seats["y"]["id"]
     configuration = AircraftConfiguration.new(config_params)
     valid_config = validate_configuration configuration
-    if valid_config
-      if configuration.save
-        config_response = configuration
-      else
-        config_response = configuration.errors.messages
-      end
+    config[:f_count] = valid_config[:f][:count]
+    config[:j_count] = valid_config[:j][:count]
+    config[:p_count] = valid_config[:p][:count]
+    config[:y_count] = valid_config[:y][:count]
+    configuration = AircraftConfiguration.new(config_params)
+    if configuration.save
+      config_response = config_serializer configuration
     else
-      config_response = valid_config.errors.messages
+      config_response = configuration.errors.messages
     end
     render json: config_response
   end
@@ -55,31 +56,41 @@ class ConfigurationController < ApplicationController
     config = configuration
     aircraft = configuration.aircraft
     sqft = aircraft.sqft.to_f
-    f_data = { id:config[:f_seat], count:config[:f_count] }
-    j_data = { id:config[:j_seat], count:config[:y_count] }
-    p_data = { id:config[:p_seat], count:config[:p_count] }
-    y_data = { id:config[:y_seat], count:config[:fy_count] }
-    validate_space(sqft,f_data)
-    validate_space(sqft,j_data)
-    validate_space(sqft,p_data)
-    validate_space(sqft,y_data)
+    f_data = validate_space(sqft,{ id:config[:f_seat], count:config[:f_count] })
+    sqft -= f_data[:sqft]
+    j_data = validate_space(sqft,{ id:config[:j_seat], count:config[:j_count] })
+    sqft -= j_data[:sqft]
+    p_data = validate_space(sqft,{ id:config[:p_seat], count:config[:p_count] })
+    sqft -= p_data[:sqft]
+    y_data = validate_space(sqft,{ id:config[:y_seat], count:config[:y_count] })
+    sqft -= y_data[:sqft]
+    all_data = {
+      f:f_data,
+      j:j_data,
+      p:p_data,
+      y:y_data
+    }
+    all_data
   end
 
   def validate_space sqft, seat
     seat[:id] > 0 ? seat_sqft = Seat.find(seat[:id]).sqft : seat_sqft = 0
     cabin_sqft = seat_sqft.to_f * seat[:count].to_f
+    response = {}
     if cabin_sqft > sqft
-      available = floor(sqft/seat_sqft)
-    else
-      false
+      available = (sqft/seat_sqft).floor
+      cabin_sqft = (available * seat_sqft)
+      seat[:count] = available
     end
+    seat[:sqft] = cabin_sqft
+    seat
   end
 
   def config_serializer configuration
-    configuration.f_seat ? f_seat = Seat.find(configuration.f_seat) : f_seat = nil
-    configuration.j_seat ? j_seat = Seat.find(configuration.j_seat) : j_seat = nil
-    configuration.p_seat ? p_seat = Seat.find(configuration.p_seat) : p_seat = nil
-    configuration.y_seat ? y_seat = Seat.find(configuration.y_seat) : y_seat = nil
+    configuration.f_seat > 0 ? f_seat = Seat.find(configuration.f_seat) : f_seat = nil
+    configuration.j_seat > 0 ? j_seat = Seat.find(configuration.j_seat) : j_seat = nil
+    configuration.p_seat > 0 ? p_seat = Seat.find(configuration.p_seat) : p_seat = nil
+    configuration.y_seat > 0 ? y_seat = Seat.find(configuration.y_seat) : y_seat = nil
     if f_seat
       f_seat = {
         count:configuration.f_count,
@@ -115,13 +126,7 @@ class ConfigurationController < ApplicationController
     configuration = {
       id:configuration.id,
       name:configuration.name,
-      aircraft:{
-        id:configuration.aircraft.id,
-        name:configuration.aircraft.name,
-        manufacturer:configuration.aircraft.manufacturer,
-        full_name:configuration.aircraft.full_name,
-        iata:configuration.aircraft.iata
-      },
+      aircraft:configuration.aircraft.basic_info,
       seats:{
         f:f_seat || nil,
         j:j_seat || nil,
