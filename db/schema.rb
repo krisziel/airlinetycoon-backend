@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 20150304184100) do
   create_table "airlines", force: true do |t|
     t.string   "name",       limit: 50, null: false
     t.string   "icao",       limit: 3,  null: false
-    t.integer  "money",      limit: 8,  null: false
+    t.integer  "money",      limit: 8
     t.integer  "game_id",               null: false
     t.integer  "user_id",               null: false
     t.datetime "created_at"
@@ -68,22 +68,6 @@ ActiveRecord::Schema.define(version: 20150304184100) do
   create_table "alliances", force: true do |t|
     t.string   "name"
     t.integer  "game_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "configurations", force: true do |t|
-    t.string   "name"
-    t.integer  "aircraft_id"
-    t.integer  "airline_id"
-    t.integer  "f_count"
-    t.integer  "j_count"
-    t.integer  "p_count"
-    t.integer  "y_count"
-    t.integer  "f_seat"
-    t.integer  "j_seat"
-    t.integer  "p_seat"
-    t.integer  "y_seat"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -108,7 +92,7 @@ ActiveRecord::Schema.define(version: 20150304184100) do
   create_table "user_aircrafts", force: true do |t|
     t.integer  "aircraft_id"
     t.integer  "airline_id"
-    t.integer  "configuration_id"
+    t.integer  "aircraft_configuration_id"
     t.integer  "age"
     t.boolean  "inuse"
     t.datetime "created_at"

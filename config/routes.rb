@@ -15,10 +15,11 @@ Rails.application.routes.draw do
   post 'aircraft/user/:id' => 'user_aircraft#create'
   put 'aircraft/user/:id' => 'user_aircraft#update'
   delete 'aircraft/user/:id' => 'user_aircraft#delete'
-  get 'aircraft/user/:id/configs' => 'configuration#all' # rspec in progress
-  get 'aircraft/user/:id/configs/:type' => 'configuration#type'
-  post 'aircraft/user/:id/configs' => 'configuration#create'
-  delete 'aircraft/user/:id/configs' => 'configuration#delete'
+
+  get 'aircraft/configs' => 'configuration#all' # rspec passing
+  get 'aircraft/configs/:type' => 'configuration#type' # rspec passing
+  post 'aircraft/configs' => 'configuration#create' # rspec passing
+  delete 'aircraft/configs/:id' => 'configuration#delete' # rspec in progress
 
   post 'user/autologin' => 'user#autologin' # rspec passing
   post 'user/' => 'user#create' # rspec passing

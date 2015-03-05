@@ -3,7 +3,7 @@ class CreateUserAircrafts < ActiveRecord::Migration
     create_table :user_aircrafts do |t|
       t.integer :aircraft_id
       t.integer :airline_id
-      t.integer :configuration_id
+      t.integer :aircraft_configuration_id
       t.integer :age
       t.boolean :inuse
       t.timestamps

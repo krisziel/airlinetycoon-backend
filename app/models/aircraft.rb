@@ -1,5 +1,6 @@
 class Aircraft < ActiveRecord::Base
   validates :iata, uniqueness: :true
+  has_many :user_aircrafts
 
   def full_name
     "#{manufacturer} #{name}"

@@ -47,6 +47,27 @@ class ConfigurationController < ApplicationController
     render json: config_response
   end
 
+  def delete
+    config = AircraftConfiguration.find_by(id:params[:id],airline_id:airline.id)
+    aircrafts = config.user_aircraft
+    if aircrafts.length == 0
+      config.destroy
+      response = {
+        message:"configuration deleted"
+      }
+    else
+      aircraft_list = []
+      aircrafts.each do |aircraft|
+        aircraft_list.push(aircraft.full_data)
+      end
+      response = {
+        message:"aircraft in user",
+        aircraft:aircraft_list
+      }
+    end
+    render json: response
+  end
+
   private
   def config_params
     params.require(:config).permit(:name, :airline_id, :aircraft_id, :f_count, :j_count, :p_count, :y_count, :f_seat, :j_seat, :p_seat, :y_seat)

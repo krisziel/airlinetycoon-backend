@@ -16,21 +16,21 @@ describe 'airtycoon API -- user_aircraft#' do
   end
 
   it 'can retreive a list of configurations beloning to an airline' do
-    get 'aircraft/user/1/configs'
+    get 'aircraft/configs'
     configurations = JSON.parse(response.body)
     expect(configurations[0]["aircraft"]["name"]).to eq("777-200LR")
     expect(configurations[1]["seats"]["p"]["name"]).to eq("Premium Economy")
   end
 
   it 'can retreive a list of configurations belonging to an airline and aircraft type' do
-    get 'aircraft/user/1/configs/77W'
+    get 'aircraft/configs/77W'
     configurations = JSON.parse(response.body)
     expect(configurations.length).to eq(1)
     expect(configurations[0]["aircraft"]["iata"]).to eq("77W")
   end
 
   it 'can create a new configuration' do
-    post 'aircraft/user/1/configs',
+    post 'aircraft/configs',
     {
       config:{
         name:'Pretty High Density',
@@ -42,20 +42,36 @@ describe 'airtycoon API -- user_aircraft#' do
     expect(configuration["seats"]["y"]["count"]).to eq(300)
   end
 
-  xit 'prevents a configuration designed for a different plane from being used' do
-
+  it 'can delete a configuration' do
+    AircraftConfiguration.create(name:"Highest Density",aircraft_id:2,airline_id:1,f_count:0,j_count:0,p_count:80,y_count:300,f_seat:0,j_seat:0,p_seat:2,y_seat:1)
+    UserAircraft.create(aircraft_id:1,airline_id:1,aircraft_configuration_id:1,age:0,inuse:true)
+    delete 'aircraft/configs/3'
+    configuration = JSON.parse(response.body)
+    expect(configuration["message"]).to eq("configuration deleted")
   end
 
-  xit 'can delete a configuration' do
-
+  it 'cannot delete a configuration used by aircraft' do
+    UserAircraft.create(aircraft_id:1,airline_id:1,aircraft_configuration_id:1,age:0,inuse:true)
+    delete 'aircraft/configs/1'
+    configuration = JSON.parse(response.body)
+    expect(configuration["aircraft"].length).to eq(1)
   end
 
-  xit 'prevents a configuration from having the same name as another of the type' do
-
+  it 'prevents a configuration from having the same name as another of the type' do
+    post 'aircraft/configs',
+    {
+      config:{
+        name:'High Density',
+        aircraft_id:1,
+        seats:'{"f":{"count":0,"id":0},"j":{"count":0,"id":0},"p":{"count":80,"id":2},"y":{"count":700,"id":1}}'
+      }
+    }
+    configuration = JSON.parse(response.body)
+    expect(configuration["name"]).to eq(["A configuration with the same name already exists for this aircraft"])
   end
 
   it 'prevents the configuration from having more seats than aircraft capacity' do
-    post 'aircraft/user/1/configs',
+    post 'aircraft/configs',
     {
       config:{
         name:'Pretty High Density',
