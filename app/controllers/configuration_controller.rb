@@ -54,7 +54,7 @@ class ConfigurationController < ApplicationController
   def validate_configuration configuration
     config = configuration
     aircraft = configuration.aircraft
-    sqft = aircraft.sqft
+    sqft = aircraft.sqft.to_f
     f_data = { id:config[:f_seat], count:config[:f_count] }
     j_data = { id:config[:j_seat], count:config[:y_count] }
     p_data = { id:config[:p_seat], count:config[:p_count] }
@@ -66,12 +66,12 @@ class ConfigurationController < ApplicationController
   end
 
   def validate_space sqft, seat
-    seat[:id] ? seat_sqft = Seat.find(seat[:id]).sqft : seat_sqft = 0
-    cabin_sqft = seat_sqft * seat[:count]
-    if seat_sqft > sqft
+    seat[:id] > 0 ? seat_sqft = Seat.find(seat[:id]).sqft : seat_sqft = 0
+    cabin_sqft = seat_sqft.to_f * seat[:count].to_f
+    if cabin_sqft > sqft
       available = floor(sqft/seat_sqft)
     else
-      available = seat[:count]
+      false
     end
   end
 

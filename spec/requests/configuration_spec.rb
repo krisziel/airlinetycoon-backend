@@ -32,10 +32,14 @@ describe 'airtycoon API -- user_aircraft#' do
   it 'can create a new configuration' do
     post 'aircraft/user/1/configs',
     {
-      name:'High Density',
-      aircraft_id:1,
-      
+      config:{
+        name:'Pretty High Density',
+        aircraft_id:1,
+        seats:'{"f":{"count":0,"id":0},"j":{"count":0,"id":0},"p":{"count":80,"id":2},"y":{"count":400,"id":1}}'
+      }
     }
+    configuration = JSON.parse(response.body)
+    p configuration
   end
 
   xit 'prevents a configuration designed for a different plane from being used' do
