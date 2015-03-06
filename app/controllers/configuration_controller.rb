@@ -61,7 +61,7 @@ class ConfigurationController < ApplicationController
         aircraft_list.push(aircraft.full_data)
       end
       response = {
-        message:"aircraft in user",
+        message:"aircraft configuration in use",
         aircraft:aircraft_list
       }
     end

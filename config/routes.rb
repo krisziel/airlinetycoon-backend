@@ -2,16 +2,16 @@ Rails.application.routes.draw do
 
   root 'app#index'
 
-  get 'games' => 'game#all'
-  get 'games/manuallogin' => 'game#manual_login'
-  get 'games/:id' => 'game#show'
+  get 'games' => 'game#all' # rspec passing
+  get 'games/manuallogin' => 'game#manual_login' # rspec passing
+  get 'games/:id' => 'game#show' # rspec passing
 
   post 'airlines' => 'airline#create' # rspec passing
   get 'airlines' => 'airline#all' # rspec passing
 
   get 'aircraft' => 'aircraft#all' # rspec passing
   get 'aircraft/seats' => 'aircraft#seats' # rspec passing
-  get 'aircraft/user/:id' => 'user_aircraft#all' # rspec pending seat/config
+  get 'aircraft/user/:id' => 'user_aircraft#all' # rspec pending
   post 'aircraft/user/:id' => 'user_aircraft#create'
   put 'aircraft/user/:id' => 'user_aircraft#update'
   delete 'aircraft/user/:id' => 'user_aircraft#delete'
@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   get 'aircraft/configs' => 'configuration#all' # rspec passing
   get 'aircraft/configs/:type' => 'configuration#type' # rspec passing
   post 'aircraft/configs' => 'configuration#create' # rspec passing
-  delete 'aircraft/configs/:id' => 'configuration#delete' # rspec in progress
+  delete 'aircraft/configs/:id' => 'configuration#delete' # rspec passing
 
   post 'user/autologin' => 'user#autologin' # rspec passing
   post 'user/' => 'user#create' # rspec passing

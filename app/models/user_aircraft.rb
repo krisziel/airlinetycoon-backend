@@ -7,7 +7,8 @@ class UserAircraft < ActiveRecord::Base
     {
       id:id,
       aircraft:aircraft.tech_info,
-      inuse:inuse
+      inuse:inuse,
+      configuration:aircraft_configuration.config_details
     }
   end
 end
