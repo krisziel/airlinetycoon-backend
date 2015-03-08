@@ -7,7 +7,7 @@ describe "airtycoon API -- alliance#" do
     Game.create(region:'all',year:'2Q2015')
   end
 
-  it "can create a new alliance" do
+  it "can create a new alliance (the name is returned)" do
     Airline.create!({
       name: "INnoVation Airlines",
       icao: "INO",
@@ -20,6 +20,20 @@ describe "airtycoon API -- alliance#" do
     }
     alliance = JSON.parse(response.body)
     expect(alliance["name"]).to eq("Star")
+  end
+
+  it "can create a new alliance (the number of member airlines is returned)" do
+    Airline.create!({
+      name: "INnoVation Airlines",
+      icao: "INO",
+      money: 5000000000,
+      game_id: 1,
+      user_id: 1
+    })
+    post 'alliances', {
+      name:"Star"
+    }
+    alliance = JSON.parse(response.body)
     expect(alliance["airlines"].length).to eq(1)
   end
 
@@ -78,7 +92,7 @@ describe "airtycoon API -- alliance#" do
     expect(alliance["name"]).to eq(["An alliance with that name already exists"])
   end
 
-  it 'allows admin to approve airlines' do
+  it 'allows admin to approve airlines (the name of the approved airline is returned)' do
     Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
     Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
     Alliance.create!({name:"Star Alliance", game_id:1})
@@ -90,6 +104,19 @@ describe "airtycoon API -- alliance#" do
     }
     membership = JSON.parse(response.body)
     expect(membership["airline"]["name"]).to eq('Maru Airways')
+  end
+
+  it 'allows admin to approve airlines (the new status of the airline is returned)' do
+    Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
+    Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
+    Alliance.create!({name:"Star Alliance", game_id:1})
+    AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:1})
+    AllianceMembership.create!({airline_id:2, alliance_id:1, status:false, position:2})
+    post 'alliances/1/approve',
+    {
+      membership_id:2
+    }
+    membership = JSON.parse(response.body)
     expect(membership["status"]).to eq(true)
   end
 
@@ -107,7 +134,7 @@ describe "airtycoon API -- alliance#" do
     expect(membership["error"]).to eq('Airline does not have permission')
   end
 
-  it 'allows admin to reject airlines' do
+  it 'allows admin to reject airlines (it returns the name of the rejected airline)' do
     Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
     Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
     Alliance.create!({name:"Star Alliance", game_id:1})
@@ -119,6 +146,19 @@ describe "airtycoon API -- alliance#" do
     }
     membership = JSON.parse(response.body)
     expect(membership["airline"]["name"]).to eq('Maru Airways')
+  end
+
+  it 'allows admin to reject airlines (it returns the updated status of the airline)' do
+    Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
+    Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
+    Alliance.create!({name:"Star Alliance", game_id:1})
+    AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:1})
+    AllianceMembership.create!({airline_id:2, alliance_id:1, status:false, position:2})
+    post 'alliances/1/reject',
+    {
+      membership_id:2
+    }
+    membership = JSON.parse(response.body)
     expect(membership["status"]).to eq(false)
   end
 
@@ -136,7 +176,7 @@ describe "airtycoon API -- alliance#" do
     expect(membership["error"]).to eq('Airline does not have permission')
   end
 
-  it 'allows admin to eject airlines' do
+  it 'allows admin to eject airlines (the name of the ejected airline is returned)' do
     Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
     Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
     Alliance.create!({name:"Star Alliance", game_id:1})
@@ -148,6 +188,19 @@ describe "airtycoon API -- alliance#" do
     }
     membership = JSON.parse(response.body)
     expect(membership["airline"]["name"]).to eq('Maru Airways')
+  end
+
+  it 'allows admin to eject airlines (the updated status of the airline is returned)' do
+    Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
+    Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
+    Alliance.create!({name:"Star Alliance", game_id:1})
+    AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:1})
+    AllianceMembership.create!({airline_id:2, alliance_id:1, status:true, position:2})
+    post 'alliances/1/eject',
+    {
+      membership_id:2
+    }
+    membership = JSON.parse(response.body)
     expect(membership["status"]).to eq(false)
   end
 

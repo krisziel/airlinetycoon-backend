@@ -55,10 +55,14 @@ class UserController < ApplicationController
   end
 
   def manuallogin # for rspec
+    if !params[:clean]
+      DatabaseCleaner.strategy = :truncation
+      DatabaseCleaner.clean
+    end
     user = User.new({name:"Kris",username:"kziel",password:"kziel",email:"krisziel@mac.com"})
     if user.save
       cookies.signed[:airtycoon_user] = 1
-      render json: {}
+      render json: {user_id:user.id}
     else
       render json: user.errors.messages
     end
