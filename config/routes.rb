@@ -11,10 +11,10 @@ Rails.application.routes.draw do
 
   get 'aircraft' => 'aircraft#all' # rspec passing
   get 'aircraft/seats' => 'aircraft#seats' # rspec passing
-  get 'aircraft/user/:id' => 'user_aircraft#all' # rspec pending
-  post 'aircraft/user/:id' => 'user_aircraft#create'
-  put 'aircraft/user/:id' => 'user_aircraft#update'
-  delete 'aircraft/user/:id' => 'user_aircraft#delete'
+  get 'aircraft/user' => 'user_aircraft#all' # rspec passing
+  post 'aircraft/user' => 'user_aircraft#create' # rspec pending
+  put 'aircraft/user' => 'user_aircraft#update'
+  delete 'aircraft/user' => 'user_aircraft#delete'
 
   get 'aircraft/configs' => 'configuration#all' # rspec passing
   get 'aircraft/configs/:type' => 'configuration#type' # rspec passing
