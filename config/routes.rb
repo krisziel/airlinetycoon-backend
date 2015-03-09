@@ -12,9 +12,9 @@ Rails.application.routes.draw do
   get 'aircraft' => 'aircraft#all' # rspec passing
   get 'aircraft/seats' => 'aircraft#seats' # rspec passing
   get 'aircraft/user' => 'user_aircraft#all' # rspec passing
-  post 'aircraft/user' => 'user_aircraft#create' # rspec pending
-  put 'aircraft/user' => 'user_aircraft#update'
-  delete 'aircraft/user' => 'user_aircraft#delete'
+  post 'aircraft/user' => 'user_aircraft#create' # rspec passing
+  put 'aircraft/user' => 'user_aircraft#update' # rspec passing
+  delete 'aircraft/user' => 'user_aircraft#delete' # not sure about need
 
   get 'aircraft/configs' => 'configuration#all' # rspec passing
   get 'aircraft/configs/:type' => 'configuration#type' # rspec passing
@@ -34,5 +34,11 @@ Rails.application.routes.draw do
   post 'alliances/:id/reject/' => 'alliance#reject_membership' # rspec passing
   post 'alliances/:id/eject/' => 'alliance#end_membership' # rspec passing
 
+  get 'chat/alliance' => 'alliance_chat#all' # rspec pending
+  post 'chat/alliance' => 'alliance_chat#create'
+  get 'chat/game' => 'game_chat#all'
+  post 'chat/game' => 'game_chat#create'
+  get 'chat/messages' => 'messages#all'
+  post 'chat/messages' => 'messages#create'
 
 end
