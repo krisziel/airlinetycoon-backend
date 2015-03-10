@@ -1,16 +1,16 @@
-class AllianceChatController < ApplicationController
+class GameChatController < ApplicationController
   before_action :airline, :game
 
   def all
-    if airline.alliance
+    if airline.game
       message_list = []
       offset = params[:offset] || 0
       limit = params[:limit] || 20
       if params[:since]
         date =  Time.at(params[:since].to_i).to_datetime
-        chats = airline.alliance.alliance_chats.order(created_at: :asc).where('created_at > ?', date)
+        chats = airline.game.game_chats.order(created_at: :asc).where('created_at > ?', date)
       else
-        chats = airline.alliance.alliance_chats.order(created_at: :asc).limit(limit).offset(offset)
+        chats = airline.game.game_chats.order(created_at: :asc).limit(limit).offset(offset)
       end
       chats.reverse.each do |chat|
         message_list.push(chat.serialize)
@@ -25,9 +25,9 @@ class AllianceChatController < ApplicationController
   end
 
   def create
-    if airline.alliance
-      params[:alliance_chat][:airline_id] = airline.id
-      message = airline.alliance.alliance_chats.new(message_params)
+    if airline
+      params[:game_chat][:airline_id] = airline.id
+      message = airline.game.game_chats.new(message_params)
       if message.save
         messages = message.serialize
       else
@@ -43,7 +43,7 @@ class AllianceChatController < ApplicationController
 
   private
   def message_params
-    params.require(:alliance_chat).permit(:message, :airline_id)
+    params.require(:game_chat).permit(:message, :airline_id)
   end
 
 end

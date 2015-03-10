@@ -34,8 +34,8 @@ Rails.application.routes.draw do
   post 'alliances/:id/reject/' => 'alliance#reject_membership' # rspec passing
   post 'alliances/:id/eject/' => 'alliance#end_membership' # rspec passing
 
-  get 'chat/alliance' => 'alliance_chat#all' # rspec pending
-  post 'chat/alliance' => 'alliance_chat#create'
+  get 'chat/alliance' => 'alliance_chat#all' # rspec passing
+  post 'chat/alliance' => 'alliance_chat#create' # rspec pending
   get 'chat/game' => 'game_chat#all'
   post 'chat/game' => 'game_chat#create'
   get 'chat/messages' => 'messages#all'

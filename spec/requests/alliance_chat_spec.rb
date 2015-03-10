@@ -44,11 +44,13 @@ describe 'airtycoon API -- alliance chat#' do
     expect(message[0]["message"]).to eq('I have replied')
   end
 
-  xit 'can read messages since specific time' do
+  it 'can read messages since specific time' do
     AllianceChat.create(airline_id:1,alliance_id:1,message:'this is a message')
     AllianceChat.create(airline_id:2,alliance_id:1,message:'this is another message')
     AllianceChat.create(airline_id:1,alliance_id:1,message:'well that is so kind of you to reply')
+    sleep 1
     timestamp = Time.new.to_i
+    sleep 1
     AllianceChat.create(airline_id:1,alliance_id:1,message:'pls reply')
     AllianceChat.create(airline_id:2,alliance_id:1,message:'okay')
     get 'chat/alliance',
@@ -56,7 +58,7 @@ describe 'airtycoon API -- alliance chat#' do
       since:timestamp
     }
     message = JSON.parse(response.body)
-    expect(message).to eq(4)
+    expect(message.length).to eq(2)
   end
 
   it 'can request a specific number of messages' do
@@ -75,13 +77,26 @@ describe 'airtycoon API -- alliance chat#' do
     expect(message.length).to eq(2)
   end
 
-  xit 'can send message' do
+  it 'can send message (returns proper airline)' do
     post 'chat/alliance',
     {
-
+      alliance_chat:{
+        message:'Welcome all to the Star'
+      }
     }
     message = JSON.parse(response.body)
-    expect(message).to eq(4)
+    expect(message["airline"]["name"]).to eq('INnoVation Airlines')
+  end
+
+  it 'can send message (returns proper message)' do
+    post 'chat/alliance',
+    {
+      alliance_chat:{
+        message:'Welcome all to the Star'
+      }
+    }
+    message = JSON.parse(response.body)
+    expect(message["message"]).to eq('Welcome all to the Star')
   end
 
 end
