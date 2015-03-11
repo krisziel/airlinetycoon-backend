@@ -13,11 +13,11 @@ class Route < ActiveRecord::Base
     route = {
       origin:origin,
       destination:destination,
-      minfare:minfare_json,
-      maxfare:maxfare_json,
-      demand:demand_json,
-      elasticity:elasticity_json,
-      price:price_json
+      minfare:minfare,
+      maxfare:maxfare,
+      demand:demand,
+      elasticity:elasticity,
+      price:price
     }
     route
   end
