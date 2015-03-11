@@ -11,31 +11,31 @@ describe 'airtycoon API -- route#' do
       origin_id:origin.id,
       destination_id:destination.id,
       distance:6624,
-      minfare_json:{
+      minfare:{
         f:500,
         j:400,
         p:250,
         y:175
       },
-      maxfare_json:{
+      maxfare:{
         f:1500,
         j:1350,
         p:1150,
         y:1050
       },
-      price_json:{
+      price:{
         f:950,
         j:900,
         p:850,
         y:800
       },
-      demand_json:{
+      demand:{
         f:50,
         j:120,
         p:400,
         y:1000
       },
-      elasticity_json:{
+      elasticity:{
         f:'a',
         j:'b',
         p:'c',
