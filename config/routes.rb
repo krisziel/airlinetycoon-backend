@@ -41,9 +41,12 @@ Rails.application.routes.draw do
   get 'chat/messages' => 'messages#all'
   post 'chat/messages' => 'messages#create'
 
-  get 'airport' => 'airport#all'
-  get 'airport/region/:region' => 'airport#all'
-  get 'airport/city/:city' => 'airport#all'
-  get 'airport/:icao' => 'airport#show'
+  get 'airport' => 'airport#all' # rspec passing
+  get 'airport/region/:region' => 'airport#all' # rspec passing
+  get 'airport/city/:city' => 'airport#all' # rspec passing
+  get 'airport/:icao' => 'airport#show' # rspec passing
+
+  get 'route/airport/:iata' => 'route#airport' #rspec pending
+  get 'route/:id' => 'route#show' #rspec pending
 
 end

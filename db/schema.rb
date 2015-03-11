@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150311145951) do
+ActiveRecord::Schema.define(version: 20150311160753) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,6 +116,19 @@ ActiveRecord::Schema.define(version: 20150311145951) do
   create_table "games", force: true do |t|
     t.string   "region"
     t.string   "year"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "routes", force: true do |t|
+    t.integer  "origin_id"
+    t.integer  "destination_id"
+    t.integer  "distance"
+    t.json     "minfare"
+    t.json     "maxfare"
+    t.json     "price"
+    t.json     "demand"
+    t.json     "elasticity"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
