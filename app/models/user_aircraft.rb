@@ -2,6 +2,7 @@ class UserAircraft < ActiveRecord::Base
   belongs_to :airline
   belongs_to :aircraft_configuration
   belongs_to :aircraft
+  has_many :flights
 
   def full_data
     {

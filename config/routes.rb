@@ -35,10 +35,25 @@ Rails.application.routes.draw do
   post 'alliances/:id/eject/' => 'alliance#end_membership' # rspec passing
 
   get 'chat/alliance' => 'alliance_chat#all' # rspec passing
-  post 'chat/alliance' => 'alliance_chat#create' # rspec pending
-  get 'chat/game' => 'game_chat#all'
-  post 'chat/game' => 'game_chat#create'
+  post 'chat/alliance' => 'alliance_chat#create' # rspec passing
+  get 'chat/game' => 'game_chat#all' # rspec passing
+  post 'chat/game' => 'game_chat#create' # rspec passing
   get 'chat/messages' => 'messages#all'
   post 'chat/messages' => 'messages#create'
+
+  get 'airport' => 'airport#all' # rspec passing
+  get 'airport/region/:region' => 'airport#all' # rspec passing
+  get 'airport/city/:city' => 'airport#all' # rspec passing
+  get 'airport/:icao' => 'airport#show' # rspec passing
+
+  get 'route/:id' => 'route#show' #rspec passing
+
+  get 'flight' => 'flight#all'
+  get 'flight/airport/:iata' => 'flight#airport'
+  get 'flight/aircraft/:iata' => 'flight#aircraft'
+  get 'flight/:id' => 'flight#show'
+  put 'flight/:id' => 'flight#update'
+  post 'flight/:id' => 'flight#create'
+  delete 'flight/:id' => 'flight#delete'
 
 end

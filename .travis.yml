@@ -7,3 +7,5 @@ before_script:
   - bundle exec rake db:migrate
 script:
   - bundle exec rake spec
+addons:
+  postgresql: 9.3

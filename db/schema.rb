@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150310233023) do
+ActiveRecord::Schema.define(version: 20150311160753) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,9 +52,31 @@ ActiveRecord::Schema.define(version: 20150310233023) do
   create_table "airlines", force: true do |t|
     t.string   "name",       limit: 50, null: false
     t.string   "icao",       limit: 3,  null: false
-    t.integer  "money",      limit: 8,  null: false
+    t.integer  "money",      limit: 8
     t.integer  "game_id",               null: false
     t.integer  "user_id",               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "airports", force: true do |t|
+    t.string   "iata",            limit: 3
+    t.string   "icao",            limit: 4
+    t.string   "citycode",        limit: 3
+    t.string   "name"
+    t.string   "city"
+    t.string   "state"
+    t.string   "country"
+    t.integer  "population"
+    t.integer  "slots_total"
+    t.integer  "slots_available"
+    t.string   "latitude"
+    t.string   "longitude"
+    t.string   "business_demand"
+    t.string   "leisure_demand"
+    t.string   "region"
+    t.string   "country_code"
+    t.integer  "display_year"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -94,6 +116,19 @@ ActiveRecord::Schema.define(version: 20150310233023) do
   create_table "games", force: true do |t|
     t.string   "region"
     t.string   "year"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "routes", force: true do |t|
+    t.integer  "origin_id"
+    t.integer  "destination_id"
+    t.integer  "distance"
+    t.json     "minfare"
+    t.json     "maxfare"
+    t.json     "price"
+    t.json     "demand"
+    t.json     "elasticity"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
