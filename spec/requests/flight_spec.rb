@@ -161,7 +161,7 @@ describe 'airtycoon API -- flight#' do
     tisror.save
   end
 
-  it 'cannot create a flight with no aircraft' do
+  xit 'cannot create a flight with no aircraft' do
     post 'flight',
     {
 
