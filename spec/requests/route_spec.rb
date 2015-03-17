@@ -4,6 +4,7 @@ describe 'airtycoon API -- route#' do
 
   before do
     get 'user/manuallogin'
+    Game.create(region:'all',year:'2Q2015')
     get 'games/manuallogin'
     Airline.create(name:"INnoVation Airlines",icao:"INO",user_id:User.last.id,game_id:1,money:500)
     origin = Airport.new({iata:"ROR",citycode:"ROR",name:"Airai Airport",city:"Koror",country:"Palau",country_code:"",region:"AS",population:500000,slots_total:1989,slots_available:1213,latitude:7.364122,longitude:134.532892, display_year:1980})

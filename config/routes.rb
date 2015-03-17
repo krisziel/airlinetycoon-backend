@@ -53,7 +53,7 @@ Rails.application.routes.draw do
   get 'flight/aircraft/:iata' => 'flight#aircraft'
   get 'flight/:id' => 'flight#show'
   put 'flight/:id' => 'flight#update'
-  post 'flight/:id' => 'flight#create'
+  post 'flight/' => 'flight#create'
   delete 'flight/:id' => 'flight#delete'
 
 end

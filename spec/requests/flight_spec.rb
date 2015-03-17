@@ -4,12 +4,13 @@ describe 'airtycoon API -- flight#' do
 
   before do
     get 'user/manuallogin'
+    Game.create(region:'all',year:'2Q2015')
     get 'games/manuallogin'
     Airline.create(name:"INnoVation Airlines",icao:"INO",user_id:User.last.id,game_id:1,money:500)
-    ror = Airport.new!({iata:"ROR",citycode:"ROR",name:"Airai Airport",city:"Koror",country:"Palau",country_code:"",region:"AS",population:500000,slots_total:1989,slots_available:1213,latitude:7.364122,longitude:134.532892, display_year:1980})
-    ycg = Airport.new!({iata:"YCG",citycode:"YCG",name:"Castlegar Airport",city:"Castlegar",country:"Canada",country_code:"",region:"NA",population:500000,slots_total:1989,slots_available:1213,latitude:49.295556,longitude:-117.632222, display_year:1980})
-    ran = Airport.new!({iata:"RAN",citycode:"RAN",name:"La Spreta Airport",city:"Ravenna",country:"Italy",country_code:"",region:"EU",population:500000,slots_total:1989,slots_available:1213,latitude:44.366667,longitude:12.223333, display_year:1980})
-    tis = Airport.new!({iata:"TIS",citycode:"TIS",name:"Thursday Island Airport",city:"Thursday Island",country:"Australia",country_code:"",region:"AS",population:500000,slots_total:1989,slots_available:1213,latitude:-10.5,longitude:142.05, display_year:1980})
+    ror = Airport.new({iata:"ROR",citycode:"ROR",name:"Airai Airport",city:"Koror",country:"Palau",country_code:"",region:"AS",population:500000,slots_total:1989,slots_available:1213,latitude:7.364122,longitude:134.532892, display_year:1980})
+    ycg = Airport.new({iata:"YCG",citycode:"YCG",name:"Castlegar Airport",city:"Castlegar",country:"Canada",country_code:"",region:"NA",population:500000,slots_total:1989,slots_available:1213,latitude:49.295556,longitude:-117.632222, display_year:1980})
+    ran = Airport.new({iata:"RAN",citycode:"RAN",name:"La Spreta Airport",city:"Ravenna",country:"Italy",country_code:"",region:"EU",population:500000,slots_total:1989,slots_available:1213,latitude:44.366667,longitude:12.223333, display_year:1980})
+    tis = Airport.new({iata:"TIS",citycode:"TIS",name:"Thursday Island Airport",city:"Thursday Island",country:"Australia",country_code:"",region:"AS",population:500000,slots_total:1989,slots_available:1213,latitude:-10.5,longitude:142.05, display_year:1980})
     ror.save
     ycg.save
     ran.save
@@ -160,7 +161,16 @@ describe 'airtycoon API -- flight#' do
     tisror.save
   end
 
-  xit 'cannot create a flight with no aircraft' do
+  it 'cannot create a flight with no aircraft' do
+    post 'flight',
+    {
+
+    }
+    aircraft = JSON.parse(response.body)
+    expect(aircraft).to eq(1)
+  end
+
+  xit 'cannot create a flight with an aircraft that doesn\'t exist' do
   end
 
   xit 'cannot create a flight with an aircraft already in use' do
@@ -181,7 +191,7 @@ describe 'airtycoon API -- flight#' do
   xit 'cannot create a flight with fare outside the limits (fare cannot be too low)' do
   end
 
-  xit ' can create a flight within all limitations' do
+  xit 'can create a flight within all limitations' do
   end
 
   xit 'can retreive details for a single flight' do
