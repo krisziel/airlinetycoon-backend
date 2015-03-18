@@ -38,8 +38,8 @@ Rails.application.routes.draw do
   post 'chat/alliance' => 'alliance_chat#create' # rspec passing
   get 'chat/game' => 'game_chat#all' # rspec passing
   post 'chat/game' => 'game_chat#create' # rspec passing
-  get 'chat/messages' => 'messages#all'
-  post 'chat/messages' => 'messages#create'
+  get 'chat/messages' => 'messages#all' # rspec pending
+  post 'chat/messages' => 'messages#create' # rspec pending
 
   get 'airport' => 'airport#all' # rspec passing
   get 'airport/region/:region' => 'airport#all' # rspec passing
@@ -53,6 +53,6 @@ Rails.application.routes.draw do
   get 'flight/:id' => 'flight#show' # rspec passing
   put 'flight/:id' => 'flight#update' # rspec passing
   post 'flight/' => 'flight#create' # rspec passing
-  delete 'flight/:id' => 'flight#delete'
+  delete 'flight/:id' => 'flight#delete' # rspec passing
 
 end
