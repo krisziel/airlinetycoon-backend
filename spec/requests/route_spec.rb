@@ -70,18 +70,36 @@ describe 'airtycoon API -- route#' do
     expect(response_json["maxfare"]["f"]).to eq(1500)
   end
 
-  xit 'can get data for all flights on a route (proper number of flights)' do
+  it 'can get data for all flights on a route (proper number of flights)' do
+    Aircraft.create(name:"777-200LR",manufacturer:"Boeing",iata:"77L",capacity:440,speed:550,turn_time:90,price:296000000,discount:2,fuel_capacity:47900,range:10800,sqft:1980)
+    Seat.create(service_class:"y",name:"Economy",price:500,rating:7,sqft:4.5)
+    Seat.create(service_class:"p",name:"Premium Economy",price:1000,rating:9,sqft:7)
+    AircraftConfiguration.create(name:"High Density",aircraft_id:1,airline_id:1,f_count:0,j_count:0,p_count:80,y_count:400,f_seat:0,j_seat:0,p_seat:2,y_seat:1)
+    UserAircraft.create(aircraft_id:1,airline_id:1,aircraft_configuration_id:1,age:0,inuse:false)
+    UserAircraft.create(aircraft_id:1,airline_id:1,aircraft_configuration_id:1,age:0,inuse:false)
+    Flight.create(airline_id:1,route_id:1,user_aircraft_id:1,frequencies:2,fare:{f:500,j:500,p:500,y:500})
+    Flight.create(airline_id:1,route_id:1,user_aircraft_id:2,frequencies:2,fare:{f:500,j:500,p:500,y:500})
+    Flight.create(airline_id:1,route_id:2,user_aircraft_id:2,frequencies:2,fare:{f:500,j:500,p:500,y:500})
     url = "route/#{Route.last.id}"
     get url
-    response_json = JSON.parse(response.body)
-    expect(response_json).to eq(1500)
+    route = JSON.parse(response.body)
+    expect(route["flights"].length).to eq(2)
   end
 
-  xit 'can get data for all flights on a route (correct flight detail)' do
+  it 'can get data for all flights on a route (correct flight detail)' do
+    Aircraft.create(name:"777-200LR",manufacturer:"Boeing",iata:"77L",capacity:440,speed:550,turn_time:90,price:296000000,discount:2,fuel_capacity:47900,range:10800,sqft:1980)
+    Seat.create(service_class:"y",name:"Economy",price:500,rating:7,sqft:4.5)
+    Seat.create(service_class:"p",name:"Premium Economy",price:1000,rating:9,sqft:7)
+    AircraftConfiguration.create(name:"High Density",aircraft_id:1,airline_id:1,f_count:0,j_count:0,p_count:80,y_count:400,f_seat:0,j_seat:0,p_seat:2,y_seat:1)
+    UserAircraft.create(aircraft_id:1,airline_id:1,aircraft_configuration_id:1,age:0,inuse:false)
+    UserAircraft.create(aircraft_id:1,airline_id:1,aircraft_configuration_id:1,age:0,inuse:false)
+    Flight.create(airline_id:1,route_id:1,user_aircraft_id:1,frequencies:2,fare:{f:500,j:500,p:500,y:500})
+    Flight.create(airline_id:1,route_id:1,user_aircraft_id:2,frequencies:2,fare:{f:500,j:500,p:500,y:500})
+    Flight.create(airline_id:1,route_id:2,user_aircraft_id:2,frequencies:2,fare:{f:500,j:500,p:500,y:500})
     url = "route/#{Route.last.id}"
     get url
-    response_json = JSON.parse(response.body)
-    expect(response_json).to eq(1500)
+    route = JSON.parse(response.body)
+    expect(route["flights"][0]["airline"]).to eq(1)
   end
 
 end

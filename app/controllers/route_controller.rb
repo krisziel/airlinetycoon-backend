@@ -5,7 +5,7 @@ class RouteController < ApplicationController
   def show
     if airline
       route = Route.find(params[:id])
-      render json: route.serialize
+      render json: route.serialize_flights
     else
       render json: {
         error: 'no airline'
