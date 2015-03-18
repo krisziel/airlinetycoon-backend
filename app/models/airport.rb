@@ -33,4 +33,12 @@ class Airport < ActiveRecord::Base
     airport
   end
 
+  def simple
+    import = {
+      iata:iata,
+      name:name,
+      id:id
+    }
+  end
+
 end

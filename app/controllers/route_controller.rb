@@ -13,4 +13,18 @@ class RouteController < ApplicationController
     end
   end
 
+  def airport
+    if airline
+      airport = Airport.find_by(iata:params[:iata])
+      if airport
+        routes = Route.where("origin=? OR destination=?",airport,airport)
+      else
+        routes = {error:'airport does not exist'}
+      end
+    else
+      routes = {error:'user not logged in'}
+    end
+    render json: routes
+  end
+
 end

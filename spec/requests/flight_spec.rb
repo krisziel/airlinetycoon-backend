@@ -529,4 +529,22 @@ describe 'airtycoon API -- flight#' do
     expect(flight["route"]["origin"]["iata"]).to eq("ROR")
   end
 
+  it 'can retreive all of an airline\'s flights of an aircraft type' do
+    UserAircraft.create(aircraft_id:1,airline_id:1,aircraft_configuration_id:1,age:0,inuse:false)
+    UserAircraft.create(aircraft_id:1,airline_id:1,aircraft_configuration_id:1,age:0,inuse:true)
+    UserAircraft.create(aircraft_id:2,airline_id:1,aircraft_configuration_id:1,age:0,inuse:true)
+    UserAircraft.create(aircraft_id:2,airline_id:1,aircraft_configuration_id:1,age:0,inuse:true)
+    Flight.create(airline_id:1,route_id:1,user_aircraft_id:1,frequencies:2,fare:{f:500,j:500,p:500,y:500})
+    Flight.create(airline_id:1,route_id:2,user_aircraft_id:2,frequencies:2,fare:{f:500,j:500,p:500,y:500})
+    Flight.create(airline_id:1,route_id:2,user_aircraft_id:3,frequencies:2,fare:{f:500,j:500,p:500,y:500})
+    Flight.create(airline_id:1,route_id:3,user_aircraft_id:4,frequencies:2,fare:{f:500,j:500,p:500,y:500})
+    get 'flight/aircraft/77L'
+    flights = JSON.parse(response.body)
+    expect(flights[0]["route"]["origin"]["iata"]).to eq("ROR")
+  end
+
+  it 'can retreive all flights from a single airport' do
+
+  end
+
 end

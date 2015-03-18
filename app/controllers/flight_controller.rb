@@ -5,10 +5,23 @@ class FlightController < ApplicationController
   def all
   end
 
-  def airport
-  end
-
   def aircraft
+    if airline
+      aircraft = Aircraft.find_by(iata:params[:iata])
+      if aircraft
+        flight_list = Flight.where(airline_id:airline.id,user_aircraft_id:UserAircraft.where(aircraft_id:aircraft.id))
+        flights = []
+        flight_list.each do |flight|
+          flight = flight.specific_data
+          flights.push(flight)
+        end
+      else
+        flights = {error:'aircraft not found'}
+      end
+    else
+      flights = {error:'user not logged in'}
+    end
+    render json: flights
   end
 
   def update
@@ -51,7 +64,17 @@ class FlightController < ApplicationController
   end
 
   def show
-    render json: Flight.find(params[:id]).full_data
+    if airline
+      flight = Flight.find(params[:id])
+      if flight.airline == airline
+        flight = flight.full_data
+      else
+        flight = flight.serialize
+      end
+    else
+      flight = {error:'user not logged in'}
+    end
+    render json: flight
   end
 
   private

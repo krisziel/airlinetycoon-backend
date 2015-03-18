@@ -29,10 +29,10 @@ Rails.application.routes.draw do
   post 'alliances' => 'alliance#create' # rspec passing
   get 'alliances/:id' => 'alliance#show' # rspec passing
   delete 'alliances/:id' => 'alliance#delete' # rspec passing
-  post 'alliances/:id/request/' => 'alliance#request_membership' # rspec passing
-  post 'alliances/:id/approve/' => 'alliance#approve_membership' # rspec passing
-  post 'alliances/:id/reject/' => 'alliance#reject_membership' # rspec passing
-  post 'alliances/:id/eject/' => 'alliance#end_membership' # rspec passing
+  post 'alliances/:id/request' => 'alliance#request_membership' # rspec passing
+  post 'alliances/:id/approve' => 'alliance#approve_membership' # rspec passing
+  post 'alliances/:id/reject' => 'alliance#reject_membership' # rspec passing
+  post 'alliances/:id/eject' => 'alliance#end_membership' # rspec passing
 
   get 'chat/alliance' => 'alliance_chat#all' # rspec passing
   post 'chat/alliance' => 'alliance_chat#create' # rspec passing
@@ -46,14 +46,13 @@ Rails.application.routes.draw do
   get 'airport/city/:city' => 'airport#all' # rspec passing
   get 'airport/:icao' => 'airport#show' # rspec passing
 
-  get 'route/:id' => 'route#show' #rspec passing
+  get 'route/:id' => 'route#show' # rspec passing
 
-  get 'flight' => 'flight#all'
-  get 'flight/airport/:iata' => 'flight#airport'
-  get 'flight/aircraft/:iata' => 'flight#aircraft'
-  get 'flight/:id' => 'flight#show'
-  put 'flight/:id' => 'flight#update'
-  post 'flight/' => 'flight#create'
+  get 'flight' => 'flight#all' # rspec passing
+  get 'flight/aircraft/:iata' => 'flight#aircraft' # rspec pending
+  get 'flight/:id' => 'flight#show' # rspec passing
+  put 'flight/:id' => 'flight#update' # rspec passing
+  post 'flight/' => 'flight#create' # rspec passing
   delete 'flight/:id' => 'flight#delete'
 
 end

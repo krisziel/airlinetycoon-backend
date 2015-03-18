@@ -31,7 +31,7 @@ class Flight < ActiveRecord::Base
     data = {
       airline:airline.basic_info,
       route:route.serialize,
-      user_aircraft:user_aircraft.full_data,
+      userAircraft:user_aircraft.full_data,
       duration:duration,
       frequencies:frequencies,
       fare:fare,
@@ -42,6 +42,20 @@ class Flight < ActiveRecord::Base
       profit:profit,
       id:id
     }
+    data
+  end
+
+  def specific_data
+    data = {
+      route:route.simple,
+      userAircraft:user_aircraft.config,
+      duration:duration,
+      frequencies:frequencies,
+      load:load,
+      profit:profit,
+      id:id
+    }
+    data
   end
 
 end

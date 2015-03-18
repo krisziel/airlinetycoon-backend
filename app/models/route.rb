@@ -32,4 +32,11 @@ class Route < ActiveRecord::Base
     route
   end
 
+  def simple
+    route = {
+      origin:origin.simple,
+      destination:destination.simple,
+    }
+  end
+
 end
