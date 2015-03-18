@@ -15,7 +15,8 @@ class Airline < ActiveRecord::Base
   def basic_info
     airline = {
       name:name,
-      icao:icao
+      icao:icao,
+      id:id
     }
     airline
   end

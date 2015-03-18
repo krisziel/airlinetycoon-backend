@@ -11,8 +11,18 @@ class Route < ActiveRecord::Base
 
   def serialize
     route = {
-      origin:origin,
-      destination:destination,
+      origin:origin.basic_data,
+      destination:destination.basic_data,
+      minfare:minfare,
+      maxfare:maxfare
+    }
+    route
+  end
+
+  def full_data
+    route = {
+      origin:origin.basic_data,
+      destination:destination.basic_data,
       minfare:minfare,
       maxfare:maxfare,
       demand:demand,

@@ -3,8 +3,7 @@ class Airport < ActiveRecord::Base
   def serialize
     airport = {
       iata:iata,
-      icao:icao,
-      citycode:citycode,
+      cityCode:citycode,
       name:name,
       city:city,
       state:state,
@@ -17,7 +16,19 @@ class Airport < ActiveRecord::Base
       coordinates:{
         latitude:latitude,
         longitude:longitude
-      }
+      },
+      id:id
+    }
+    airport
+  end
+
+  def basic_data
+    airport = {
+      iata:iata,
+      name:name,
+      city:city,
+      country:country,
+      id:id
     }
     airport
   end

@@ -12,60 +12,117 @@ class FlightController < ApplicationController
   end
 
   def update
+    params[:flight][:airline_id] = airline.id
+    validate = validate_flight(flight_params,"update")
+    if validate == true
+      flight = Flight.find(params[:id])
+      old_aircraft = flight.user_aircraft_id
+      if flight.update(flight_params)
+        UserAircraft.find(old_aircraft).update(inuse:false)
+        UserAircraft.find(params[:flight][:user_aircraft_id]).update(inuse:true)
+        flight = flight.serialize
+      else
+        flight = ['error updating flight']
+      end
+    else
+      flight = validate
+    end
+    render json: flight
   end
 
   def create
-    validate_flight(flight_params)
-    flight = Flight.new(flight_params)
+    params[:flight][:airline_id] = airline.id
+    validate = validate_flight(flight_params,"create")
+    if validate == true
+      flight = Flight.new(flight_params)
+      if flight.save
+        UserAircraft.find(params[:flight][:user_aircraft_id]).update(inuse:true)
+        flight = flight.serialize
+      else
+        flight = ['error saving flight']
+      end
+    else
+      flight = validate
+    end
+    render json: flight
   end
 
   def delete
   end
 
+  def show
+    render json: Flight.find(params[:id]).full_data
+  end
+
   private
   def flight_params
-    params.require(:flight).permit(:airline_id, :route_id, :user_aircraft_id, :duration, :frequencies, :fare)
+    params.require(:flight).permit(:airline_id, :route_id, :user_aircraft_id, :duration, :frequencies, :fare => [:f, :j, :p, :y])
   end
 
-  def validate_flight(flight)
-    validate_aircraft(flight)
+  def validate_flight(flight,status)
+    route = Route.find_by(id:flight[:route_id])
+    if route
+      aircraft_valid = validate_aircraft(flight, route)
+      if aircraft_valid[:success]
+        fare_valid = validate_fare(flight, route, aircraft_valid[:config])
+        if fare_valid == true
+          params[:flight][:duration] = aircraft_valid[:duration]
+          flight = true
+        else
+          flight = fare_valid
+        end
+      else
+        flight = aircraft_valid[:errors]
+      end
+    else
+      flight = ['route does not exist']
+    end
+    flight
   end
 
-  def validate_aircraft(flight)
+  def validate_aircraft(flight, route)
     errors = []
-    user_aircraft = UserAircraft.find(flight[:user_aircraft_id])
-    route = Route.find(route_id)
+    user_aircraft = UserAircraft.find_by(id:flight[:user_aircraft_id]) # find_by so it doesn't error out if no aircraft is found
     if !user_aircraft
-      errors.push('Aircraft does not exist')
+      errors.push('aircraft does not exist')
     else
       if user_aircraft.airline != airline
-        errors.push('Aircraft does not belong to airline')
+        errors.push('aircraft does not belong to airline')
       end
-      if flight.id
-        if user_aircraft.inuse && user_aircraft.flight_id != flight.id
-          errors.push('Aircraft is already in use')
+      if flight[:id]
+        if user_aircraft.inuse && user_aircraft.flight_id != flight[:id]
+          errors.push('aircraft is already in use')
         end
       else
         if user_aircraft.inuse
-          errors.push('Aircraft is already in use')
+          errors.push('aircraft is already in use')
         end
       end
       if route.distance > user_aircraft.aircraft.range
-        errors.push('Flight is longer than aircraft range')
+        errors.push('flight is longer than aircraft range')
       end
-      flight_time = (((route.distance.to_f/user_aircraft.aircraft.speed.to_f)*60+user_aircraft.aircraft.turn_time.to_f)*2)
-      max_frequencies = (10080/flight_time).floor
-      if frequencies > max_frequencies
-        errors.push('More frequencies than aircraft can fly')
+      flight_duration = (route.distance.to_f/user_aircraft.aircraft.speed.to_f)*60
+      rt_time = ((flight_duration+user_aircraft.aircraft.turn_time.to_f)*2)
+      max_frequencies = (10080/rt_time).floor
+      if flight[:frequencies].to_i > max_frequencies
+        errors.push('more frequencies than aircraft can fly')
       end
     end
+    errors.length > 0 ? {errors:errors,success:false} : {success:true,duration:flight_duration.to_i,config:user_aircraft.aircraft_configuration}
+  end
+
+  def validate_fare(flight, route, config)
+    minfare = route.minfare
+    maxfare = route.maxfare
+    errors = []
+    flight[:fare].each do |key,value|
+      if value.to_i < minfare[key]
+        errors.push("#{key} fare too low")
+      elsif value.to_i > maxfare[key]
+        errors.push("#{key} fare too high")
+      end
+    end
+    errors.length > 0 ? errors : true
   end
 
 end
-
-# t.integer  "airline_id"
-# t.integer  "route_id"
-# t.integer  "user_aircraft_id"
-# t.integer  "duration"
-# t.integer  "frequencies"
-# t.json     "fare"
