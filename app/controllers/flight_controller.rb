@@ -61,6 +61,23 @@ class FlightController < ApplicationController
   end
 
   def delete
+    if airline
+      flight = Flight.find(params[:id])
+      user_aircraft = flight.user_aircraft_id
+      if flight.airline == airline
+        if flight.destroy
+          UserAircraft.find(user_aircraft).update(inuse:false)
+          flight = {message:'flight destroyed'}
+        else
+          flight = {error:'error destroying flight'}
+        end
+      else
+        flight = {error:'flight does not belong to airline'}
+      end
+    else
+      flight = {error:'user not logged in'}
+    end
+    render json: flight
   end
 
   def show

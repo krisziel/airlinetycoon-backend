@@ -543,8 +543,20 @@ describe 'airtycoon API -- flight#' do
     expect(flights[0]["route"]["origin"]["iata"]).to eq("ROR")
   end
 
-  it 'can retreive all flights from a single airport' do
+  it 'cannot delete a flight that does not belong to the airline' do
+    UserAircraft.create(aircraft_id:1,airline_id:1,aircraft_configuration_id:1,age:0,inuse:false)
+    Flight.create(airline_id:2,route_id:2,user_aircraft_id:1,frequencies:2,fare:{f:500,j:500,p:500,y:500})
+    delete 'flight/1'
+    flight = JSON.parse(response.body)
+    expect(flight["error"]).to eq("flight does not belong to airline")
+  end
 
+  it 'can delete a flight' do
+    UserAircraft.create(aircraft_id:1,airline_id:1,aircraft_configuration_id:1,age:0,inuse:false)
+    Flight.create(airline_id:1,route_id:2,user_aircraft_id:1,frequencies:2,fare:{f:500,j:500,p:500,y:500})
+    delete 'flight/1'
+    flight = JSON.parse(response.body)
+    expect(flight["message"]).to eq("flight destroyed")
   end
 
 end
