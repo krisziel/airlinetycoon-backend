@@ -21,4 +21,8 @@ class Airline < ActiveRecord::Base
     airline
   end
 
+  def conversations
+    Conversation.where("sender_id=? OR recipient_id=?",id,id)
+  end
+
 end

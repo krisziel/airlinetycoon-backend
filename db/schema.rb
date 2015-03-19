@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150318221220) do
+ActiveRecord::Schema.define(version: 20150319152844) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,6 +105,17 @@ ActiveRecord::Schema.define(version: 20150318221220) do
     t.datetime "updated_at"
   end
 
+  create_table "balance_sheets", force: true do |t|
+    t.integer  "cash_assets"
+    t.integer  "fuel_assets"
+    t.integer  "current_assets"
+    t.integer  "aircraft_assets"
+    t.integer  "total_assets"
+    t.integer  "long_term_debt"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "conversations", force: true do |t|
     t.integer  "sender_id"
     t.integer  "recipient_id"
@@ -143,6 +154,23 @@ ActiveRecord::Schema.define(version: 20150318221220) do
     t.datetime "updated_at"
   end
 
+  create_table "income_statements", force: true do |t|
+    t.integer  "total_revenue"
+    t.integer  "passenger_revenue"
+    t.integer  "cargo_revenue"
+    t.integer  "total_cost"
+    t.integer  "fuel_cost"
+    t.integer  "salaries"
+    t.integer  "aircraft_cost"
+    t.integer  "special_cost"
+    t.integer  "operating_income"
+    t.integer  "interest_expense"
+    t.integer  "pre_tax_income"
+    t.integer  "net_income"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "messages", force: true do |t|
     t.text     "body"
     t.integer  "conversation_id"
@@ -174,6 +202,13 @@ ActiveRecord::Schema.define(version: 20150318221220) do
     t.float    "sqft"
     t.integer  "price"
     t.integer  "rating"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ten_qs", force: true do |t|
+    t.integer  "airline_id"
+    t.string   "period"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

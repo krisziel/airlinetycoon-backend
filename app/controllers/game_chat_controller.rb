@@ -18,7 +18,7 @@ class GameChatController < ApplicationController
       messages = message_list
     else
       messages = {
-        error: "no alliance"
+        error: "no game"
       }
     end
     render json: messages
@@ -35,7 +35,7 @@ class GameChatController < ApplicationController
       end
     else
       messages = {
-        error: "no alliance"
+        error: "no game"
       }
     end
     render json: messages

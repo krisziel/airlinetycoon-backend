@@ -40,6 +40,7 @@ describe 'airtycoon API -- game_chat#' do
     }
     message = JSON.parse(response.body)
     expect(message[0]["message"]).to eq('I have replied')
+    expect(message.length).to eq(2)
   end
 
   it 'can read messages since specific time' do
@@ -84,16 +85,7 @@ describe 'airtycoon API -- game_chat#' do
     }
     message = JSON.parse(response.body)
     expect(message["airline"]["name"]).to eq('INnoVation Airlines')
-  end
-
-  it 'can send message (returns proper message)' do
-    post 'chat/game',
-    {
-      game_chat:{
-        message:'Welcome all to the Star'
-      }
-    }
-    message = JSON.parse(response.body)
     expect(message["message"]).to eq('Welcome all to the Star')
   end
+
 end

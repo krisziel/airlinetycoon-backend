@@ -3,12 +3,27 @@ class MessageController < ApplicationController
 
   def create
     if airline
-      message = Message.new(message_params)
-      message.airline = airline
-      if message.save
-        message
+      conversation = Conversation.find(params[:id])
+      if conversation.sender_id == airline.id || conversation.recipient_id == airline.id
+        if params[:message][:body] == ""
+          message = {error:'empty message'}
+        else
+          date =  Time.now.to_datetime-15
+          dupe = conversation.messages.find_by('created_at > ? AND body=?', date, params[:message][:body])
+          if dupe
+            message = {error:'duplicate message'}
+          else
+            message = conversation.messages.new(message_params)
+            message.airline = airline
+            if message.save
+              message = message.serialize
+            else
+              message = message.errors.messages
+            end
+          end
+        end
       else
-        message = message.errors.messages
+        messages = {error:'conversation does not belong to user'}
       end
     else
       message = {error:'no airline'}
@@ -18,7 +33,7 @@ class MessageController < ApplicationController
 
   private
   def message_params
-    params.require(:message).permit(:body, :conversation_id)
+    params.require(:message).permit(:body)
   end
 
 end
