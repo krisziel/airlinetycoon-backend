@@ -40,8 +40,8 @@ Rails.application.routes.draw do
   post 'chat/game' => 'game_chat#create' # rspec passing
   get 'chat/conversation' => 'conversation#all' # rspec passing
   post 'chat/conversation' => 'conversation#create' # rspec passing
-  get 'chat/conversation/:id' => 'conversation#show' # rspec pending
-  post 'chat/conversation/:id/message' => 'message#create' # rspec pending
+  get 'chat/conversation/:id' => 'conversation#show' # rspec passing
+  post 'chat/conversation/:id/message' => 'message#create' # rspec passing
 
   get 'airport' => 'airport#all' # rspec passing
   get 'airport/region/:region' => 'airport#all' # rspec passing
@@ -51,7 +51,7 @@ Rails.application.routes.draw do
   get 'route/:id' => 'route#show' # rspec passing
 
   get 'flight' => 'flight#all' # rspec passing
-  get 'flight/aircraft/:iata' => 'flight#aircraft' # rspec pending
+  get 'flight/aircraft/:iata' => 'flight#aircraft' # rspec passing
   get 'flight/:id' => 'flight#show' # rspec passing
   put 'flight/:id' => 'flight#update' # rspec passing
   post 'flight/' => 'flight#create' # rspec passing
