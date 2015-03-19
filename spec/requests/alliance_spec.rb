@@ -15,7 +15,7 @@ describe "airtycoon API -- alliance#" do
       game_id: 1,
       user_id: 1
     })
-    post 'alliances', {
+    post 'alliance', {
       name:"Star"
     }
     alliance = JSON.parse(response.body)
@@ -30,7 +30,7 @@ describe "airtycoon API -- alliance#" do
       game_id: 1,
       user_id: 1
     })
-    post 'alliances', {
+    post 'alliance', {
       name:"Star"
     }
     alliance = JSON.parse(response.body)
@@ -39,7 +39,7 @@ describe "airtycoon API -- alliance#" do
 
   it 'can request to join an alliance' do
     Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
-    post 'alliances', {
+    post 'alliance', {
       name:"Star"
     }
     post 'user',{
@@ -51,7 +51,7 @@ describe "airtycoon API -- alliance#" do
       }
     }
     Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
-    post 'alliances/1/request', {
+    post 'alliance/1/request', {
       game_id:1
     }
     alliance = JSON.parse(response.body)
@@ -63,7 +63,7 @@ describe "airtycoon API -- alliance#" do
     alliance = Alliance.create!({name:"Star Alliance", game_id:1})
     AllianceMembership.create!({airline_id:1, alliance_id:1})
     alliance = Alliance.create!({name:"SK Telecom", game_id:1})
-    post 'alliances/2/request',
+    post 'alliance/2/request',
     {
       game_id:1
     }
@@ -84,7 +84,7 @@ describe "airtycoon API -- alliance#" do
       }
     }
     Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
-    post 'alliances', {
+    post 'alliance', {
       name:"Star Alliance",
       game_id:1
     }
@@ -98,7 +98,7 @@ describe "airtycoon API -- alliance#" do
     Alliance.create!({name:"Star Alliance", game_id:1})
     AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:1})
     AllianceMembership.create!({airline_id:2, alliance_id:1, status:false, position:2})
-    post 'alliances/1/approve',
+    post 'alliance/1/approve',
     {
       membership_id:2
     }
@@ -112,7 +112,7 @@ describe "airtycoon API -- alliance#" do
     Alliance.create!({name:"Star Alliance", game_id:1})
     AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:1})
     AllianceMembership.create!({airline_id:2, alliance_id:1, status:false, position:2})
-    post 'alliances/1/approve',
+    post 'alliance/1/approve',
     {
       membership_id:2
     }
@@ -126,7 +126,7 @@ describe "airtycoon API -- alliance#" do
     Alliance.create!({name:"Star Alliance", game_id:1})
     AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:2})
     AllianceMembership.create!({airline_id:2, alliance_id:1, status:false, position:2})
-    post 'alliances/1/approve',
+    post 'alliance/1/approve',
     {
       membership_id:2
     }
@@ -140,7 +140,7 @@ describe "airtycoon API -- alliance#" do
     Alliance.create!({name:"Star Alliance", game_id:1})
     AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:1})
     AllianceMembership.create!({airline_id:2, alliance_id:1, status:false, position:2})
-    post 'alliances/1/reject',
+    post 'alliance/1/reject',
     {
       membership_id:2
     }
@@ -154,7 +154,7 @@ describe "airtycoon API -- alliance#" do
     Alliance.create!({name:"Star Alliance", game_id:1})
     AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:1})
     AllianceMembership.create!({airline_id:2, alliance_id:1, status:false, position:2})
-    post 'alliances/1/reject',
+    post 'alliance/1/reject',
     {
       membership_id:2
     }
@@ -168,7 +168,7 @@ describe "airtycoon API -- alliance#" do
     Alliance.create!({name:"Star Alliance", game_id:1})
     AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:2})
     AllianceMembership.create!({airline_id:2, alliance_id:1, status:false, position:2})
-    post 'alliances/1/reject',
+    post 'alliance/1/reject',
     {
       membership_id:2
     }
@@ -182,7 +182,7 @@ describe "airtycoon API -- alliance#" do
     Alliance.create!({name:"Star Alliance", game_id:1})
     AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:1})
     AllianceMembership.create!({airline_id:2, alliance_id:1, status:true, position:2})
-    post 'alliances/1/eject',
+    post 'alliance/1/eject',
     {
       membership_id:2
     }
@@ -196,7 +196,7 @@ describe "airtycoon API -- alliance#" do
     Alliance.create!({name:"Star Alliance", game_id:1})
     AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:1})
     AllianceMembership.create!({airline_id:2, alliance_id:1, status:true, position:2})
-    post 'alliances/1/eject',
+    post 'alliance/1/eject',
     {
       membership_id:2
     }
@@ -210,7 +210,7 @@ describe "airtycoon API -- alliance#" do
     Alliance.create!({name:"Star Alliance", game_id:1})
     AllianceMembership.create!({airline_id:1, alliance_id:1, status:true, position:2})
     AllianceMembership.create!({airline_id:2, alliance_id:1, status:true, position:2})
-    post 'alliances/1/eject',
+    post 'alliance/1/eject',
     {
       membership_id:2
     }

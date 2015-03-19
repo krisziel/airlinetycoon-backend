@@ -12,26 +12,26 @@ describe 'airtycoon API -- game#' do
   end
 
   it 'can get a list of all games (the region name is correct)' do
-    get 'games'
+    get 'game'
     games = JSON.parse(response.body)
     expect(games[0]["region"]).to eq('all')
   end
 
   it 'can get a list of all games (the number of member airlines is correct)' do
-    get 'games'
+    get 'game'
     games = JSON.parse(response.body)
     expect(games.length).to eq(2)
     expect(games[0]["airlines"]).to eq(2)
   end
 
   it 'can get details for a game (the list of member airlines has each airline)' do
-    get 'games/1'
+    get 'game/1'
     game = JSON.parse(response.body)
     expect(game["airlines"][0]["name"]).to eq("INnoVation Airlines")
   end
 
   it 'can get details for a game (the list of alliances has each alliance)' do
-    get 'games/1'
+    get 'game/1'
     game = JSON.parse(response.body)
     expect(game["alliances"][0]["name"]).to eq("Star Alliance")
   end

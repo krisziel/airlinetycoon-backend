@@ -2,12 +2,12 @@ Rails.application.routes.draw do
 
   root 'app#index'
 
-  get 'games' => 'game#all' # rspec passing
-  get 'games/manuallogin' => 'game#manual_login' # rspec passing
-  get 'games/:id' => 'game#show' # rspec passing
+  get 'game' => 'game#all' # rspec passing
+  get 'games/manuallogin' => 'game#manual_login' # rspec cookie workaround
+  get 'game/:id' => 'game#show' # rspec passing
 
-  post 'airlines' => 'airline#create' # rspec passing
-  get 'airlines' => 'airline#all' # rspec passing
+  post 'airline' => 'airline#create' # rspec passing
+  get 'airline' => 'airline#all' # rspec passing
 
   get 'aircraft' => 'aircraft#all' # rspec passing
   get 'aircraft/seats' => 'aircraft#seats' # rspec passing
@@ -25,14 +25,14 @@ Rails.application.routes.draw do
   post 'user/' => 'user#create' # rspec passing
   get 'user/manuallogin' => 'user#manuallogin' # rspec passing
 
-  get 'alliances' => 'alliance#all' # rspec passing
-  post 'alliances' => 'alliance#create' # rspec passing
-  get 'alliances/:id' => 'alliance#show' # rspec passing
-  delete 'alliances/:id' => 'alliance#delete' # rspec passing
-  post 'alliances/:id/request' => 'alliance#request_membership' # rspec passing
-  post 'alliances/:id/approve' => 'alliance#approve_membership' # rspec passing
-  post 'alliances/:id/reject' => 'alliance#reject_membership' # rspec passing
-  post 'alliances/:id/eject' => 'alliance#end_membership' # rspec passing
+  get 'alliance' => 'alliance#all' # rspec passing
+  post 'alliance' => 'alliance#create' # rspec passing
+  get 'alliance/:id' => 'alliance#show' # rspec passing
+  delete 'alliance/:id' => 'alliance#delete' # rspec passing
+  post 'alliance/:id/request' => 'alliance#request_membership' # rspec passing
+  post 'alliance/:id/approve' => 'alliance#approve_membership' # rspec passing
+  post 'alliance/:id/reject' => 'alliance#reject_membership' # rspec passing
+  post 'alliance/:id/eject' => 'alliance#end_membership' # rspec passing
 
   get 'chat/alliance' => 'alliance_chat#all' # rspec passing
   post 'chat/alliance' => 'alliance_chat#create' # rspec passing
