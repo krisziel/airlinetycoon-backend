@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-  root 'app#index'
-
   get 'game' => 'game#all' # rspec passing
   get 'games/manuallogin' => 'game#manual_login' # rspec cookie workaround
   get 'game/:id' => 'game#show' # rspec passing
@@ -23,6 +21,7 @@ Rails.application.routes.draw do
 
   post 'user/autologin' => 'user#autologin' # rspec passing
   post 'user/' => 'user#create' # rspec passing
+  post 'user/login' => 'user#login'
   get 'user/manuallogin' => 'user#manuallogin' # rspec passing
 
   get 'alliance' => 'alliance#all' # rspec passing

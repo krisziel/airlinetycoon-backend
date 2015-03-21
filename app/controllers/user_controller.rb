@@ -49,7 +49,22 @@ class UserController < ApplicationController
       }
       cookies.signed[:airtycoon_user] = user.id
     else
-      response = user.errors.message
+      response = user.errors.messages
+    end
+    render json: response
+  end
+
+  def login
+    user = User.find_by(username:params[:username])
+    if user
+      if user.authenticate(params[:password])
+        response = {loggedin:'true'}
+        cookies.signed[:airtycoon_user] = user.id
+      else
+        response = {error:'invalid password'}
+      end
+    else
+      response = {error:'user not found'}
     end
     render json: response
   end

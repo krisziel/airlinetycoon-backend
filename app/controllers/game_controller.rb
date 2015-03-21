@@ -1,13 +1,24 @@
 class GameController < ApplicationController
 
   def all
+    regions = {
+      "all" => "Worldwide",
+      "na" => "North America",
+      "a" => "Americas",
+      "asia" => "Asia",
+      "me" => "Middle East",
+      "eu" => "Europe",
+      "af" => "Africa"
+    }
     games = Game.all
     game_list = []
     games.each do |game|
       game = {
         id:game.id,
-        region:game.region,
-        airlines:game.airlines.length
+        region:regions[game.region],
+        airlines:game.airlines.length,
+        year:game.year,
+        name:game.name
       }
       game_list.push(game)
     end
