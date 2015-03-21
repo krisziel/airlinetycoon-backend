@@ -14,7 +14,7 @@ describe 'airtycoon API -- game#' do
   it 'can get a list of all games (the region name is correct)' do
     get 'game'
     games = JSON.parse(response.body)
-    expect(games[0]["region"]).to eq('all')
+    expect(games[0]["region"]).to eq('Worldwide')
   end
 
   it 'can get a list of all games (the number of member airlines is correct)' do
