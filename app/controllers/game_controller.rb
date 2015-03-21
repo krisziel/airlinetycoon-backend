@@ -1,4 +1,5 @@
 class GameController < ApplicationController
+  before_action :airline
 
   def all
     regions = {
@@ -12,13 +13,30 @@ class GameController < ApplicationController
     }
     games = Game.all
     game_list = []
+    airline = Airline.find(1)
+    if airline
+      user = User.find(cookies.signed[:airtycoon_user])
+      airlines = user.airlines
+      user_games = {}
+      user_game_ids = []
+      user.airlines.each do |airline|
+        user_game_ids.push(airline.game.id)
+        user_games[airline.game.id] = airline.name
+      end
+    end
     games.each do |game|
+      if user_game_ids.include?(game.id)
+        player = user_games[game.id]
+      else
+        player = false
+      end
       game = {
         id:game.id,
         region:regions[game.region],
         airlines:game.airlines.length,
         year:game.year,
-        name:game.name
+        name:game.name,
+        player:player
       }
       game_list.push(game)
     end
