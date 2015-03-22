@@ -24,9 +24,9 @@ class AirlineController < ApplicationController
   end
 
   def create
-    params[:airline][:money] = 5000000000
     params[:airline][:user_id] = cookies.signed[:airtycoon_user]
     airline = Airline.new(airline_params)
+    airline.money = 1000000000
     if airline.save
       cookies.signed[:airtycoon_game] = params[:airline][:game_id]
       response = {

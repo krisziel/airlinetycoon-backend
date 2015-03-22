@@ -56,4 +56,6 @@ Rails.application.routes.draw do
   post 'flight/' => 'flight#create' # rspec passing
   delete 'flight/:id' => 'flight#delete' # rspec passing
 
+  match '*path' => 'cors#preflight', :via => :options
+
 end

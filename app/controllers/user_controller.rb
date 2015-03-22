@@ -59,7 +59,11 @@ class UserController < ApplicationController
     if user
       if user.authenticate(params[:password])
         response = {loggedin:'true'}
-        cookies.signed[:airtycoon_user] = user.id
+        cookies.signed[:airtycoon_user] = {
+          value:user.id,
+          expires: 1.year.from_now,
+          domain: 'http://localhost:3000'
+        }
       else
         response = {error:'invalid password'}
       end
@@ -70,15 +74,21 @@ class UserController < ApplicationController
   end
 
   def manuallogin # for rspec
+    cookies.signed[:airtycoon_user] = {
+      value:2,
+      expires: 1.year.from_now,
+      domain:'locahost:3000'
+    }
     if !params[:clean]
       DatabaseCleaner.strategy = :truncation
       DatabaseCleaner.clean
     end
     user = User.new({name:"Kris",username:"kziel",password:"kziel",email:"krisziel@mac.com"})
     if user.save
-      cookies.signed[:airtycoon_user] = 1
+      cookies.signed[:airtycoon_user] = user.id
       render json: {user_id:user.id}
     else
+      cookies.signed[:airtycoon_user] = 2
       render json: user.errors.messages
     end
   end

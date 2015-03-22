@@ -1,7 +1,25 @@
 class ApplicationController < ActionController::Base
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :null_session
+  after_filter :set_access_control_headers
+
+  def set_access_control_headers
+    headers['Access-Control-Allow-Origin'] = '*'
+    headers['Access-Control-Request-Method'] = '*'
+  end
+  # 
+  # def self.cors_allowed_actions
+  #   @cors_allowed_actions ||= []
+  # end
+  #
+  # def self.cors_allowed_actions=(arr)
+  #   @cors_allowed_actions = arr
+  # end
+  #
+  # def self.allow_cors(*methods)
+  #   self.cors_allowed_actions += methods
+  #   before_filter :cors_before_filter, :only => methods
+  #   protect_from_forgery with: :null_session, :only => methods
+  # end
 
   def airline
     if cookies.signed[:airtycoon_game]
