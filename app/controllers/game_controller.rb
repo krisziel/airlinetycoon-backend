@@ -13,15 +13,13 @@ class GameController < ApplicationController
     }
     games = Game.all
     game_list = []
-    if airline
-      user = User.find(cookies.signed[:airtycoon_user])
-      airlines = user.airlines
-      user_games = {}
-      user_game_ids = []
-      user.airlines.each do |airline|
-        user_game_ids.push(airline.game.id)
-        user_games[airline.game.id] = airline.name
-      end
+    user = User.find(cookies.signed[:airtycoon_user])
+    airlines = user.airlines
+    user_games = {}
+    user_game_ids = []
+    user.airlines.each do |airline|
+      user_game_ids.push(airline.game.id)
+      user_games[airline.game.id] = airline.name
     end
     games.each do |game|
       if user_game_ids && user_game_ids.include?(game.id)
