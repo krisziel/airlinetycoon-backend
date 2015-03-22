@@ -9,7 +9,6 @@ class ApplicationController < ActionController::Base
   def cookie
     crypt = ActiveSupport::MessageEncryptor.new(ENV['SECRET_KEY_BASE'])
     if params[:user_cookie]
-      p params[:user_cookie]
       cookies.signed[:airtycoon_user] = crypt.decrypt_and_verify(params[:user_cookie])
     end
     if params[:game_cookie]
@@ -18,7 +17,6 @@ class ApplicationController < ActionController::Base
     if params[:airline_cookie]
       cookies.signed[:airtycoon_airline] = crypt.decrypt_and_verify(params[:airline_cookie])
     end
-    p cookies.signed[:airtycoon_user]
   end
 
   def airline

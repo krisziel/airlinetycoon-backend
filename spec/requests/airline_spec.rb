@@ -67,7 +67,7 @@ describe 'airtycoon API -- airline#' do
       'airline[user_id]' => 2
     }
     airlines = JSON.parse(response.body)
-    expect(airlines["icao"]).to eq(["An airline with that icao code already exists"])
+    expect(airlines["icao"]).to eq(["An airline with that code already exists"])
   end
 
 end
