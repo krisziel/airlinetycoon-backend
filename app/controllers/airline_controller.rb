@@ -28,11 +28,16 @@ class AirlineController < ApplicationController
     airline = Airline.new(airline_params)
     airline.money = 1000000000
     if airline.save
+      if ENV['SECRET_KEY_BASE']
+        crypt = ActiveSupport::MessageEncryptor.new(ENV['SECRET_KEY_BASE'])
+        cookie = crypt.encrypt_and_sign(params[:airline][:game_id])
+      end
       cookies.signed[:airtycoon_game] = params[:airline][:game_id]
       response = {
         name: airline.name,
         icao: airline.icao,
-        id: airline.id
+        id: airline.id,
+        cookie: cookie
       }
     else
       response = airline.errors.messages

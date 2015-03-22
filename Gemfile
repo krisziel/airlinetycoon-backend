@@ -11,3 +11,8 @@ group :test do
 end
 
 gem 'bcrypt', '~> 3.1.7'
+group :development do
+  gem "better_errors"
+  gem "binding_of_caller"
+  gem "dotenv-rails"
+end

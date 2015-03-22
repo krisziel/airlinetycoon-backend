@@ -1,25 +1,25 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :null_session
-  after_filter :set_access_control_headers
+  before_filter :set_access_control_headers, :cookie
 
   def set_access_control_headers
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Request-Method'] = '*'
   end
-  # 
-  # def self.cors_allowed_actions
-  #   @cors_allowed_actions ||= []
-  # end
-  #
-  # def self.cors_allowed_actions=(arr)
-  #   @cors_allowed_actions = arr
-  # end
-  #
-  # def self.allow_cors(*methods)
-  #   self.cors_allowed_actions += methods
-  #   before_filter :cors_before_filter, :only => methods
-  #   protect_from_forgery with: :null_session, :only => methods
-  # end
+
+  def cookie
+    crypt = ActiveSupport::MessageEncryptor.new(ENV['SECRET_KEY_BASE'])
+    if params[:user_cookie]
+      p params[:user_cookie]
+      cookies.signed[:airtycoon_user] = crypt.decrypt_and_verify(params[:user_cookie])
+    end
+    if params[:game_cookie]
+      cookies.signed[:airtycoon_game] = crypt.decrypt_and_verify(params[:game_cookie])
+    end
+    if params[:airline_cookie]
+      cookies.signed[:airtycoon_airline] = crypt.decrypt_and_verify(params[:airline_cookie])
+    end
+    p cookies.signed[:airtycoon_user]
+  end
 
   def airline
     if cookies.signed[:airtycoon_game]
@@ -42,6 +42,6 @@ class ApplicationController < ActionController::Base
     game
   end
 
-  helper_method :airline, :game
+  helper_method :airline, :game, :cookie
 
 end

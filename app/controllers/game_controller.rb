@@ -13,7 +13,6 @@ class GameController < ApplicationController
     }
     games = Game.all
     game_list = []
-    airline = Airline.find(1)
     if airline
       user = User.find(cookies.signed[:airtycoon_user])
       airlines = user.airlines
@@ -25,7 +24,7 @@ class GameController < ApplicationController
       end
     end
     games.each do |game|
-      if user_game_ids.include?(game.id)
+      if user_game_ids && user_game_ids.include?(game.id)
         player = user_games[game.id]
       else
         player = false

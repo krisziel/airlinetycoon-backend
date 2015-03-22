@@ -10,7 +10,7 @@ class Airline < ActiveRecord::Base
 
   validates :name, :icao, :user_id, :game_id, presence: true
   validates :name, uniqueness: {scope: :game_id, message:'An airline with that name already exists'}
-  validates :icao, uniqueness: {scope: :game_id, message:'An airline with that icao code already exists'}
+  validates :icao, uniqueness: {scope: :game_id, message:'An airline with that code already exists'}
 
   def basic_info
     airline = {

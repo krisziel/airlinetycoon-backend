@@ -1,4 +1,5 @@
 class UserController < ApplicationController
+  before_action :cookie
 
   def autologin
     user_id = cookies.signed[:airtycoon_user] || 0
@@ -42,10 +43,15 @@ class UserController < ApplicationController
   def create
     user = User.new(user_params)
     if user.save
+      if ENV['SECRET_KEY_BASE']
+        crypt = ActiveSupport::MessageEncryptor.new(ENV['SECRET_KEY_BASE'])
+        cookie = crypt.encrypt_and_sign(user_id)
+      end
       response = {
         id: user.id,
         name: user.name,
-        username: user.username
+        username: user.username,
+        cookie:cookie
       }
       cookies.signed[:airtycoon_user] = user.id
     else
@@ -58,12 +64,9 @@ class UserController < ApplicationController
     user = User.find_by(username:params[:username])
     if user
       if user.authenticate(params[:password])
-        response = {loggedin:'true'}
-        cookies.signed[:airtycoon_user] = {
-          value:user.id,
-          expires: 1.year.from_now,
-          domain: 'http://localhost:3000'
-        }
+        crypt = ActiveSupport::MessageEncryptor.new(ENV['SECRET_KEY_BASE'])
+        cookie = crypt.encrypt_and_sign(user.id)
+        response = {loggedin:'true',cookie:cookie}
       else
         response = {error:'invalid password'}
       end
@@ -76,8 +79,7 @@ class UserController < ApplicationController
   def manuallogin # for rspec
     cookies.signed[:airtycoon_user] = {
       value:2,
-      expires: 1.year.from_now,
-      domain:'locahost:3000'
+      expires: 1.year.from_now
     }
     if !params[:clean]
       DatabaseCleaner.strategy = :truncation
