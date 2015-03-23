@@ -21,6 +21,19 @@ class Airline < ActiveRecord::Base
     airline
   end
 
+  def alliance_info
+    airline = {
+      name:name,
+      icao:icao,
+      id:id,
+      flights:flights.length,
+      aircraft:user_aircrafts.length,
+      position:alliance_membership.position,
+      status:alliance_membership.status
+    }
+    airline
+  end
+
   def conversations
     Conversation.where("sender_id=? OR recipient_id=?",id,id)
   end
