@@ -26,7 +26,7 @@ describe 'airtycoon API -- alliance chat#' do
     AllianceChat.create(airline_id:1,alliance_id:1,message:'well that is so kind of you to reply')
     get 'chat/alliance'
     message = JSON.parse(response.body)
-    expect(message[0]["message"]).to eq('well that is so kind of you to reply')
+    expect(message[2]["message"]).to eq('well that is so kind of you to reply')
   end
 
   it 'can read messages offset' do
@@ -41,7 +41,7 @@ describe 'airtycoon API -- alliance chat#' do
       offset: 4
     }
     message = JSON.parse(response.body)
-    expect(message[0]["message"]).to eq('I have replied')
+    expect(message[1]["message"]).to eq('I have replied')
   end
 
   it 'can read messages since specific time' do

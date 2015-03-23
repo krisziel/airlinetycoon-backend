@@ -24,7 +24,7 @@ describe 'airtycoon API -- game_chat#' do
     GameChat.create(airline_id:1,game_id:1,message:'well that is so kind of you to reply')
     get 'chat/game'
     message = JSON.parse(response.body)
-    expect(message[0]["message"]).to eq('well that is so kind of you to reply')
+    expect(message[2]["message"]).to eq('well that is so kind of you to reply')
   end
 
   it 'can read messages offset' do
@@ -39,7 +39,7 @@ describe 'airtycoon API -- game_chat#' do
       offset: 4
     }
     message = JSON.parse(response.body)
-    expect(message[0]["message"]).to eq('I have replied')
+    expect(message[1]["message"]).to eq('I have replied')
     expect(message.length).to eq(2)
   end
 

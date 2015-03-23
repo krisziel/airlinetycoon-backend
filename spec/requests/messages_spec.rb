@@ -58,7 +58,7 @@ describe 'airtycoon API -- messages#' do
     conv.messages.create(airline_id:3,body:"how are you?")
     get 'chat/conversation/1'
     conversation = JSON.parse(response.body)
-    expect(conversation[0]["body"]).to eq("how are you?")
+    expect(conversation[2]["body"]).to eq("how are you?")
   end
 
   it 'can receive messages since a given time' do
@@ -77,7 +77,7 @@ describe 'airtycoon API -- messages#' do
       since: timestamp
     }
     conversation = JSON.parse(response.body)
-    expect(conversation[0]["body"]).to eq("just chillin")
+    expect(conversation[1]["body"]).to eq("just chillin")
     expect(conversation.length).to eq(2)
   end
 
@@ -94,7 +94,7 @@ describe 'airtycoon API -- messages#' do
       offset: 3
     }
     conversation = JSON.parse(response.body)
-    expect(conversation[0]["body"]).to eq("just chillin")
+    expect(conversation[1]["body"]).to eq("just chillin")
     expect(conversation.length).to eq(2)
   end
 
