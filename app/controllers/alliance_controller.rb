@@ -77,7 +77,7 @@ class AllianceController < ApplicationController
     end
     alliance = {
       name:alliance.name,
-      id:alliance.name,
+      id:alliance.id,
       airlines:airlines
     }
     render json: alliance
