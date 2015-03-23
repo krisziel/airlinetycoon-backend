@@ -65,7 +65,7 @@ class UserController < ApplicationController
       if user.authenticate(params[:password])
         if ENV['SECRET_KEY_BASE']
           crypt = ActiveSupport::MessageEncryptor.new(ENV['SECRET_KEY_BASE'])
-          cookie = crypt.encrypt_and_sign(user_id)
+          cookie = crypt.encrypt_and_sign(user.id)
         end
         response = {loggedin:'true',cookie:cookie}
       else
