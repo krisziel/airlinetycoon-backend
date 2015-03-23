@@ -1,5 +1,4 @@
 class UserController < ApplicationController
-  before_action :cookie
 
   def autologin
     user_id = cookies.signed[:airtycoon_user] || 0

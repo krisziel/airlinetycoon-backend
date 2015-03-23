@@ -59,11 +59,14 @@ class GameController < ApplicationController
         }
         alliances.push(alliance)
       end
+      crypt = ActiveSupport::MessageEncryptor.new(ENV['SECRET_KEY_BASE'])
+      cookie = crypt.encrypt_and_sign(game.id)
       game_info = {
         id:game.id,
         region:game.region,
         airlines:airlines,
-        alliances:alliances
+        alliances:alliances,
+        cookie:cookie
       }
     else
       game_info = {
