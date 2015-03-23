@@ -13,7 +13,9 @@ class AllianceChatController < ApplicationController
         chats = airline.alliance.alliance_chats.order(created_at: :asc).limit(limit).offset(offset)
       end
       chats.reverse.each do |chat|
-        message_list.push(chat.serialize)
+        message = chat.serialize
+        message[:airline][:id] == airline.id ? message[:own] = true : message[:own] = false
+        message_list.push(message)
       end
       messages = message_list
     else

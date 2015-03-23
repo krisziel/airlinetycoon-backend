@@ -17,6 +17,7 @@ class MessageController < ApplicationController
             message.airline = airline
             if message.save
               message = message.serialize
+              message[:sender] == airline.id ? message[:own] = true : message[:own] = false
             else
               message = message.errors.messages
             end
