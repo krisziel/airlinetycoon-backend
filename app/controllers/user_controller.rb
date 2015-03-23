@@ -63,8 +63,10 @@ class UserController < ApplicationController
     user = User.find_by(username:params[:username])
     if user
       if user.authenticate(params[:password])
-        crypt = ActiveSupport::MessageEncryptor.new(ENV['SECRET_KEY_BASE'])
-        cookie = crypt.encrypt_and_sign(user.id)
+        if ENV['SECRET_KEY_BASE']
+          crypt = ActiveSupport::MessageEncryptor.new(ENV['SECRET_KEY_BASE'])
+          cookie = crypt.encrypt_and_sign(user_id)
+        end
         response = {loggedin:'true',cookie:cookie}
       else
         response = {error:'invalid password'}
