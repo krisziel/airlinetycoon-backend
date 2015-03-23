@@ -58,6 +58,15 @@ describe "airtycoon API -- alliance#" do
     expect(alliance["message"]).to eq("membership requested")
   end
 
+  it 'can view an alliance\'s info' do
+    Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
+    Alliance.create!(name:'Star',game_id:1)
+    AllianceMembership.create!(airline_id:1,alliance_id:1,position:1,status:1)
+    get 'alliance/1'
+    alliance = JSON.parse(response.body)
+    expect(alliance["airlines"][0]["name"]).to eq("INnoVation Airlines")
+  end
+
   it 'returns an error if the airline is already in an alliance' do
     airline = Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
     alliance = Alliance.create!({name:"Star Alliance", game_id:1})

@@ -61,17 +61,17 @@ class AllianceController < ApplicationController
 
   def show
     alliance = Alliance.find(params[:id])
-    user_airline = User.find(cookies.signed[:airtycoon_user]).airlines.where({game_id:alliance.game_id})[0]
+    user_airline = User.find(cookies.signed[:airtycoon_user]).airlines.find_by({game_id:alliance.game_id})
     airlines = []
-    alliance.airlines do |airline|
+    alliance.airlines.each do |airline|
       this_airline = {
         name:airline.name,
         icao:airline.icao,
         id:airline.id,
         position:airline.alliance_membership.position
       }
-      if user_airline.membership_status == 1 && user_airline.alliance == alliance
-        this_airline[:status] = airline.status
+      if user_airline.alliance_membership.position == 1 && user_airline.alliance == alliance
+        this_airline[:status] = airline.alliance_membership.status
       end
       airlines.push(this_airline)
     end
