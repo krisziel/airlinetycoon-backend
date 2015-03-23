@@ -45,7 +45,7 @@ class ConversationController < ApplicationController
         else
           chats = conversation.messages.order(created_at: :asc).offset(offset)
         end
-        chats.reverse.each do |chat|
+        chats.each do |chat|
           message_list.push(chat.serialize)
         end
         messages = message_list
