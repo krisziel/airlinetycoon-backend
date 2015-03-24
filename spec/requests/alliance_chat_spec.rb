@@ -99,4 +99,15 @@ describe 'airtycoon API -- alliance chat#' do
     expect(message["message"]).to eq('Welcome all to the Star')
   end
 
+  it 'cannot send an empty message' do
+    post 'chat/alliance',
+    {
+      alliance_chat:{
+        message:''
+      }
+    }
+    message = JSON.parse(response.body)
+    expect(message["airline"]).to eq(nil)
+  end
+
 end
