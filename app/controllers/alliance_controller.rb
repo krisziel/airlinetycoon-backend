@@ -60,25 +60,35 @@ class AllianceController < ApplicationController
   end
 
   def show
-    alliance = Alliance.find(params[:id])
-    user_airline = User.find(cookies.signed[:airtycoon_user]).airlines.find_by({game_id:alliance.game_id})
-    airlines = []
-    alliance.airlines.each do |airline|
-      this_airline = airline.alliance_info
-      if user_airline.alliance_membership.position == 1 && user_airline.alliance == alliance
-        airlines.push(this_airline)
-      elsif user_airline.alliance_membership.status == true
-        if this_airline[:status]
-          this_airline[:status] = nil
+    if params[:id]
+      alliance = Alliance.find(params[:id])
+    else
+      alliance = airline.alliance
+    end
+    if alliance
+      user_airline = User.find(cookies.signed[:airtycoon_user]).airlines.find_by({game_id:alliance.game_id})
+      airlines = []
+      alliance.airlines.each do |airline|
+        this_airline = airline.alliance_info
+        if user_airline.alliance_membership.position == 1 && user_airline.alliance == alliance
           airlines.push(this_airline)
+        elsif user_airline.alliance_membership.status == true
+          if this_airline[:status]
+            this_airline[:status] = nil
+            airlines.push(this_airline)
+          end
         end
       end
+      alliance = {
+        name:alliance.name,
+        id:alliance.id,
+        airlines:airlines
+      }
+    else
+      alliance = {
+        error:'no alliance found'
+      }
     end
-    alliance = {
-      name:alliance.name,
-      id:alliance.id,
-      airlines:airlines
-    }
     render json: alliance
   end
 
