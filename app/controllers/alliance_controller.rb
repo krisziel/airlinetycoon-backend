@@ -60,7 +60,7 @@ class AllianceController < ApplicationController
   end
 
   def show
-    if params[:id]
+    if params[:id].to_i > 0
       alliance = Alliance.find(params[:id])
     else
       alliance = airline.alliance
