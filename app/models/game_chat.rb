@@ -1,6 +1,7 @@
 class GameChat < ActiveRecord::Base
   belongs_to :game
   belongs_to :airline
+  validates :message, :game_id, :alliance_id, presence: true
 
   def serialize
     chat = {
