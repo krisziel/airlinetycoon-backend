@@ -79,9 +79,11 @@ class AllianceController < ApplicationController
           end
         end
       end
+      user_airline.alliance_membership.position == 1 ? admin = true : admin = false
       alliance = {
         name:alliance.name,
         id:alliance.id,
+        admin:admin,
         airlines:airlines
       }
     else
