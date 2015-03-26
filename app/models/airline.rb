@@ -34,6 +34,20 @@ class Airline < ActiveRecord::Base
     airline
   end
 
+  def show_info
+    all_flights = []
+    flights.each do |flight|
+      all_flights.push(flight.mini_data)
+    end
+    airline = {
+      name:name,
+      icao:icao,
+      id:id,
+      flights:all_flights
+    }
+    airline
+  end
+
   def conversations
     Conversation.where("sender_id=? OR recipient_id=?",id,id)
   end

@@ -86,7 +86,6 @@ class AllianceController < ApplicationController
           this_airline[:status] = nil
           admin = false;
         end
-        p this_airline
         if admin
           airlines.push(this_airline)
         elsif this_airline[:status]

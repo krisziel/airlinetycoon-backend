@@ -45,6 +45,20 @@ class AirlineController < ApplicationController
     render json: response
   end
 
+  def show
+    if airline
+      airline = Airline.find_by(id:params[:id])
+      if airline
+        response = airline.show_info
+      else
+        response = {error:'airline not found'}
+      end
+    else
+      response = {error:'user not logged in'}
+    end
+    render json: response
+  end
+
   private
   def airline_params
     params.require(:airline).permit(:name, :icao, :user_id, :game_id, :money)

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   post 'airline' => 'airline#create' # rspec passing
   get 'airline' => 'airline#all' # rspec passing
+  get 'airline/:id' => 'airline#show' # rspec passing
 
   get 'aircraft' => 'aircraft#all' # rspec passing
   get 'aircraft/seats' => 'aircraft#seats' # rspec passing

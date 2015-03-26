@@ -58,4 +58,13 @@ class Flight < ActiveRecord::Base
     data
   end
 
+  def mini_data
+    flight = {
+      route:route.simple,
+      userAircraft:user_aircraft.aircraft.full_name,
+      frequencies:frequencies
+    }
+    flight
+  end
+
 end
