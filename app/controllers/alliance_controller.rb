@@ -71,13 +71,13 @@ class AllianceController < ApplicationController
       alliance.airlines.each do |airline|
         this_airline = airline.alliance_info
         if user_airline.alliance_membership.position == 1 && user_airline.alliance == alliance
-          airlines.push(this_airline)
         elsif user_airline.alliance_membership.status == true
           if this_airline[:status]
             this_airline[:status] = nil
-            airlines.push(this_airline)
           end
         end
+        this_airline[:mid] = airline.alliance_membership.id
+        airlines.push(this_airline)
       end
       user_airline.alliance_membership.position == 1 ? admin = true : admin = false
       alliance = {
