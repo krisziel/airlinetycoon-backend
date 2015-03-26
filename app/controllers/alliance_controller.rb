@@ -74,17 +74,25 @@ class AllianceController < ApplicationController
         if user_airline.alliance == alliance
           if user_airline.alliance_membership.position == 1 && user_airline.alliance == alliance
           elsif user_airline.alliance_membership.status == true
-            if this_airline[:status]
+            if !this_airline[:status]
               this_airline[:status] = nil
             end
           end
           user_airline.alliance_membership.position == 1 ? admin = true : admin = false
+          if user_airline.id == this_airline[:id]
+            this_airline[:self] = true
+          end
         else
           this_airline[:status] = nil
           admin = false;
         end
+        p this_airline
+        if admin
+          airlines.push(this_airline)
+        elsif this_airline[:status]
+          airlines.push(this_airline)
+        end
         this_airline[:mid] = airline.alliance_membership.id
-        airlines.push(this_airline)
       end
       alliance = {
         name:alliance.name,
@@ -195,7 +203,7 @@ class AllianceController < ApplicationController
   def end_membership
     alliance = Alliance.find(params[:id])
     airline = User.find(cookies.signed[:airtycoon_user]).airlines.where({game_id:alliance.game_id})[0]
-    if airline.alliance_membership.status && airline.alliance_membership.position == 1
+    if airline.alliance_membership.status && (airline.alliance_membership.position == 1 || airline.alliance_membership.id == params[:membership_id].to_i)
       member = AllianceMembership.find(params[:membership_id])
       requestor = Airline.find(member.airline_id)
       alliance_membership = member.destroy

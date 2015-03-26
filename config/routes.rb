@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   post 'alliance/:id/approve' => 'alliance#approve_membership' # rspec passing
   post 'alliance/:id/reject' => 'alliance#reject_membership' # rspec passing
   post 'alliance/:id/eject' => 'alliance#end_membership' # rspec passing
+  post 'alliance/:id/leave' => 'alliance#end_membership' # rspec passing
 
   get 'chat/alliance' => 'alliance_chat#all' # rspec passing
   post 'chat/alliance' => 'alliance_chat#create' # rspec passing
