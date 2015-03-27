@@ -16,7 +16,9 @@ describe "airtycoon API -- alliance#" do
       user_id: 1
     })
     post 'alliance', {
-      name:"Star"
+      alliance:{
+        name:"Star"
+      }
     }
     alliance = JSON.parse(response.body)
     expect(alliance["name"]).to eq("Star")
@@ -31,7 +33,9 @@ describe "airtycoon API -- alliance#" do
       user_id: 1
     })
     post 'alliance', {
-      name:"Star"
+      alliance:{
+        name:"Star"
+      }
     }
     alliance = JSON.parse(response.body)
     expect(alliance["airlines"].length).to eq(1)
@@ -40,7 +44,9 @@ describe "airtycoon API -- alliance#" do
   it 'can request to join an alliance' do
     Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
     post 'alliance', {
-      name:"Star"
+      alliance:{
+        name:"Star"
+      }
     }
     post 'user',{
       user:{
@@ -94,8 +100,10 @@ describe "airtycoon API -- alliance#" do
     }
     Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
     post 'alliance', {
-      name:"Star Alliance",
-      game_id:1
+      alliance:{
+        name:"Star Alliance",
+        game_id:1
+      }
     }
     alliance = JSON.parse(response.body)
     expect(alliance["name"]).to eq(["An alliance with that name already exists"])
