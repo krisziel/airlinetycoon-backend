@@ -2,7 +2,6 @@ class AircraftController < ApplicationController
 
   def all
     aircrafts = Aircraft.all
-    aircraft_types = {}
     aircraft_list = []
     aircrafts.each do |aircraft|
       this_aircraft = {
@@ -16,12 +15,12 @@ class AircraftController < ApplicationController
         price:aircraft.price,
         discount:aircraft.discount,
         range:aircraft.range,
-        sqft:aircraft.sqft
+        sqft:aircraft.sqft,
+        user:{inuse:0,unused:0}
       }
       aircraft_list.push(this_aircraft)
-      aircraft_types[aircraft.iata] = {inuse:0,unused:0}
     end
-    render json: {list:aircraft_list,types:aircraft_types}
+    render json: aircraft_list
   end
 
   def seats

@@ -8,7 +8,7 @@ describe 'airtycoon API -- aircraft#' do
     Aircraft.create(name:"777-300ER",manufacturer:"Boeing",iata:"77W",capacity:550,speed:550,turn_time:90,price:320000000,discount:2,fuel_capacity:47900,range:9100,sqft:2475)
     get '/aircraft'
     aircraft = JSON.parse(response.body)
-    expect(aircraft["list"][0]["name"]).to eq("777-200ER")
+    expect(aircraft[0]["name"]).to eq("777-200ER")
   end
 
   it 'can get aircraft list (list has all aircraft)' do
@@ -17,7 +17,7 @@ describe 'airtycoon API -- aircraft#' do
     Aircraft.create(name:"777-300ER",manufacturer:"Boeing",iata:"77W",capacity:550,speed:550,turn_time:90,price:320000000,discount:2,fuel_capacity:47900,range:9100,sqft:2475)
     get '/aircraft'
     aircraft = JSON.parse(response.body)
-    expect(aircraft["list"].length).to eq(3)
+    expect(aircraft.length).to eq(3)
   end
 
   it 'can get get the generated aircraft object' do
@@ -26,7 +26,7 @@ describe 'airtycoon API -- aircraft#' do
     Aircraft.create(name:"777-300ER",manufacturer:"Boeing",iata:"77W",capacity:550,speed:550,turn_time:90,price:320000000,discount:2,fuel_capacity:47900,range:9100,sqft:2475)
     get '/aircraft'
     aircraft = JSON.parse(response.body)
-    expect(aircraft["types"]["77L"]).to eq({"inuse" => 0,"unused" => 0})
+    expect(aircraft[0]["user"]).to eq({"inuse" => 0,"unused" => 0})
   end
 
   it 'can get a list of seat types (the seat has a name)' do
