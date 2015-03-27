@@ -111,7 +111,7 @@ Aircraft.create(name:"757-200",manufacturer:"Boeing",iata:"752",capacity:239,spe
 Aircraft.create(name:"757-300",manufacturer:"Boeing",iata:"753",capacity:295,speed:530,turn_time:60,price:80000000,discount:2,fuel_capacity:11500,range:4150,sqft:1328)
 Aircraft.create(name:"767-200ER",manufacturer:"Boeing",iata:"762",capacity:290,speed:530,turn_time:60,price:160000000,discount:2,fuel_capacity:24140,range:7350,sqft:1305)
 Aircraft.create(name:"767-300ER",manufacturer:"Boeing",iata:"763",capacity:350,speed:530,turn_time:70,price:185000000,discount:2,fuel_capacity:24140,range:7260,sqft:1575)
-Aircraft.create(name:"767-400",manufacturer:"Boeing",iata:"764",capacity:375,speed:530,turn_time:70,price:200000000,discount:2,fuel_capacity:24140,range:6450,sqft:1688)
+Aircraft.create(name:"767-400ER",manufacturer:"Boeing",iata:"764",capacity:375,speed:530,turn_time:70,price:200000000,discount:2,fuel_capacity:24140,range:6450,sqft:1688)
 Aircraft.create(name:"777-200ER",manufacturer:"Boeing",iata:"77E",capacity:440,speed:550,turn_time:90,price:261000000,discount:2,fuel_capacity:45250,range:8900,sqft:1980)
 Aircraft.create(name:"777-200LR",manufacturer:"Boeing",iata:"77L",capacity:440,speed:550,turn_time:90,price:296000000,discount:2,fuel_capacity:47900,range:10800,sqft:1980)
 Aircraft.create(name:"777-300ER",manufacturer:"Boeing",iata:"77W",capacity:550,speed:550,turn_time:90,price:320000000,discount:2,fuel_capacity:47900,range:9100,sqft:2475)
