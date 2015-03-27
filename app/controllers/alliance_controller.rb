@@ -237,6 +237,7 @@ class AllianceController < ApplicationController
   def alliance_params
     params.require(:alliance).permit(:name, :game_id)
   end
+  
   def request_params
     params.require(:alliance).permit(:id, :airline_id)
   end
