@@ -5,11 +5,18 @@ class UserAircraft < ActiveRecord::Base
   has_many :flights
 
   def full_data
+    flight = Flight.find_by(user_aircraft_id:id)
+    if flight
+      flight = flight.mini_data
+    else
+      flight = nil
+    end
     user_aircraft = {
       id:id,
       aircraft:aircraft.tech_info,
       inuse:inuse,
-      configuration:aircraft_configuration.config_details
+      configuration:aircraft_configuration.config_details,
+      flight:flight
     }
     user_aircraft
   end

@@ -2,7 +2,7 @@ class UserAircraftController < ApplicationController
   before_action :game, :airline
 
   def all
-    aircrafts = airline.user_aircrafts
+    aircrafts = airline.user_aircrafts.order(:aircraft_id)
     aircraft_list = []
     aircrafts.each do |aircraft|
       aircraft_list.push(aircraft.full_data)

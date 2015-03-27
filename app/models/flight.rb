@@ -62,7 +62,8 @@ class Flight < ActiveRecord::Base
     flight = {
       route:route.simple,
       userAircraft:user_aircraft.aircraft.full_name,
-      frequencies:frequencies
+      frequencies:frequencies,
+      id:id
     }
     flight
   end
