@@ -21,7 +21,7 @@ describe 'airtycoon API -- user_aircraft#' do
     UserAircraft.create(aircraft_id:2, airline_id:1, aircraft_configuration_id:1, age:1, inuse:false)
     get '/aircraft/user'
     aircraft_list = JSON.parse(response.body)
-    expect(aircraft_list[0]["aircraft"]["name"]).to eq("777-200ER")
+    expect(aircraft_list["1"]["aircraft"]["name"]).to eq("777-200ER")
   end
 
   it 'can view all user aircraft (aircraft has configuration)' do
@@ -29,7 +29,7 @@ describe 'airtycoon API -- user_aircraft#' do
     UserAircraft.create(aircraft_id:2, airline_id:1, aircraft_configuration_id:1, age:1, inuse:false)
     get '/aircraft/user'
     aircraft_list = JSON.parse(response.body)
-    expect(aircraft_list[0]["configuration"]["config"]["j"]["count"]).to eq(20)
+    expect(aircraft_list["1"]["configuration"]["config"]["j"]["count"]).to eq(20)
   end
 
   it 'can view all user aircraft (list has both aircraft)' do

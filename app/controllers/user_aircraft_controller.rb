@@ -3,9 +3,9 @@ class UserAircraftController < ApplicationController
 
   def all
     aircrafts = airline.user_aircrafts.order(:aircraft_id)
-    aircraft_list = []
+    aircraft_list = {}
     aircrafts.each do |aircraft|
-      aircraft_list.push(aircraft.full_data)
+      aircraft_list[aircraft.id] = aircraft.full_data
     end
     render json: aircraft_list
   end
