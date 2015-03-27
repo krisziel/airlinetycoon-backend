@@ -16,10 +16,6 @@ class AllianceController < ApplicationController
   end
 
   def create
-    params[:alliance] = {
-      game_id:game.id,
-      name:params[:name]
-    }
     if airline.alliance
       alliance = airline.alliance
       if airline.alliance_membership.status == false
@@ -37,6 +33,7 @@ class AllianceController < ApplicationController
       end
     else
       alliance = Alliance.new(alliance_params)
+      alliance.game_id = game.id
       if alliance.save
         membership = AllianceMembership.new({alliance_id:alliance.id,airline_id:airline.id,status:true,position:1})
         membership.save
@@ -237,7 +234,7 @@ class AllianceController < ApplicationController
   def alliance_params
     params.require(:alliance).permit(:name, :game_id)
   end
-  
+
   def request_params
     params.require(:alliance).permit(:id, :airline_id)
   end

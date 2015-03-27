@@ -96,6 +96,11 @@ UserAircraft.create(airline_id:1,aircraft_id:1,age:1,aircraft_configuration_id:2
 UserAircraft.create(airline_id:1,aircraft_id:2,age:1,aircraft_configuration_id:3,inuse:0)
 UserAircraft.create(airline_id:1,aircraft_id:1,age:1,aircraft_configuration_id:1,inuse:0)
 UserAircraft.create(airline_id:1,aircraft_id:2,age:1,aircraft_configuration_id:3,inuse:0)
+UserAircraft.create(airline_id:2,aircraft_id:1,age:1,aircraft_configuration_id:1,inuse:1)
+UserAircraft.create(airline_id:2,aircraft_id:1,age:1,aircraft_configuration_id:2,inuse:1)
+UserAircraft.create(airline_id:2,aircraft_id:2,age:1,aircraft_configuration_id:3,inuse:1)
+UserAircraft.create(airline_id:2,aircraft_id:1,age:1,aircraft_configuration_id:2,inuse:0)
+UserAircraft.create(airline_id:2,aircraft_id:1,age:1,aircraft_configuration_id:2,inuse:0)
 
 Aircraft.create(name:"737-700",manufacturer:"Boeing",iata:"73G",capacity:149,speed:514,turn_time:35,price:78300000,discount:2,fuel_capacity:6875,range:3950,sqft:671)
 Aircraft.create(name:"737-800",manufacturer:"Boeing",iata:"738",capacity:189,speed:514,turn_time:40,price:93300000,discount:2,fuel_capacity:6875,range:3400,sqft:851)
