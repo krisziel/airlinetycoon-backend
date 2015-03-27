@@ -82,14 +82,17 @@ class AllianceController < ApplicationController
           if user_airline.id == this_airline[:id]
             this_airline[:self] = true
           end
+          if admin
+            airlines.push(this_airline)
+          else
+            airlines.push(this_airline)
+          end
         else
-          this_airline[:status] = nil
-          admin = false;
-        end
-        if admin
-          airlines.push(this_airline)
-        elsif this_airline[:status]
-          airlines.push(this_airline)
+          if this_airline[:status]
+            this_airline[:status] = nil
+            admin = false;
+            airlines.push(this_airline)
+          end
         end
         this_airline[:mid] = airline.alliance_membership.id
       end
