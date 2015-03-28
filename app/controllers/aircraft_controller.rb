@@ -6,7 +6,7 @@ class AircraftController < ApplicationController
       aircrafts = Aircraft.all
       aircraft_list = []
       aircrafts.each do |aircraft|
-        user_aircrafts = UserAircraft.where(airline_id:airline.id,aircraft_id:aircraft.id)
+        user_aircrafts = UserAircraft.where(airline_id:airline.id,aircraft_id:aircraft.id).order('inuse DESC')
         user_aircraft_list = []
         user_aircrafts.each{|ac| user_aircraft_list.push(ac.id) }
         this_aircraft = {

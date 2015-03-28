@@ -2,7 +2,7 @@ class UserAircraftController < ApplicationController
   before_action :game, :airline
 
   def all
-    aircrafts = airline.user_aircrafts.order(:aircraft_id)
+    aircrafts = airline.user_aircrafts.order(:aircraft_id).order('inuse DESC')
     aircraft_list = {}
     aircrafts.each do |aircraft|
       aircraft_list[aircraft.id] = aircraft.full_data
