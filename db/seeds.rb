@@ -141,4 +141,9 @@ Aircraft.create(name:"E175",manufacturer:"Embraer",iata:"E75",capacity:88,speed:
 Aircraft.create(name:"E190",manufacturer:"Embraer",iata:"E90",capacity:114,speed:550,turn_time:30,price:41000000,discount:2,fuel_capacity:3400,range:2070,sqft:513)
 Aircraft.create(name:"E195",manufacturer:"Embraer",iata:"E95",capacity:122,speed:550,turn_time:30,price:47000000,discount:2,fuel_capacity:3400,range:1600,sqft:549)
 
+AircraftConfiguration.create(name:"High Density",aircraft_id:1,airline_id:1,f_count:0,j_count:0,p_count:80,y_count:400,f_seat:0,j_seat:0,p_seat:2,y_seat:1)
+AircraftConfiguration.create(name:"High Density",aircraft_id:2,airline_id:1,f_count:0,j_count:0,p_count:80,y_count:300,f_seat:0,j_seat:0,p_seat:2,y_seat:1)
+AircraftConfiguration.create(name:"High Density",aircraft_id:3,airline_id:1,f_count:0,j_count:0,p_count:80,y_count:400,f_seat:0,j_seat:0,p_seat:2,y_seat:1)
+AircraftConfiguration.create(name:"High Density",aircraft_id:4,airline_id:1,f_count:0,j_count:0,p_count:80,y_count:300,f_seat:0,j_seat:0,p_seat:2,y_seat:1)
+
 # reset id index: ActiveRecord::Base.connection.reset_pk_sequence!('aircrafts')
