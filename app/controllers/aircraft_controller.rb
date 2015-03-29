@@ -9,6 +9,9 @@ class AircraftController < ApplicationController
         user_aircrafts = UserAircraft.where(airline_id:airline.id,aircraft_id:aircraft.id).order('inuse DESC')
         user_aircraft_list = []
         user_aircrafts.each{|ac| user_aircraft_list.push(ac.id) }
+        user_configs = AircraftConfiguration.where(airline_id:airline.id,aircraft_id:aircraft.id)
+        user_config_list = []
+        user_configs.each{|config| user_config_list.push(config.config_details) }
         this_aircraft = {
           manufacturer:aircraft.manufacturer,
           name:aircraft.name,
@@ -21,7 +24,7 @@ class AircraftController < ApplicationController
           discount:aircraft.discount,
           range:aircraft.range,
           sqft:aircraft.sqft,
-          user:{inuse:0,unused:0,aircraft:user_aircraft_list}
+          user:{inuse:0,unused:0,aircraft:user_aircraft_list,configs:user_config_list}
         }
         aircraft_list.push(this_aircraft)
       end

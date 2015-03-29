@@ -26,7 +26,7 @@ describe 'airtycoon API -- aircraft#' do
   it 'can get get the generated aircraft object' do
     get '/aircraft'
     aircraft = JSON.parse(response.body)
-    expect(aircraft[0]["user"]).to eq({"inuse" => 0,"unused" => 0, "aircraft"=>[]})
+    expect(aircraft[0]["user"]).to eq({"inuse" => 0,"unused" => 0, "aircraft"=>[], "configs"=>[]})
   end
 
   it 'can get a list of seat types (the seat has a name)' do
