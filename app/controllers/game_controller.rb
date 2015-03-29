@@ -68,7 +68,8 @@ class GameController < ApplicationController
         region:game.region,
         airlines:airlines,
         alliances:alliances,
-        cookie:cookie
+        cookie:cookie,
+        own:airline.login_info
       }
     else
       game_info = {

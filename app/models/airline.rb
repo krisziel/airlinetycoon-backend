@@ -21,6 +21,16 @@ class Airline < ActiveRecord::Base
     airline
   end
 
+  def login_info
+    airline = {
+      name:name,
+      icao:icao,
+      money:money,
+      id:id
+    }
+    airline
+  end
+
   def alliance_info
     airline = {
       name:name,
