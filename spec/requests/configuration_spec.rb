@@ -45,7 +45,7 @@ describe 'airtycoon API -- user_aircraft#' do
       config:{
         name:'Pretty High Density',
         aircraft_id:1,
-        seats:'{"f":{"count":0,"id":0},"j":{"count":0,"id":0},"p":{"count":80,"id":2},"y":{"count":300,"id":1}}'
+        seats:JSON.parse('{"count":{"f":0,"j":0,"p":80,"y":300},"id":{"f":0,"j":0,"p":2,"y":1}}')
       }
     }
     configuration = JSON.parse(response.body)
@@ -73,7 +73,7 @@ describe 'airtycoon API -- user_aircraft#' do
       config:{
         name:'High Density',
         aircraft_id:1,
-        seats:'{"f":{"count":0,"id":0},"j":{"count":0,"id":0},"p":{"count":80,"id":2},"y":{"count":700,"id":1}}'
+        seats:JSON.parse('{"count":{"f":0,"j":0,"p":80,"y":300},"id":{"f":0,"j":0,"p":2,"y":1}}')
       }
     }
     configuration = JSON.parse(response.body)
@@ -86,7 +86,7 @@ describe 'airtycoon API -- user_aircraft#' do
       config:{
         name:'Pretty High Density',
         aircraft_id:1,
-        seats:'{"f":{"count":0,"id":0},"j":{"count":0,"id":0},"p":{"count":80,"id":2},"y":{"count":700,"id":1}}'
+        seats:JSON.parse('{"count":{"f":0,"j":0,"p":80,"y":315},"id":{"f":0,"j":0,"p":2,"y":1}}')
       }
     }
     configuration = JSON.parse(response.body)

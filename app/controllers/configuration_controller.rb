@@ -21,17 +21,17 @@ class ConfigurationController < ApplicationController
   end
 
   def create
-    seats = JSON.parse(params[:config][:seats])
+    seats = params[:config][:seats]
     params[:config][:airline_id] = airline.id
     config = params[:config]
-    config[:f_count] = seats["f"]["count"]
-    config[:j_count] = seats["j"]["count"]
-    config[:p_count] = seats["p"]["count"]
-    config[:y_count] = seats["y"]["count"]
-    config[:f_seat] = seats["f"]["id"]
-    config[:j_seat] = seats["j"]["id"]
-    config[:p_seat] = seats["p"]["id"]
-    config[:y_seat] = seats["y"]["id"]
+    config[:f_count] = seats["count"]["f"]
+    config[:j_count] = seats["count"]["j"]
+    config[:p_count] = seats["count"]["p"]
+    config[:y_count] = seats["count"]["y"]
+    config[:f_seat] = seats["id"]["f"]
+    config[:j_seat] = seats["id"]["j"]
+    config[:p_seat] = seats["id"]["p"]
+    config[:y_seat] = seats["id"]["y"]
     configuration = AircraftConfiguration.new(config_params)
     valid_config = validate_configuration configuration
     config[:f_count] = valid_config[:f][:count]
