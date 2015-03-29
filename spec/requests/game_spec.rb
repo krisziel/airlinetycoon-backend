@@ -5,6 +5,7 @@ describe 'airtycoon API -- game#' do
     get 'user/manuallogin'
     Game.create!(region:"all",year:"2Q2015")
     Game.create!(region:"asia",year:"1Q2010")
+    get 'games/manuallogin'
     Airline.create!({name:"INnoVation Airlines", icao:"INO", money:5000000000, game_id:1, user_id:1})
     Airline.create!({name:"Maru Airways", icao:"MRU", money:5000000000, game_id:1, user_id:2})
     Airline.create!({name:"Polt Airlines", icao:"PLT", money:5000000000, game_id:2, user_id:3})
