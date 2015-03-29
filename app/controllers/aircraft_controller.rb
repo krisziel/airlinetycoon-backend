@@ -24,6 +24,7 @@ class AircraftController < ApplicationController
           discount:aircraft.discount,
           range:aircraft.range,
           sqft:aircraft.sqft,
+          id:aircraft.id,
           user:{inuse:0,unused:0,aircraft:user_aircraft_list,configs:user_config_list}
         }
         aircraft_list.push(this_aircraft)

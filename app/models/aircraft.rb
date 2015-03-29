@@ -11,7 +11,8 @@ class Aircraft < ActiveRecord::Base
       name:name,
       manufacturer:manufacturer,
       iata:iata,
-      full_name:full_name
+      full_name:full_name,
+      id:id
     }
   end
 
@@ -23,7 +24,8 @@ class Aircraft < ActiveRecord::Base
       full_name:full_name,
       capacity:capacity,
       range:range,
-      sqft:sqft
+      sqft:sqft,
+      id:id
     }
   end
 
