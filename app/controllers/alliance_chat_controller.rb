@@ -26,22 +26,22 @@ class AllianceChatController < ApplicationController
     render json: messages
   end
 
-  def create
-    if airline.alliance
-      params[:alliance_chat][:airline_id] = airline.id
-      message = airline.alliance.alliance_chats.new(message_params)
-      if message.save
-        messages = message.serialize
-      else
-        messages = message.errors.messages
-      end
-    else
-      messages = {
-        error: "no alliance"
-      }
-    end
-    render json: messages
-  end
+  # def create
+  #   if airline.alliance
+  #     params[:alliance_chat][:airline_id] = airline.id
+  #     message = airline.alliance.alliance_chats.new(message_params)
+  #     if message.save
+  #       messages = message.serialize
+  #     else
+  #       messages = message.errors.messages
+  #     end
+  #   else
+  #     messages = {
+  #       error: "no alliance"
+  #     }
+  #   end
+  #   render json: messages
+  # end
 
   private
   def message_params
