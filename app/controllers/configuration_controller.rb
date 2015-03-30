@@ -40,7 +40,7 @@ class ConfigurationController < ApplicationController
     config[:y_count] = valid_config[:y][:count]
     configuration = AircraftConfiguration.new(config_params)
     if configuration.save
-      config_response = config_serializer configuration
+      config_response = configuration.config_details
     else
       config_response = configuration.errors.messages
     end
