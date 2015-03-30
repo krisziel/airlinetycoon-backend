@@ -49,7 +49,7 @@ describe 'airtycoon API -- user_aircraft#' do
       }
     }
     configuration = JSON.parse(response.body)
-    expect(configuration["seats"]["y"]["count"]).to eq(300)
+    expect(configuration["config"]["y"]["count"]).to eq(300)
   end
 
   it 'can delete a configuration' do
@@ -90,7 +90,7 @@ describe 'airtycoon API -- user_aircraft#' do
       }
     }
     configuration = JSON.parse(response.body)
-    expect(configuration["seats"]["y"]["count"]).to eq(315)
+    expect(configuration["config"]["y"]["count"]).to eq(315)
   end
 
 end
