@@ -44,7 +44,7 @@ class UserController < ApplicationController
     if user.save
       if ENV['SECRET_KEY_BASE']
         crypt = ActiveSupport::MessageEncryptor.new(ENV['SECRET_KEY_BASE'])
-        cookie = crypt.encrypt_and_sign(user_id)
+        cookie = crypt.encrypt_and_sign(user.id)
       end
       response = {
         id: user.id,

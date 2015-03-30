@@ -51,19 +51,20 @@ class ChatController < ApplicationController
         type_id = message_data["type_id"]
         message_type = message_data["message_type"]
         body = message_data["body"]
-        new_message = Message.new(body:body, airline_id:airline.id, message_type:message_type, type_id:type_id)
-        if new_message.save
-          p @clients
-          p '*********************************'
-          p @clients[message_type.to_sym]
-          recipients = @clients[message_type.to_sym][type_id.to_i]
-          recipients.each do |socket|
-            socket[:socket].send new_message.serialize.to_json
+        if message_permissions(airline, message_data)
+          new_message = Message.new(body:body, airline_id:airline.id, message_type:message_type, type_id:type_id)
+          if new_message.save
+            recipients = @clients[message_type.to_sym][type_id.to_i]
+            recipients.each do |socket|
+              socket[:socket].send new_message.serialize.to_json
+            end
+          else
+            if socket[:conv_info][:user_id] == conversation[:user_id]
+              socket[:socket].send new_message.errors.to_json
+            end
           end
         else
-          if socket[:conv_info][:user_id] == conversation[:user_id]
-            socket[:socket].send new_message.errors.to_json
-          end
+          
         end
       end
     end
