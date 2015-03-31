@@ -7,10 +7,14 @@ class Message < ActiveRecord::Base
    end
 
    def serialize
+     sender_airline = Airline.find(airline_id).basic_info
      message = {
        body:body,
-       sender:airline_id,
-       sent:created_at.to_i
+       sender:sender_airline,
+       sent:created_at.to_i,
+       type:message_type,
+       typeId:type_id,
+       id:id
      }
      message
    end
