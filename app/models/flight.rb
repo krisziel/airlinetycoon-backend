@@ -83,7 +83,7 @@ class Flight < ActiveRecord::Base
         pax += passengers['p']
         pax += passengers['y']
       end
-      load['average'] = ((pax*1.0)/(seats*1.0))
+      load['average'] = ((((pax*1.0)/(seats*1.0))*100).round)
       load
     else
       load
