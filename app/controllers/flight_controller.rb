@@ -3,6 +3,13 @@ class FlightController < ApplicationController
   before_action :game, :airline
 
   def all
+    if airline
+      flights = []
+      airline.flights.each do |flight|
+        flights.push flight.full_data
+      end
+      render json: flights
+    end
   end
 
   def aircraft

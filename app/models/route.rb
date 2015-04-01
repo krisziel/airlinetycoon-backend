@@ -14,7 +14,8 @@ class Route < ActiveRecord::Base
       origin:origin.basic_data,
       destination:destination.basic_data,
       minfare:minfare,
-      maxfare:maxfare
+      maxfare:maxfare,
+      id:id
     }
     route
   end
@@ -51,7 +52,9 @@ class Route < ActiveRecord::Base
       destination:destination.basic_data,
       minfare:minfare,
       maxfare:maxfare,
-      flights:flights
+      flights:flights,
+      distance:distance,
+      id:id
     }
   end
 

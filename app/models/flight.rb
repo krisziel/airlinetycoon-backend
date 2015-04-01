@@ -22,6 +22,7 @@ class Flight < ActiveRecord::Base
       frequencies: frequencies,
       fare:fare,
       passengers:passengers,
+      load:load_average,
       id:id
     }
     data
@@ -31,13 +32,13 @@ class Flight < ActiveRecord::Base
     data = {
       airline:airline.basic_info,
       route:route.serialize,
-      userAircraft:user_aircraft.full_data,
+      userAircraft:user_aircraft.mini_data,
       duration:duration,
       frequencies:frequencies,
       fare:fare,
       passengers:passengers,
       revenue:revenue,
-      load:load,
+      load:load_average,
       cost:cost,
       profit:profit,
       id:id
@@ -51,7 +52,7 @@ class Flight < ActiveRecord::Base
       userAircraft:user_aircraft.config,
       duration:duration,
       frequencies:frequencies,
-      load:load,
+      load:load_average,
       profit:profit,
       id:id
     }
@@ -66,6 +67,27 @@ class Flight < ActiveRecord::Base
       id:id
     }
     flight
+  end
+
+  def load_average
+    if load
+      seats = 0
+      seats += user_aircraft.aircraft_configuration.f_count
+      seats += user_aircraft.aircraft_configuration.j_count
+      seats += user_aircraft.aircraft_configuration.p_count
+      seats += user_aircraft.aircraft_configuration.y_count
+      pax = 0
+      if passengers
+        pax += passengers['f']
+        pax += passengers['j']
+        pax += passengers['p']
+        pax += passengers['y']
+      end
+      load['average'] = ((pax*1.0)/(seats*1.0))
+      load
+    else
+      load
+    end
   end
 
 end

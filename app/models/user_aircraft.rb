@@ -21,6 +21,16 @@ class UserAircraft < ActiveRecord::Base
     user_aircraft
   end
 
+  def mini_data
+  user_aircraft = {
+    id:id,
+    aircraft:aircraft.tech_info,
+    inuse:inuse,
+    configuration:aircraft_configuration.config_details
+  }
+  user_aircraft
+  end
+
   def config
     config = {
       id:id,
