@@ -28,6 +28,18 @@ class Flight < ActiveRecord::Base
     data
   end
 
+  def route_serialize
+    data = {
+      airline: airline.basic_info,
+      aircraft: user_aircraft.aircraft.basic_info,
+      frequencies: frequencies,
+      fare:fare,
+      load:load_average,
+      id:id
+    }
+    data
+  end
+
   def full_data
     data = {
       airline:airline.basic_info,

@@ -45,7 +45,7 @@ class Route < ActiveRecord::Base
     flight_list = Flight.where(route_id:id)
     flights = []
     flight_list.each do |flight|
-      flights.push(flight.serialize)
+      flights.push(flight.route_serialize)
     end
     route = {
       origin:origin.basic_data,

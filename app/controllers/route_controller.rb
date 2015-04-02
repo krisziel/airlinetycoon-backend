@@ -1,5 +1,4 @@
 class RouteController < ApplicationController
-
   before_action :airline
 
   def show
