@@ -99,7 +99,7 @@ describe 'airtycoon API -- route#' do
     url = "route/#{Route.last.id}"
     get url
     route = JSON.parse(response.body)
-    expect(route["flights"][0]["airline"]).to eq(1)
+    expect(route["flights"][0]["airline"]).to eq({"name"=>"INnoVation Airlines", "icao"=>"INO", "id"=>1})
   end
 
 end

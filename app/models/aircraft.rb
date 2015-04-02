@@ -24,6 +24,8 @@ class Aircraft < ActiveRecord::Base
       full_name:full_name,
       capacity:capacity,
       range:range,
+      speed:speed,
+      turn_time:turn_time,
       sqft:sqft,
       id:id
     }

@@ -15,6 +15,7 @@ class Route < ActiveRecord::Base
       destination:destination.basic_data,
       minfare:minfare,
       maxfare:maxfare,
+      distance:distance,
       id:id
     }
     route
@@ -28,7 +29,8 @@ class Route < ActiveRecord::Base
       maxfare:maxfare,
       demand:demand,
       elasticity:elasticity,
-      price:price
+      price:price,
+      distance:distance
     }
     route
   end
