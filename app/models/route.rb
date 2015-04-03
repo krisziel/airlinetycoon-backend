@@ -39,7 +39,8 @@ class Route < ActiveRecord::Base
     route = {
       origin:origin.simple,
       destination:destination.simple,
-      id:id
+      id:id,
+      distance:distance
     }
   end
 
