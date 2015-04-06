@@ -210,6 +210,7 @@ describe 'airtycoon API -- flight#' do
   end
 
   it 'cannot create a flight with an aircraft already in use' do
+    Flight.create(airline_id:1,route_id:1,user_aircraft_id:1,frequencies:2,fare:{f:500,j:500,p:500,y:500})
     UserAircraft.create(aircraft_id:1,airline_id:1,aircraft_configuration_id:1,age:0,inuse:true)
     post 'flight',
     {
@@ -350,10 +351,11 @@ describe 'airtycoon API -- flight#' do
   end
 
   it 'cannot update a flight with an aircraft already in use' do
+    Flight.create(airline_id:1,route_id:1,user_aircraft_id:2,frequencies:2,fare:{f:500,j:500,p:500,y:500})
     UserAircraft.create(aircraft_id:1,airline_id:1,aircraft_configuration_id:1,age:0,inuse:false)
     UserAircraft.create(aircraft_id:2,airline_id:1,aircraft_configuration_id:1,age:0,inuse:true)
     Flight.create(airline_id:1,route_id:1,user_aircraft_id:1,frequencies:2,fare:{f:500,j:500,p:500,y:500})
-    put 'flight/1',
+    put 'flight/2',
     {
       flight:{
         route_id:1,

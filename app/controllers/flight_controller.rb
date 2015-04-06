@@ -37,7 +37,6 @@ class FlightController < ApplicationController
     if validate == true
       flight = Flight.find(params[:id])
       old_aircraft = flight.user_aircraft_id
-      p flight
       if flight.update(flight_params)
         UserAircraft.find(old_aircraft).update(inuse:false)
         UserAircraft.find(params[:flight][:user_aircraft_id]).update(inuse:true)
