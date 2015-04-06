@@ -39,4 +39,9 @@ class UserAircraft < ActiveRecord::Base
     config
   end
 
+  def flight
+    this_flight = Flight.find_by(user_aircraft_id:id)
+    this_flight
+  end
+
 end

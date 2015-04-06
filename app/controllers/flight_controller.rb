@@ -33,16 +33,17 @@ class FlightController < ApplicationController
 
   def update
     params[:flight][:airline_id] = airline.id
-    validate = validate_flight(flight_params,"update")
+    validate = validate_flight(flight_params,"update", params[:id])
     if validate == true
       flight = Flight.find(params[:id])
       old_aircraft = flight.user_aircraft_id
+      p flight
       if flight.update(flight_params)
         UserAircraft.find(old_aircraft).update(inuse:false)
         UserAircraft.find(params[:flight][:user_aircraft_id]).update(inuse:true)
-        flight = flight.serialize
+        flight = flight.full_data
       else
-        flight = ['error updating flight']
+        flight = flight.errors.messages
       end
     else
       flight = validate
@@ -57,9 +58,9 @@ class FlightController < ApplicationController
       flight = Flight.new(flight_params)
       if flight.save
         UserAircraft.find(params[:flight][:user_aircraft_id]).update(inuse:true)
-        flight = flight.serialize
+        flight = flight.full_data
       else
-        flight = ['error saving flight']
+        flight = flight.errors.message
       end
     else
       flight = validate
@@ -106,7 +107,8 @@ class FlightController < ApplicationController
     params.require(:flight).permit(:airline_id, :route_id, :user_aircraft_id, :duration, :frequencies, :fare => [:f, :j, :p, :y])
   end
 
-  def validate_flight(flight,status)
+  def validate_flight(flight, status, *id)
+    flight[:id] = id[0].to_i if id
     route = Route.find_by(id:flight[:route_id])
     if route
       aircraft_valid = validate_aircraft(flight, route)
@@ -136,12 +138,12 @@ class FlightController < ApplicationController
       if user_aircraft.airline != airline
         errors.push('aircraft does not belong to airline')
       end
-      if flight[:id]
-        if user_aircraft.inuse && user_aircraft.flight_id != flight[:id]
+      if user_aircraft.flight
+        if user_aircraft.inuse && user_aircraft.flight.id != flight[:id]
           errors.push('aircraft is already in use')
         end
       else
-        if user_aircraft.inuse
+        if user_aircraft.flight
           errors.push('aircraft is already in use')
         end
       end
