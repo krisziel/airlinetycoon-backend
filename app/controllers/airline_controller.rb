@@ -37,7 +37,9 @@ class AirlineController < ApplicationController
         name: airline.name,
         icao: airline.icao,
         id: airline.id,
-        cookie: cookie
+        cookie: cookie,
+        money:airline.money,
+        gameId:airline.game_id
       }
     else
       response = airline.errors.messages
