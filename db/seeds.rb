@@ -156,12 +156,12 @@ User.create(name:'United Airlines',username:'ual',password:'ual',email:'krisziel
 User.create(name:'American Airlines',username:'aal',password:'aal',email:'kz@kziel.com')
 User.create(name:'Delta Air Lines',username:'dal',password:'dal',email:'kris@kziel.com')
 User.create(name:'JetBlue Airways',username:'jbu',password:'jbu',email:'me@kziel.com')
-User.create(name:'Virgin America',username:'vaa',password:'vaa',email:'k.ziel@icloud.com')
+User.create(name:'Virgin America',username:'vrd',password:'vaa',email:'k.ziel@icloud.com')
 Airline.create(name:'United Airlines',icao:'UAL',money:5000000000,game_id:1,user_id:1)
 Airline.create(name:'American Airlines',icao:'AAL',money:5000000000,game_id:1,user_id:2)
 Airline.create(name:'Delta Air Lines',icao:'DAL',money:5000000000,game_id:1,user_id:3)
 Airline.create(name:'JetBlue Airways',icao:'JBU',money:5000000000,game_id:1,user_id:4)
-Airline.create(name:'Virgin America',icao:'VAA',money:5000000000,game_id:1,user_id:5)
+Airline.create(name:'Virgin America',icao:'VRD',money:5000000000,game_id:1,user_id:5)
 
 ########### UAL
 AircraftConfiguration.create(name:"International",aircraft_id:2,airline_id:1,f_count:10,j_count:58,p_count:63,y_count:232,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 77W
