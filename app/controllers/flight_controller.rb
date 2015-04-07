@@ -1,5 +1,4 @@
 class FlightController < ApplicationController
-
   before_action :game, :airline
 
   def all
@@ -9,6 +8,8 @@ class FlightController < ApplicationController
         flights.push flight.full_data
       end
       render json: flights
+    else
+      render json: {error:'no airline'}
     end
   end
 

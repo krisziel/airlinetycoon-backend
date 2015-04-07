@@ -37,12 +37,14 @@ class GameController < ApplicationController
       }
       game_list.push(game)
     end
+    game_list.push({game:"autojoin",gameid:cookies.signed[:airtycoon_game]}) if airline
     render json: game_list
   end
 
   def show
     if cookies.signed[:airtycoon_user]
       game = Game.find(params[:id])
+      airline = game.airlines.find_by(user_id:cookies.signed[:airtycoon_user])
       airlines = []
       game.airlines.each do |airline|
         airline = {
