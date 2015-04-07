@@ -235,23 +235,63 @@ class RouteController < ApplicationController
     aircrafts = []
     flights = []
     CSV.foreach("public/seedflights.csv") do |row|
-      new_aircraft = UserAircraft.new(airline_id:row[4],aircraft_id:row[2],age:0,aircraft_configuration_id:row[3],inuse:false)
+      new_aircraft = UserAircraft.new(airline_id:row[4],aircraft_id:row[2],age:0,aircraft_configuration_id:row[3],inuse:true)
       if new_aircraft.save
         route = Route.find_by('(origin_id=? AND destination_id=?) OR (origin_id=? AND destination_id=?)',row[0],row[1],row[1],row[0])
         aircraft = new_aircraft.aircraft
+        config = new_aircraft.aircraft_configuration
         duration = time(route.distance,aircraft.speed)
-        flight = Flight.new(route_id:route.id,user_aircraft_id:new_aircraft.id,duration:duration,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:max_freq(duration,aircraft.turn_time),fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:row[4])
+        freq = max_freq(duration,aircraft.turn_time)
+        cap = {
+          y:config[:y_count]*freq,
+          p:config[:p_count]*freq,
+          j:config[:j_count]*freq,
+          f:config[:f_count]*freq
+        }
+        load = {
+          y:65+rand(35),
+          p:65+rand(35),
+          j:65+rand(35),
+          f:65+rand(35)
+        }
+        pax = {
+          y:(cap[:y].to_f*(load[:y].to_f/100)).round,
+          p:(cap[:p].to_f*(load[:p].to_f/100)).round,
+          j:(cap[:j].to_f*(load[:j].to_f/100)).round,
+          f:(cap[:f].to_f*(load[:f].to_f/100)).round
+        }
+        fare = {
+          y:(route.distance*0.20).round,
+          p:(route.distance*0.18).round,
+          j:(route.distance*0.58).round,
+          f:(route.distance*1.35).round
+        }
+        revenue = {
+          y:(pax[:y]*fare[:y]),
+          p:(pax[:p]*fare[:p]),
+          j:(pax[:j]*fare[:j]),
+          f:(pax[:f]*fare[:f])
+        }
+        total_revenue = revenue[:y]+revenue[:p]+revenue[:j]+revenue[:f]
+        gpm = (aircraft.fuel_capacity.to_f/aircraft.range.to_f)
+        fuel_cost = (gpm*route.distance*2*2.55*freq)
+        fa_cost = (((config[:y_count]/50).ceil+(config[:p_count]/24).ceil+(config[:j_count]/8).ceil+(config[:f_count]/4).ceil)*(1+((duration-240).abs/240).ceil))*freq*duration*2
+        service_cost = ((config[:y_count]*3)+(config[:p_count]*5)+(config[:j_count]*15)+(config[:f_count]*30))
+        pilot_cost = (duration*freq*(1+((duration-240).abs/240).ceil)*2.5)
+        total_cost = (fuel_cost+(fa_cost*2)+(pilot_cost)+(fuel_cost/3))
+        flight = Flight.new(route_id:route.id,user_aircraft_id:new_aircraft.id,duration:duration,passengers:pax,load:load,profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:freq,fare:fare,revenue:revenue,cost:total_cost,profit:(total_revenue-total_cost),airline_id:row[4])
         flight.save
       end
     end
+    render json: Flight.all
   end
 
   def time(distance,speed)
-    (distance/speed)*60
+    ((distance*1.0)/(speed*1.0))*60
   end
 
   def max_freq(duration,turn)
-    (10080/(duration+turn)).floor
+    (5040/(duration+turn)).floor
   end
 
 end
