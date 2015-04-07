@@ -1,5 +1,6 @@
 class RouteController < ApplicationController
   before_action :airline
+  require 'csv'
 
   def show
     if airline
@@ -228,5 +229,29 @@ class RouteController < ApplicationController
     c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     d = 6371 * c;
   end
-  
+
+  def construct
+    json = []
+    aircrafts = []
+    flights = []
+    CSV.foreach("public/seedflights.csv") do |row|
+      new_aircraft = UserAircraft.new(airline_id:row[4],aircraft_id:row[2],age:0,aircraft_configuration_id:row[3],inuse:false)
+      if new_aircraft.save
+        route = Route.find_by('(origin_id=? AND destination_id=?) OR (origin_id=? AND destination_id=?)',row[0],row[1],row[1],row[0])
+        aircraft = new_aircraft.aircraft
+        duration = time(route.distance,aircraft.speed)
+        flight = Flight.new(route_id:route.id,user_aircraft_id:new_aircraft.id,duration:duration,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:max_freq(duration,aircraft.turn_time),fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:row[4])
+        flight.save
+      end
+    end
+  end
+
+  def time(distance,speed)
+    (distance/speed)*60
+  end
+
+  def max_freq(duration,turn)
+    (10080/(duration+turn)).floor
+  end
+
 end

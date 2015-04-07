@@ -164,21 +164,21 @@ Airline.create(name:'JetBlue Airways',icao:'JBU',money:5000000000,game_id:1,user
 Airline.create(name:'Virgin America',icao:'VRD',money:5000000000,game_id:1,user_id:5)
 
 ########### UAL
-AircraftConfiguration.create(name:"International",aircraft_id:2,airline_id:1,f_count:10,j_count:58,p_count:63,y_count:232,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 77W
-AircraftConfiguration.create(name:"International",aircraft_id:6,airline_id:1,f_count:10,j_count:54,p_count:90,y_count:230,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 744
-AircraftConfiguration.create(name:"International",aircraft_id:8,airline_id:1,f_count:0,j_count:16,p_count:48,y_count:116,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 752 intl
-AircraftConfiguration.create(name:"Domestic",aircraft_id:8,airline_id:1,f_count:0,j_count:16,p_count:60,y_count:96,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 752 dom
-AircraftConfiguration.create(name:"p.s.",aircraft_id:8,airline_id:1,f_count:8,j_count:24,p_count:55,y_count:30,f_seat:9,j_seat:6,p_seat:2,y_seat:1)
-AircraftConfiguration.create(name:"International",aircraft_id:11,airline_id:1,f_count:6,j_count:36,p_count:62,y_count:129,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 763
+AircraftConfiguration.create(name:"International",aircraft_id:13,airline_id:1,f_count:10,j_count:58,p_count:63,y_count:232,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 77W
+AircraftConfiguration.create(name:"International",aircraft_id:4,airline_id:1,f_count:10,j_count:54,p_count:90,y_count:230,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 744
+AircraftConfiguration.create(name:"International",aircraft_id:6,airline_id:1,f_count:0,j_count:16,p_count:48,y_count:116,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 752 intl
+AircraftConfiguration.create(name:"Domestic",aircraft_id:6,airline_id:1,f_count:0,j_count:16,p_count:60,y_count:96,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 752 dom
+AircraftConfiguration.create(name:"p.s.",aircraft_id:6,airline_id:1,f_count:8,j_count:24,p_count:55,y_count:30,f_seat:9,j_seat:6,p_seat:2,y_seat:1)
+AircraftConfiguration.create(name:"International",aircraft_id:9,airline_id:1,f_count:6,j_count:36,p_count:62,y_count:129,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 763
 AircraftConfiguration.create(name:"International",aircraft_id:15,airline_id:1,f_count:6,j_count:40,p_count:60,y_count:188,f_seat:0,j_seat:0,p_seat:2,y_seat:1) # 789
 
 ######### AAL
-AircraftConfiguration.create(name:"International",aircraft_id:2,airline_id:2,f_count:10,j_count:58,p_count:63,y_count:232,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 77W
+AircraftConfiguration.create(name:"International",aircraft_id:13,airline_id:2,f_count:10,j_count:58,p_count:63,y_count:232,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 77W
 AircraftConfiguration.create(name:"Transcon",aircraft_id:20,airline_id:2,f_count:8,j_count:26,p_count:24,y_count:57,f_seat:9,j_seat:6,p_seat:2,y_seat:1) # 321T
 
 ######### DAL
-AircraftConfiguration.create(name:"International",aircraft_id:11,airline_id:3,f_count:6,j_count:36,p_count:62,y_count:129,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 763
-AircraftConfiguration.create(name:"International",aircraft_id:8,airline_id:3,f_count:0,j_count:16,p_count:60,y_count:96,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 752 dom
+AircraftConfiguration.create(name:"International",aircraft_id:9,airline_id:3,f_count:6,j_count:36,p_count:62,y_count:129,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 763
+AircraftConfiguration.create(name:"International",aircraft_id:6,airline_id:3,f_count:0,j_count:16,p_count:60,y_count:96,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 752 dom
 
 ######### JBU
 AircraftConfiguration.create(name:"Mint",aircraft_id:20,airline_id:4,f_count:0,j_count:24,p_count:24,y_count:116,f_seat:9,j_seat:6,p_seat:2,y_seat:1) # 321T
