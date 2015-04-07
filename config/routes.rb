@@ -49,7 +49,9 @@ Rails.application.routes.draw do
   get 'airport/city/:city' => 'airport#all' # rspec passing
   get 'airport/:icao' => 'airport#show' # rspec passing
 
-  get 'route/:o/:d' => 'route#show'
+  get 'route/parse_demand' => 'route#parse_demand'
+  get 'route/generate_routes' => 'route#generate_routes'
+  get 'route/:o/:d' => 'route#show' # rspec passing
   get 'route/:id' => 'route#show' # rspec passing
 
   get 'flight' => 'flight#all' # rspec passing
