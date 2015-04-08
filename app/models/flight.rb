@@ -88,13 +88,17 @@ class Flight < ActiveRecord::Base
       seats += user_aircraft.aircraft_configuration.j_count
       seats += user_aircraft.aircraft_configuration.p_count
       seats += user_aircraft.aircraft_configuration.y_count
+      seats = seats*frequencies
+      p seats
       pax = 0
+      p passengers
       if passengers
         pax += passengers['f']
         pax += passengers['j']
         pax += passengers['p']
         pax += passengers['y']
       end
+      p pax
       load['average'] = (((pax*1.0)/(seats*1.0))*100).round
       load
     else
