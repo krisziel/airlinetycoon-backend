@@ -300,7 +300,6 @@ class RouteController < ApplicationController
       j:config[:j_count]*freq,
       f:config[:f_count]*freq
     }
-    p cap
     load = {
       y:65+rand(35),
       p:65+rand(35),

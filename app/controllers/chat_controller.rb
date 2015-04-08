@@ -87,7 +87,6 @@ class ChatController < ApplicationController
       if airline.alliance.id == message_data["type_id"]
         true
       else
-        p "alliance chat, permission denied"
         false
       end
     else
