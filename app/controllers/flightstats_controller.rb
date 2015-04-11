@@ -1,0 +1,2 @@
+class FlightstatsController < ApplicationController
+end
