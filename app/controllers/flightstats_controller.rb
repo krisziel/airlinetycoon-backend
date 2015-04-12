@@ -76,5 +76,19 @@ class FlightstatsController < ApplicationController
     end
 	end
 
+	def update_flights
+		i = 0
+		ActualFlight.all.each do |flight|
+			p i
+			i += 1
+			if flight.equipment
+				ac = ActualAircraft.find_by("fs_iata=? OR iata=?",flight.equipment,flight.equipment)
+				if ac && ac.capacity
+					flight.update(capacity:ac.capacity)
+				end
+			end
+		end
+	end
+
 end
 
