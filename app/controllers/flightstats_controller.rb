@@ -57,16 +57,23 @@ class FlightstatsController < ApplicationController
 
 	def get_aircraft
 		doc = Nokogiri::HTML(RestClient.get("http://www.flugzeuginfo.net/table_accodes_iata_en.php"))
-		doc.css('.codes tr').each do |row|
+		doc.css('.codes tr')[1..-1].each do |row|
 			ac = row.css('td')
 			code = ac[0].text
 			manufacturer = ac[1].text
 			name = ac[2].text
-			p code
 			if @clean.index(code)
 				ActualAircraft.create(iata:code,fs_iata:@aircraft[@clean.index(code)],name:name,manufacturer:manufacturer)
 			end
 		end
+	end
+
+	def add_capacity
+    CSV.foreach("public/ac.csv") do |row|
+    	p row[5]
+    	row[5] ? capacity = row[5] : capacity = 0
+    	ActualAircraft.find(row[0]).update(capacity:capacity)
+    end
 	end
 
 end
