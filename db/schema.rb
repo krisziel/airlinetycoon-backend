@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150412080059) do
+ActiveRecord::Schema.define(version: 20150412080532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "actual_aircrafts", force: true do |t|
+    t.string  "iata"
+    t.string  "fs_iata"
+    t.string  "name"
+    t.string  "manufacturer"
+    t.integer "capacity"
+  end
 
   create_table "actual_flights", force: true do |t|
     t.integer  "origin_id"
