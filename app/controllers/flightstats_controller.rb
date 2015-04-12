@@ -62,17 +62,20 @@ class FlightstatsController < ApplicationController
 			code = ac[0].text
 			manufacturer = ac[1].text
 			name = ac[2].text
-			if @clean.index(code)
-				ActualAircraft.create(iata:code,fs_iata:@aircraft[@clean.index(code)],name:name,manufacturer:manufacturer)
+			codes = @clean.each_index.select{|i| @clean[i] == code}
+			if codes.length > 0
+				p @aircraft[@clean.index(code)]
+				codes.each do |fs_code|
+					ActualAircraft.create(iata:code,fs_iata:@aircraft[fs_code],name:name,manufacturer:manufacturer)
+				end
 			end
 		end
 	end
 
 	def add_capacity
     CSV.foreach("public/ac.csv") do |row|
-    	p row[5]
     	row[5] ? capacity = row[5] : capacity = 0
-    	ActualAircraft.find(row[0]).update(capacity:capacity)
+    	ActualAircraft.where(iata:row[1]).update_all(capacity:capacity)
     end
 	end
 
@@ -88,6 +91,22 @@ class FlightstatsController < ApplicationController
 				end
 			end
 		end
+	end
+
+	def clean_flights
+		routes = {}
+		ActualFlight.uniq.pluck(:carrier, :flight).each do |flight|
+			flt = ActualFlight.find_by("carrier=? AND flight=?",flight[0],flight[1])
+			origin = flt.origin_id
+			destination = flt.destination_id
+			route = routes[[origin,destination]]
+			if route
+				route.push(flt)
+			else
+				routes[[origin,destination]] = [flt]
+			end
+		end
+		routes
 	end
 
 end
