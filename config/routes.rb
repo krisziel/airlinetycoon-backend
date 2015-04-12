@@ -64,4 +64,7 @@ Rails.application.routes.draw do
 
   get 'chat' => 'chat#join'
 
+  get 'fs' => 'flightstats#airport_loop'
+  get 'fs/:iata' => 'flightstats#get_flights'
+
 end
