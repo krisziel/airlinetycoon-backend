@@ -1,4 +1,4 @@
-class FlightstatsController < ApplicationController
+class RealData
 	
 	def initialize
 		@airports = {"DAN"=>1, "AIS"=>2, "BEA"=>3, "UTI"=>4, "FUL"=>5, "SIN"=>6, "HKG"=>7, "LAX"=>8, "JFK"=>9, "EWR"=>10, "SFO"=>11, "IAD"=>12, "IAH"=>13, "ORD"=>14, "DEN"=>15, "TPE"=>16, "PER"=>17, "SYD"=>18, "MEL"=>19, "LHR"=>20, "EDI"=>21, "GLA"=>22, "MAN"=>23, "CDG"=>24, "TBS"=>25, "DME"=>26, "FCO"=>27, "MXP"=>28, "TLV"=>29, "ROR"=>30, "YCG"=>31, "RAN"=>32, "TIS"=>33, "STU"=>34, "NNI"=>35, "NGO"=>36, "GRU"=>37, "GIG"=>38, "AKL"=>39, "EZE"=>40, "VIE"=>41, "BAH"=>42, "BRU"=>43, "YOW"=>44, "YYT"=>45, "YYC"=>46, "YVR"=>47, "SCL"=>48, "PEK"=>49, "PVG"=>50, "CAI"=>51, "KIX"=>52, "NRT"=>53, "FUK"=>54, "TXL"=>55, "FRA"=>56, "MUC"=>57, "GUM"=>58, "DEL"=>59, "SNN"=>60, "MFM"=>61, "KUL"=>62, "PVR"=>63, "CUN"=>64, "MEX"=>65, "TIJ"=>66, "AMS"=>67, "PTY"=>68, "DOH"=>69, "ICN"=>70, "BCN"=>71, "ZRH"=>72, "GVA"=>73, "IST"=>74, "MSP"=>75, "LAS"=>76, "MEM"=>77, "LIH"=>78, "ABQ"=>79, "FLL"=>80, "MIA"=>81, "MSY"=>82, "PHX"=>83, "SAN"=>84, "HNL"=>85, "OGG"=>86, "KOA"=>87, "OMA"=>88, "OKC"=>89, "DTW"=>90, "DFW"=>91, "CLE"=>92, "CLT"=>93, "FAR"=>94, "ANC"=>95, "RNO"=>96, "BOI"=>97, "BOS"=>98, "COS"=>99, "BZN"=>100, "MCO"=>101, "SJC"=>102, "SMF"=>103, "SEA"=>104, "PDX"=>105, "RDU"=>106, "YUL"=>107, "SJD"=>108, "TPA"=>109, "PIT"=>110, "TUS"=>111, "PHL"=>112, "CMH"=>113, "AUS"=>114, "AMA"=>115, "ATL"=>116, "SAT"=>117, "DWC"=>118, "DXB"=>119, "MLE"=>120, "AUH"=>121, "KWI"=>122, "JAX"=>123}
@@ -110,8 +110,8 @@ class FlightstatsController < ApplicationController
 	end
 
 	def get_configuration
-		doc = Nokogiri::HTML(RestClient.get('http://www.seatguru.com/charts/longhaul_economy.php'))
-		doc.css('#comparison tr')[176..-1].each do |aircraft|
+		doc = Nokogiri::HTML(RestClient.get('http://www.seatguru.com/charts/shorthaul_economy.php'))
+		doc.css('#chart tr')[9..-1].each do |aircraft|
 			url = aircraft.css('td a')[1].attr('href')
 			parse_configuration url
 		end
@@ -122,40 +122,69 @@ class FlightstatsController < ApplicationController
 		doc = Nokogiri::HTML(RestClient.get(url))
 		config_name = doc.css('.h2-fix').text
 		carrier = doc.css('.h1-fix').text.match(/([a-z ]+) Seat/i)[1]
-		iata = config_name.match(/\(([a-z0-9]{3})\)|\//i)[1]
-		seats = doc.css('.seat-list tbody tr')
-		seat_arr = {
-			f:0,
-			j:0,
-			p:0,
-			y:0,
-			total:0
-		}
-		seats.each_with_index do |seat,i|
-			seat = seat.css('td')
-			name = seat[1].text
-			count = seat[4].css('.value').text
-			count = count.match(/([0-9]+)\ /)[1].to_i
-			seat_arr[:total] += count
-			if seats.length == 4
-				seat_arr[:f] = count if i == 0
-				seat_arr[:j] = count if i == 1
-				seat_arr[:p] = count if i == 2
-				seat_arr[:y] = count if i == 3
+		if config_name.match(/\(([a-z0-9]{3})\)|\//i)
+			iata = config_name.match(/\(([a-z0-9]{3})\)|\//i)[1]
+			seats = doc.css('.seat-list tbody tr')
+			seat_arr = {
+				f:0,
+				j:0,
+				p:0,
+				y:0,
+				total:0
+			}
+			seats.each_with_index do |seat,i|
+				seat = seat.css('td')
+				name = seat[1].text
+				count = seat[4].css('.value').text
+				count = count.match(/([0-9]+)\ /)[1].to_i
+				seat_arr[:total] += count
+				if seats.length == 4
+					seat_arr[:f] = count if i == 0
+					seat_arr[:j] = count if i == 1
+					seat_arr[:p] = count if i == 2
+					seat_arr[:y] = count if i == 3
+				else
+					seat_arr[:f] = count if name.match(/First|Suite/i)
+					seat_arr[:j] = count if name.match(/Business/i)
+					seat_arr[:p] = count if name.match(/Plus|Comfort|Premium/i)
+					seat_arr[:y] = count if name.match(/Economy/i)
+				end
+			end
+			config = {
+				name:config_name,
+				carrier:carrier,
+				iata:iata,
+				config:seat_arr
+			}
+			ActualConfiguration.new(config).save
+		end
+	end
+
+	def correct_equip
+		ActualFlight.all.each do |flight|
+			iata = flight.equipment
+			if flight.equipment && flight.equipment.length > 3
+				aircraft = ActualAircraft.find_by(fs_iata:flight.equipment)
+				if aircraft
+					iata = aircraft.iata
+				end
+			end
+			flight.update(iata:iata)
+		end
+	end
+
+	def merge_config flights
+		flights.each do |flight|
+			config = ActualConfiguration.select(:config).find_by(carrier:flight.carrier,iata:flight.iata)
+			if config
+				flight.update(capacity:config.config["total"])
 			else
-				seat_arr[:f] = count if name.match(/First|Suite/i)
-				seat_arr[:j] = count if name.match(/Business/i)
-				seat_arr[:p] = count if name.match(/Plus|Comfort|Premium/i)
-				seat_arr[:y] = count if name.match(/Economy/i)
+				capacity = ActualAircraft.find_by(iata:flight.iata)
+				if capacity
+					flight.update(capacity:capacity.capacity)
+				end
 			end
 		end
-		config = {
-			name:config_name,
-			carrier:carrier,
-			iata:iata,
-			config:seat_arr
-		}
-		ActualConfiguration.new(config).save
 	end
 
 end
