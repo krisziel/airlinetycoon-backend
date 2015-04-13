@@ -177,14 +177,88 @@ class RealData
 		flights.each do |flight|
 			config = ActualConfiguration.select(:config).find_by(carrier:flight.carrier,iata:flight.iata)
 			if config
-				flight.update(capacity:config.config["total"])
+				cabins = config.config["f"].to_i + config.config["j"].to_i + config.config["p"].to_i + config.config["y"].to_i
+				total = config.config["total"]
+				if cabins == total
+					cap = {
+						:f => config.config["f"],
+						:j => config.config["j"],
+						:p => config.config["p"],
+						:y => config.config["y"],
+						:total => config.config["total"]
+					}
+				elsif cabins == 0
+					cap = config_distro total
+				else
+					config.config["y"] = total - cabins
+					cap = config.config
+				end
+				flight.update(capacity:cap.to_s)
 			else
 				capacity = ActualAircraft.find_by(iata:flight.iata)
 				if capacity
-					flight.update(capacity:capacity.capacity)
+					if capacity.capacity
+						capacity = config_distro capacity.capacity
+						flight.update(capacity:capacity.to_s)
+					end
 				end
 			end
 		end
+	end
+
+	def import_csv file
+		require 'csv'
+		csv_text = File.read(file)
+		csv = CSV.parse(csv_text, :headers => true)
+		csv.each do |row|
+			row.each do |value|
+				if value[1] && value[1].match(/\(\w+:\w+\)/i)
+					value[1] = csv_to_json value[1]
+				end
+			end
+		  ActualAircraft.create!(row.to_hash)
+		end
+	end
+
+	def config_distro total_capacity
+		capacity = {
+			f:0.0,
+			j:0.0,
+			p:0.0,
+			y:0.0
+		}
+		if total_capacity > 250
+			capacity[:f] = 0.03
+			capacity[:j] = 0.15
+			capacity[:p] = 0.17
+			capacity[:y] = 0.65
+		elsif total_capacity > 50
+			capacity[:f] = 0.0
+			capacity[:j] = 0.12
+			capacity[:p] = 0.17
+			capacity[:y] = 0.65
+		end
+		capacity = {
+			:f => (total_capacity*capacity[:f]).round,
+			:j => (total_capacity*capacity[:j]).round,
+			:p => (total_capacity*capacity[:p]).round,
+			:y => (total_capacity*capacity[:y]).round,
+			:total => total_capacity
+		}
+		capacity
+	end
+
+	def csv_to_json string
+		string.gsub!(/^\(/,'')
+		string.gsub!(/\)$/,'')
+		parts = string.split(")(")
+		json = {}
+		parts.each do |part|
+			key = part.split(':')[0]
+			val = part.split(':')[1]
+			json[key.to_sym] = val.to_i
+		end
+		json
 	end
 
 end
