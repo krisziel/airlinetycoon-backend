@@ -109,5 +109,54 @@ class FlightstatsController < ApplicationController
 		routes
 	end
 
+	def get_configuration
+		doc = Nokogiri::HTML(RestClient.get('http://www.seatguru.com/charts/longhaul_economy.php'))
+		doc.css('#comparison tr')[176..-1].each do |aircraft|
+			url = aircraft.css('td a')[1].attr('href')
+			parse_configuration url
+		end
+	end
+
+	def parse_configuration url
+		url = "http://www.seatguru.com/#{url}"
+		doc = Nokogiri::HTML(RestClient.get(url))
+		config_name = doc.css('.h2-fix').text
+		carrier = doc.css('.h1-fix').text.match(/([a-z ]+) Seat/i)[1]
+		iata = config_name.match(/\(([a-z0-9]{3})\)|\//i)[1]
+		seats = doc.css('.seat-list tbody tr')
+		seat_arr = {
+			f:0,
+			j:0,
+			p:0,
+			y:0,
+			total:0
+		}
+		seats.each_with_index do |seat,i|
+			seat = seat.css('td')
+			name = seat[1].text
+			count = seat[4].css('.value').text
+			count = count.match(/([0-9]+)\ /)[1].to_i
+			seat_arr[:total] += count
+			if seats.length == 4
+				seat_arr[:f] = count if i == 0
+				seat_arr[:j] = count if i == 1
+				seat_arr[:p] = count if i == 2
+				seat_arr[:y] = count if i == 3
+			else
+				seat_arr[:f] = count if name.match(/First|Suite/i)
+				seat_arr[:j] = count if name.match(/Business/i)
+				seat_arr[:p] = count if name.match(/Plus|Comfort|Premium/i)
+				seat_arr[:y] = count if name.match(/Economy/i)
+			end
+		end
+		config = {
+			name:config_name,
+			carrier:carrier,
+			iata:iata,
+			config:seat_arr
+		}
+		ActualConfiguration.new(config).save
+	end
+
 end
 
