@@ -214,9 +214,10 @@ class RealData
 			row.each do |value|
 				if value[1] && value[1].match(/\(\w+:\w+\)/i)
 					value[1] = csv_to_json value[1]
+					value[1] = value[1].to_s
 				end
 			end
-		  ActualAircraft.create!(row.to_hash)
+		  ActualFlight.create!(row.to_hash)
 		end
 	end
 
@@ -260,6 +261,33 @@ class RealData
 		end
 		json
 	end
+
+  def create_actual_routes flights
+    flights.each do |flight|
+      flight = ActualFlight.find_by(origin_id:flight[0],destination_id:flight[1],carrier:flight[2],flight:flight[3])
+      capacity = 0
+      capacity = eval flight.capacity if flight.capacity # yea, never, ever, ever, ever do this for sure
+      existing_route = ActualRoute.find_by(origin_id:flight.origin_id,destination_id:flight.destination_id)
+      if existing_route && capacity == Hash
+        new_capacity = {
+          f:existing_route.capacity["f"]+capacity[:f],
+          j:existing_route.capacity["j"]+capacity[:j],
+          p:existing_route.capacity["p"]+capacity[:p],
+          y:existing_route.capacity["y"]+capacity[:y],
+          total:existing_route.capacity["total"]+capacity[:total]
+        }
+        new_flights = existing_route.flights + 1
+        carriers = existing_route.carriers.dup
+        carriers.push(flight.carrier)
+        existing_route.update(capacity:new_capacity,flights:new_flights,carriers:carriers.uniq)
+      else
+        route = Route.find_by(origin_id:flight.origin_id,destination_id:flight.destination_id)
+        if route
+          ActualRoute.new(route_id:route.id,origin_id:flight.origin_id,destination_id:flight.destination_id,carriers:[flight.carrier],flights:1,capacity:capacity).save
+        end
+      end
+    end
+  end
 
 end
 
