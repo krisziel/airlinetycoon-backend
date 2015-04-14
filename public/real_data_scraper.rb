@@ -289,5 +289,14 @@ class RealData
     end
   end
 
+  def import_db1b_fares file
+    require 'csv'
+    csv_text = File.read(file)
+    csv = CSV.parse(csv_text, :headers => true)
+    csv.each do |row|
+      ActualFare.create!(origin:row[0],destination:row[1],fare:row[3])
+    end
+  end
+
 end
 
