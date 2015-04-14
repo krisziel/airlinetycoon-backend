@@ -268,7 +268,7 @@ class RealData
       capacity = 0
       capacity = eval flight.capacity if flight.capacity # yea, never, ever, ever, ever do this for sure
       existing_route = ActualRoute.find_by(origin_id:flight.origin_id,destination_id:flight.destination_id)
-      if existing_route && capacity == Hash
+      if existing_route && capacity.class == Hash
         new_capacity = {
           f:existing_route.capacity["f"]+capacity[:f],
           j:existing_route.capacity["j"]+capacity[:j],
@@ -280,7 +280,7 @@ class RealData
         carriers = existing_route.carriers.dup
         carriers.push(flight.carrier)
         existing_route.update(capacity:new_capacity,flights:new_flights,carriers:carriers.uniq)
-      else
+      elsif capacity.class == Hash
         route = Route.find_by(origin_id:flight.origin_id,destination_id:flight.destination_id)
         if route
           ActualRoute.new(route_id:route.id,origin_id:flight.origin_id,destination_id:flight.destination_id,carriers:[flight.carrier],flights:1,capacity:capacity).save
