@@ -2,7 +2,8 @@ class RealData
 	
 	def initialize
 		@airports = {"DAN"=>1, "AIS"=>2, "BEA"=>3, "UTI"=>4, "FUL"=>5, "SIN"=>6, "HKG"=>7, "LAX"=>8, "JFK"=>9, "EWR"=>10, "SFO"=>11, "IAD"=>12, "IAH"=>13, "ORD"=>14, "DEN"=>15, "TPE"=>16, "PER"=>17, "SYD"=>18, "MEL"=>19, "LHR"=>20, "EDI"=>21, "GLA"=>22, "MAN"=>23, "CDG"=>24, "TBS"=>25, "DME"=>26, "FCO"=>27, "MXP"=>28, "TLV"=>29, "ROR"=>30, "YCG"=>31, "RAN"=>32, "TIS"=>33, "STU"=>34, "NNI"=>35, "NGO"=>36, "GRU"=>37, "GIG"=>38, "AKL"=>39, "EZE"=>40, "VIE"=>41, "BAH"=>42, "BRU"=>43, "YOW"=>44, "YYT"=>45, "YYC"=>46, "YVR"=>47, "SCL"=>48, "PEK"=>49, "PVG"=>50, "CAI"=>51, "KIX"=>52, "NRT"=>53, "FUK"=>54, "TXL"=>55, "FRA"=>56, "MUC"=>57, "GUM"=>58, "DEL"=>59, "SNN"=>60, "MFM"=>61, "KUL"=>62, "PVR"=>63, "CUN"=>64, "MEX"=>65, "TIJ"=>66, "AMS"=>67, "PTY"=>68, "DOH"=>69, "ICN"=>70, "BCN"=>71, "ZRH"=>72, "GVA"=>73, "IST"=>74, "MSP"=>75, "LAS"=>76, "MEM"=>77, "LIH"=>78, "ABQ"=>79, "FLL"=>80, "MIA"=>81, "MSY"=>82, "PHX"=>83, "SAN"=>84, "HNL"=>85, "OGG"=>86, "KOA"=>87, "OMA"=>88, "OKC"=>89, "DTW"=>90, "DFW"=>91, "CLE"=>92, "CLT"=>93, "FAR"=>94, "ANC"=>95, "RNO"=>96, "BOI"=>97, "BOS"=>98, "COS"=>99, "BZN"=>100, "MCO"=>101, "SJC"=>102, "SMF"=>103, "SEA"=>104, "PDX"=>105, "RDU"=>106, "YUL"=>107, "SJD"=>108, "TPA"=>109, "PIT"=>110, "TUS"=>111, "PHL"=>112, "CMH"=>113, "AUS"=>114, "AMA"=>115, "ATL"=>116, "SAT"=>117, "DWC"=>118, "DXB"=>119, "MLE"=>120, "AUH"=>121, "KWI"=>122, "JAX"=>123}
-		@base = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json'
+		@airports = {1=>"DAN", 2=>"AIS", 3=>"BEA", 4=>"UTI", 5=>"FUL", 6=>"SIN", 7=>"HKG", 8=>"LAX", 9=>"JFK", 10=>"EWR", 11=>"SFO", 12=>"IAD", 13=>"IAH", 14=>"ORD", 15=>"DEN", 16=>"TPE", 17=>"PER", 18=>"SYD", 19=>"MEL", 20=>"LHR", 21=>"EDI", 22=>"GLA", 23=>"MAN", 24=>"CDG", 25=>"TBS", 26=>"DME", 27=>"FCO", 28=>"MXP", 29=>"TLV", 30=>"ROR", 31=>"YCG", 32=>"RAN", 33=>"TIS", 34=>"STU", 35=>"NNI", 36=>"NGO", 37=>"GRU", 38=>"GIG", 39=>"AKL", 40=>"EZE", 41=>"VIE", 42=>"BAH", 43=>"BRU", 44=>"YOW", 45=>"YYT", 46=>"YYC", 47=>"YVR", 48=>"SCL", 49=>"PEK", 50=>"PVG", 51=>"CAI", 52=>"KIX", 53=>"NRT", 54=>"FUK", 55=>"TXL", 56=>"FRA", 57=>"MUC", 58=>"GUM", 59=>"DEL", 60=>"SNN", 61=>"MFM", 62=>"KUL", 63=>"PVR", 64=>"CUN", 65=>"MEX", 66=>"TIJ", 67=>"AMS", 68=>"PTY", 69=>"DOH", 70=>"ICN", 71=>"BCN", 72=>"ZRH", 73=>"GVA", 74=>"IST", 75=>"MSP", 76=>"LAS", 77=>"MEM", 78=>"LIH", 79=>"ABQ", 80=>"FLL", 81=>"MIA", 82=>"MSY", 83=>"PHX", 84=>"SAN", 85=>"HNL", 86=>"OGG", 87=>"KOA", 88=>"OMA", 89=>"OKC", 90=>"DTW", 91=>"DFW", 92=>"CLE", 93=>"CLT", 94=>"FAR", 95=>"ANC", 96=>"RNO", 97=>"BOI", 98=>"BOS", 99=>"COS", 100=>"BZN", 101=>"MCO", 102=>"SJC", 103=>"SMF", 104=>"SEA", 105=>"PDX", 106=>"RDU", 107=>"YUL", 108=>"SJD", 109=>"TPA", 110=>"PIT", 111=>"TUS", 112=>"PHL", 113=>"CMH", 114=>"AUS", 115=>"AMA", 116=>"ATL", 117=>"SAT", 118=>"DWC", 119=>"DXB", 120=>"MLE", 121=>"AUH", 122=>"KWI", 123=>"JAX"}
+    @base = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json'
 		@auth = "?appId=8e45847d&appKey=#{ENV['FS_KEY']}&utc=false&numHours=6"
 		@aircraft = ["76Y", "33F", "32B", "A343", "AT7", "CL60", "SF34", "77F", "DH8A", "SH6", "75W", "B733", "B712", "767", "310", "787", "737", "B762", "CR9", "747", "B763", "EMJ", "M88", "B773", "744", "345", "738", "DH8C", "773", "A346", "772", "M80", "33X", "318", "CRJ", "B753", "757", "A332", "B732", "E55P", "E135", "CNA", "73G", "789", "A310", "B77L", "E145", "ERJ", "E70", "E90", "B738", "74H", "73J", "CRJ9", "DC10", "B190", "330", "H25B", "74Y", "A321", "346", "32A", "72F", "ABY", "E120", "B77W", "A306", "76W", "753", "DH8", "AT72", "AB6", "F70", "76F", "752", "A333", "340", "717", "733", "AR1", "74N", "736", "C560", "DH8D", "FA20", "73W", "DH8B", "73Y", "AT5", "73C", "BE40", "763", "SW4", "DH4", "E170", "ABF", "B748", "CR7", "E95", "JS32", "CL30", "M88", "BE99", "A320", "F2TH", "CRJ7", "C680", "788", "DH1", "B744", "B788", "ABX", "B737", "GLF5", "M1F", "M83", "M11", "B739", "734", "S20", "735", "M90", "380", "M90", "CRJ2", "E190", "332", "333", "DH2", "74E", "762", "GLEX", "CRA", "GALX", "388", "343", "SF3", "320", "B734", "14X", "74F", "AT45", "B742", "E45X", "B772", "319", "C750", "B764", "73H", "DH3", "777", "B752", "32S", "77L", "739", "77W", "PA31", "31F", "ERD", "ER4", "321", "A388", "73F", "74M", "A319", "764", "C56X", "E75", "C208", "100", "SU9", "77X", "75F"]
 		@clean = ["76Y","33F","32B","343","AT7","XXX","SF3","77F","DH1","SH6","75W","733","712","767","310","787","737","762","CR9","747","763","EMJ","M88","773","744","345","738","DH3","773","346","772","M80","33X","318","CRJ","753","757","332","732","XXX","ER3","CNA","73G","789","310","77L","ER4","ERJ","E70","E90","738","74H","73J","CR9","D1F","BES","330","XXX","74Y","321","346","32A","72F","ABY","ER2","77W","306","76W","753","DH8","AT7","AB6","F70","76F","752","333","340","717","733","AR1","74N","736","XXX","DH4","XXX","73W","DH2","73Y","AT5","73C","XXX","763","SW4","DH4","E70","ABF","748","CR7","E95","XXX","XXX","M88","XXX","320","XXX","CR7","XXX","788","DH1","744","788","ABX","737","XXX","M1F","M83","M11","739","734","S20","735","M90","380","M90","CR2","E90","332","333","DH2","74E","762","XXX","CRA","XXX","388","343","SF3","320","734","14X","74F","AT4","742","ER4","772","319","XXX","764","73H","DH3","777","752","32S","77L","739","77W","XXX","31F","ERD","ER4","321","388","73F","74M","319","764","XXX","E75","XXX","100","SU9","77X","75F"]
@@ -295,6 +296,27 @@ class RealData
     csv = CSV.parse(csv_text, :headers => true)
     csv.each do |row|
       ActualFare.create!(origin:row[0],destination:row[1],fare:row[3])
+    end
+  end
+
+  def average_db1b_fares routes
+    routes.each do |route|
+      fares = ActualFare.select(:fare).where('(origin=? AND destination=?) OR (origin=? AND destination=?)',@airports[route.origin_id],@airports[route.destination_id],@airports[route.destination_id],@airports[route.origin_id])
+      if fares.length > 0
+        sum = 0
+        fares.each do |fare|
+          sum += fare.fare
+        end
+        average = (sum/fares.length)*2
+        fares = {
+          f:average*2.5,
+          j:average*1.9,
+          p:average*1.3,
+          y:average*0.9,
+          total:average
+        }
+        route.update(price:fare)
+      end
     end
   end
 
