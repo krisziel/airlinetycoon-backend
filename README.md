@@ -1,9 +1,7 @@
 [![Build Status](https://travis-ci.org/krisziel/airlinetycoon.svg?branch=master)](https://travis-ci.org/krisziel/airlinetycoon)
 
-The pre-alpha version of this is available on Heroku at https://salty-falls-9631.herokuapp.com or on github at https://github.com/krisziel/airsim
+#### Live at http://kziel.com/airlinetycoon
 
-This project will serve as the API for the eventual Backbone-based front end.
+Airline Tycoon is a multi-player competitve game where users create airline and compete against each other to create the biggest and best airline.  Airlines start with $1,000,000,000 and can purchase any currently available Boeing and Airbus aircraft, along with several Embraer and Bombardier aircraft and can configure them with a custom layout.  Airlines create flights between any two of the 123 currently available airports, choosing the aircraft, frequency, and fares.  Using data from the US Department of Transportation, Airline Tycoon predicts demand on over 1,700 domestic US routes based on data from over 200,000 actual ticket purchases made in Q3 of 2014.
 
-This part of the project serves as the API for the app, which will have a Backbone-based front end
-
-The pre-alpha version, built on jQuery on Heroku at https://salty-falls-9631.herokuapp.com, the repo is available on github at https://github.com/krisziel/airsim
+This part of the app serves only as the API for the Backbone.js and jQuery based front end, which can be found at https://github.com/krisziel/airtycoon-frontend.
