@@ -1,4 +1,5 @@
-class TurnController < ApplicationController
+# class TurnController < ApplicationController
+class Turn
 
   def initialize
     @elasticity = {
@@ -34,6 +35,7 @@ class TurnController < ApplicationController
       }
     }
   end
+  @routes = {}
 
   def game_flights game_id
     airlines = []
@@ -42,6 +44,7 @@ class TurnController < ApplicationController
     end
     flights = Flight.where('airline_id IN (?)',airlines).order('route_id DESC')
     organize_flights flights
+    ''
   end
 
   def organize_flights flights
@@ -56,16 +59,81 @@ class TurnController < ApplicationController
         flight_routes[flight.route_id] = [flight]
       end
     end
+    @routes = flight_routes
+    reformatted_routes = []
     routes.each do |id,route|
-      process_route flight_routes[id]
+      flights = process_route flight_routes[id]
+      route = {
+        :flights => flights,
+        :route => reformat_route(route)
+      }
+      reformatted_routes.push(route)
     end
+    reformatted_routes
   end
 
   def process_route route
+    flights = []
     route.each do |flight|
-      configuration = flight.user_aircraft.aircraft_configuration
-      seats = configuration.config_details[:config]
+      flight = reformat_flight flight
+      flights.push(flight)
     end
+    flights
+  end
+
+  def reformat_route route
+    price = route.price
+    demand = route.demand
+    route = {
+      :id => route.id,
+      :cabins => {
+        :f => {
+          :fare => price["f"],
+          :demand => demand["f"]
+        },
+        :j => {
+          :fare => price["j"],
+          :demand => demand["j"]
+        },
+        :p => {
+          :fare => price["p"],
+          :demand => demand["p"]
+        },
+        :y => {
+          :fare => price["y"],
+          :demand => demand["y"]
+        }
+      }
+    }
+    route
+  end
+
+  def reformat_flight flight
+    configuration = flight.user_aircraft.aircraft_configuration
+    layout = configuration.config_details[:config]
+    fares = flight.fare
+    flight = {
+      :id => flight.id,
+      :cabins => {
+        :f => {
+          :fare => fares["f"],
+          :count => layout[:f][:count]
+        },
+        :j => {
+          :fare => fares["j"],
+          :count => layout[:j][:count]
+        },
+        :p => {
+          :fare => fares["p"],
+          :count => layout[:p][:count]
+        },
+        :y => {
+          :fare => fares["y"],
+          :count => layout[:y][:count]
+        }
+      }
+    }
+    flight
   end
 
   def price_spread market, fare
@@ -106,9 +174,6 @@ class TurnController < ApplicationController
       :y => {},
       :total => {}
     }
-    flights.each do |flight|
-
-    end
   end
 
 end
