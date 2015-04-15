@@ -7,6 +7,7 @@ class RealData
     @auth = "?appId=8e45847d&appKey=#{ENV['FS_KEY']}&utc=false&numHours=6"
     @aircraft = ["76Y", "33F", "32B", "A343", "AT7", "CL60", "SF34", "77F", "DH8A", "SH6", "75W", "B733", "B712", "767", "310", "787", "737", "B762", "CR9", "747", "B763", "EMJ", "M88", "B773", "744", "345", "738", "DH8C", "773", "A346", "772", "M80", "33X", "318", "CRJ", "B753", "757", "A332", "B732", "E55P", "E135", "CNA", "73G", "789", "A310", "B77L", "E145", "ERJ", "E70", "E90", "B738", "74H", "73J", "CRJ9", "DC10", "B190", "330", "H25B", "74Y", "A321", "346", "32A", "72F", "ABY", "E120", "B77W", "A306", "76W", "753", "DH8", "AT72", "AB6", "F70", "76F", "752", "A333", "340", "717", "733", "AR1", "74N", "736", "C560", "DH8D", "FA20", "73W", "DH8B", "73Y", "AT5", "73C", "BE40", "763", "SW4", "DH4", "E170", "ABF", "B748", "CR7", "E95", "JS32", "CL30", "M88", "BE99", "A320", "F2TH", "CRJ7", "C680", "788", "DH1", "B744", "B788", "ABX", "B737", "GLF5", "M1F", "M83", "M11", "B739", "734", "S20", "735", "M90", "380", "M90", "CRJ2", "E190", "332", "333", "DH2", "74E", "762", "GLEX", "CRA", "GALX", "388", "343", "SF3", "320", "B734", "14X", "74F", "AT45", "B742", "E45X", "B772", "319", "C750", "B764", "73H", "DH3", "777", "B752", "32S", "77L", "739", "77W", "PA31", "31F", "ERD", "ER4", "321", "A388", "73F", "74M", "A319", "764", "C56X", "E75", "C208", "100", "SU9", "77X", "75F"]
     @clean = ["76Y","33F","32B","343","AT7","XXX","SF3","77F","DH1","SH6","75W","733","712","767","310","787","737","762","CR9","747","763","EMJ","M88","773","744","345","738","DH3","773","346","772","M80","33X","318","CRJ","753","757","332","732","XXX","ER3","CNA","73G","789","310","77L","ER4","ERJ","E70","E90","738","74H","73J","CR9","D1F","BES","330","XXX","74Y","321","346","32A","72F","ABY","ER2","77W","306","76W","753","DH8","AT7","AB6","F70","76F","752","333","340","717","733","AR1","74N","736","XXX","DH4","XXX","73W","DH2","73Y","AT5","73C","XXX","763","SW4","DH4","E70","ABF","748","CR7","E95","XXX","XXX","M88","XXX","320","XXX","CR7","XXX","788","DH1","744","788","ABX","737","XXX","M1F","M83","M11","739","734","S20","735","M90","380","M90","CR2","E90","332","333","DH2","74E","762","XXX","CRA","XXX","388","343","SF3","320","734","14X","74F","AT4","742","ER4","772","319","XXX","764","73H","DH3","777","752","32S","77L","739","77W","XXX","31F","ERD","ER4","321","388","73F","74M","319","764","XXX","E75","XXX","100","SU9","77X","75F"]
+    @us = ["DAN", "FUL", "LAX", "JFK", "EWR", "SFO", "IAD", "IAH", "ORD", "DEN", "MSP", "LAS", "MEM", "LIH", "ABQ", "FLL", "MIA", "MSY", "PHX", "SAN", "HNL", "OGG", "KOA", "OMA", "OKC", "DTW", "DFW", "CLE", "CLT", "FAR", "ANC", "RNO", "BOI", "BOS", "COS", "BZN", "MCO", "SJC", "SMF", "SEA", "PDX", "RDU", "TPA", "PIT", "TUS", "PHL", "CMH", "AUS", "AMA", "ATL", "SAT", "JAX"]
   end
   
   def airport_loop
@@ -208,16 +209,17 @@ class RealData
   end
 
   def import_csv file
+    require 'csv'
     csv_text = File.read(file)
     csv = CSV.parse(csv_text, :headers => true)
     csv.each do |row|
       row.each do |value|
         if value[1] && value[1].match(/\(\w+:\w+\)/i)
           value[1] = csv_to_json value[1]
+          value[1] = value[1].to_s
         end
       end
-      p row.to_hash
-      Route.create!(row.to_hash)
+      ActualFlight.create!(row.to_hash)
     end
   end
 
@@ -308,16 +310,16 @@ class RealData
         end
         average = (sum/fares.length)*2
         fares = {
-          f:average*2.5,
-          j:average*1.9,
-          p:average*1.3,
-          y:average*0.9,
-          total:average
+          f:(average*2.5).round,
+          j:(average*1.9).round,
+          p:(average*1.3).round,
+          y:(average*0.9).round,
+          total:average.round
         }
-        route.update(price:fare)
+        route.update(price:fares)
       end
     end
+    File.open("/Users/Kris/Desktop/Dropbox/route.csv", 'w') {|f| f.write(Route.all.as_csv) }
   end
 
 end
-
