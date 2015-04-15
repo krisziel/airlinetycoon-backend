@@ -3,32 +3,32 @@ class Turn
 
   def initialize
     @elasticity = {
-      [1.25,10] => {
+      [1.25,100.0] => {
         base:0.4509,
         margin:1.009,
         anchor:1.25
       },
-      [1.01,1.24] => {
+      [1.0,1.25] => {
         base:0.0,
         margin:1.015,
         anchor:1.0
       },
-      [1,1] => {
+      [1.0,1.0] => {
         base:0.0,
         margin:1,
         anchor:1.0
       },
-      [0.9,1] => {
+      [0.9,1.0] => {
         base:0.0,
         margin:0.994,
         anchor:1.0
       },
-      [0.7,0.89] => {
+      [0.7,0.9] => {
         base:-0.0584,
         margin:0.975,
         anchor:0.9
       },
-      [0,0.69] => {
+      [-100.0,0.7] => {
         base:-0.4325,
         margin:0.95,
         anchor:0.7
@@ -62,20 +62,24 @@ class Turn
     @routes = flight_routes
     reformatted_routes = []
     routes.each do |id,route|
-      flights = process_route flight_routes[id]
       route = {
-        :flights => flights,
         :route => reformat_route(route)
       }
+      flights = process_route({
+        :flights => flight_routes[id],
+        :market => route[:route][:cabins]
+      })
+      route[:flights] = flights
       reformatted_routes.push(route)
     end
+    p reformatted_routes
     reformatted_routes
   end
 
   def process_route route
     flights = []
-    route.each do |flight|
-      flight = reformat_flight flight
+    route[:flights].each do |flight|
+      flight = reformat_flight(flight,route[:market])
       flights.push(flight)
     end
     flights
@@ -108,7 +112,7 @@ class Turn
     route
   end
 
-  def reformat_flight flight
+  def reformat_flight flight, market
     configuration = flight.user_aircraft.aircraft_configuration
     layout = configuration.config_details[:config]
     fares = flight.fare
@@ -117,19 +121,23 @@ class Turn
       :cabins => {
         :f => {
           :fare => fares["f"],
-          :count => layout[:f][:count]
+          :count => layout[:f][:count],
+          :pricing => price_spread(market[:f][:fare],fares["f"])
         },
         :j => {
           :fare => fares["j"],
-          :count => layout[:j][:count]
+          :count => layout[:j][:count],
+          :pricing => price_spread(market[:j][:fare],fares["j"])
         },
         :p => {
           :fare => fares["p"],
-          :count => layout[:p][:count]
+          :count => layout[:p][:count],
+          :pricing => price_spread(market[:p][:fare],fares["p"])
         },
         :y => {
           :fare => fares["y"],
-          :count => layout[:y][:count]
+          :count => layout[:y][:count],
+          :pricing => price_spread(market[:y][:fare],fares["y"])
         }
       }
     }
@@ -143,17 +151,19 @@ class Turn
       :percent => 0,
       :multiplier => 1
     }
-    market = market.to_f
-    fare = fare.to_f
-    spread = (market-fare)/market
-    demand[:spread] = spread.round(4)
-    demand[:percent] = (demand[:spread].abs*100).round
-    @elasticity.each do |key,value|
-      if (1.0+demand[:spread]).between?(key[0],key[1])
-        demand[:elasticity] = value
+    if market && fare
+      market = market.to_f
+      fare = fare.to_f
+      spread = (market-fare)/market
+      demand[:spread] = spread.round(4)
+      demand[:percent] = (demand[:spread].abs*100).round
+      @elasticity.each do |key,value|
+        if (1.0+demand[:spread]).between?(key[0],key[1])
+          demand[:elasticity] = value
+        end
       end
+      demand[:multiplier] = compute_multiplier(demand)
     end
-    demand[:multiplier] = compute_multiplier demand
     demand
   end
 
@@ -162,18 +172,10 @@ class Turn
     exponent = (exponent*100).abs.floor.to_i
     multiplier = (demand[:elasticity][:margin]**exponent)+demand[:elasticity][:base]
     multiplier = multiplier.round(4)
-    multiplier
   end
 
   def compare_demand route
-    flights = route
-    total_capacity = {
-      :f => {},
-      :j => {},
-      :p => {},
-      :y => {},
-      :total => {}
-    }
+
   end
 
 end
