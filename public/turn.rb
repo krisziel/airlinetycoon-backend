@@ -36,6 +36,7 @@ class Turn
     }
   end
   @routes = {}
+  @flights = {}
 
   def game_flights game_id
     airlines = []
@@ -43,7 +44,10 @@ class Turn
      airlines.push(airline.id) 
     end
     flights = Flight.where('airline_id IN (?)',airlines).order('route_id DESC')
-    organize_flights flights
+    organized_routes = organize_flights flights
+    @flights = organized_routes
+    organized_routes.each do |key,route|
+    end
     ''
   end
 
@@ -70,10 +74,12 @@ class Turn
         :market => route[:route][:cabins]
       })
       route[:flights] = flights
+      if route[:flights][0][:route_id] == 1186
+        @flights2 = route
+      end
       reformatted_routes.push(route)
     end
     reformatted_routes
-    @compare = reformatted_routes[3]
   end
 
   def process_route route
@@ -120,22 +126,22 @@ class Turn
       :id => flight.id,
       :cabins => {
         :f => {
-          :fare => fares["f"],
+          :fare => fares["f"].to_i,
           :count => layout[:f][:count],
           :pricing => price_spread(market[:f][:fare],fares["f"])
         },
         :j => {
-          :fare => fares["j"],
+          :fare => fares["j"].to_i,
           :count => layout[:j][:count],
           :pricing => price_spread(market[:j][:fare],fares["j"])
         },
         :p => {
-          :fare => fares["p"],
+          :fare => fares["p"].to_i,
           :count => layout[:p][:count],
           :pricing => price_spread(market[:p][:fare],fares["p"])
         },
         :y => {
-          :fare => fares["y"],
+          :fare => fares["y"].to_i,
           :count => layout[:y][:count],
           :pricing => price_spread(market[:y][:fare],fares["y"])
         }
@@ -173,6 +179,8 @@ class Turn
     multiplier = (demand[:elasticity][:margin]**exponent)+demand[:elasticity][:base]
     multiplier = multiplier.round(4)
   end
+  # {:fare=>7228, :count=>10, :pricing=>{:spread=>0.3874, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>39, :multiplier=>1.5744}}, :j=>{:fare=>3105, :count=>58, :pricing=>{:spread=>0.6492, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>65, :multiplier=>1.8692}}, :p=>{:fare=>964, :count=>63, :pricing=>{:spread=>0.7246, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>72, :multiplier=>1.9745}}, :y=>{:fare=>1071, :count=>232, :pricing=>{:spread=>0.1959, :elasticity=>{:base=>0.0, :margin=>1.015, :anchor=>1.0}, :percent=>20, :multiplier=>1.327}}}}, {:id=>1, :cabins=>{:f=>{:fare=>7228, :count=>10, :pricing=>{:spread=>0.3874, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>39, :multiplier=>1.5744}}, :j=>{:fare=>3105, :count=>54, :pricing=>{:spread=>0.6492, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>65, :multiplier=>1.8692}}, :p=>{:fare=>964, :count=>90, :pricing=>{:spread=>0.7246, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>72, :multiplier=>1.9745}}, :y=>{:fare=>1071, :count=>230, :pricing=>{:spread=>0.1959, :elasticity=>{:base=>0.0, :margin=>1.015, :anchor=>1.0}, :percent=>20, :multiplier=>1.327}}}}, {:id=>83, :cabins=>{:f=>{:fare=>"6120", :count=>7, :pricing=>{:spread=>0.4813, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>48, :multiplier=>1.6797}}, :j=>{:fare=>"3037", :count=>42, :pricing=>{:spread=>0.6568, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>66, :multiplier=>1.8819}}, :p=>{:fare=>"1851", :count=>55, :pricing=>{:spread=>0.4711, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>47, :multiplier=>1.6688}}, :y=>{:fare=>"750", :count=>201, :pricing=>{:spread=>0.4369, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>44, :multiplier=>1.6259}}}}]}
+  # [{:id=>1, :cabins=>{:f=>{:fare=>7228, :count=>10, :pricing=>{:spread=>0.3874, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>39, :multiplier=>1.5744}}, :j=>{:fare=>3105, :count=>54, :pricing=>{:spread=>0.6492, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>65, :multiplier=>1.8692}}, :p=>{:fare=>964, :count=>90, :pricing=>{:spread=>0.7246, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>72, :multiplier=>1.9745}}, :y=>{:fare=>1071, :count=>230, :pricing=>{:spread=>0.1959, :elasticity=>{:base=>0.0, :margin=>1.015, :anchor=>1.0}, :percent=>20, :multiplier=>1.327}}}}, {:id=>76, :cabins=>{:f=>{:fare=>7228, :count=>10, :pricing=>{:spread=>0.3874, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>39, :multiplier=>1.5744}}, :j=>{:fare=>3105, :count=>58, :pricing=>{:spread=>0.6492, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>65, :multiplier=>1.8692}}, :p=>{:fare=>964, :count=>63, :pricing=>{:spread=>0.7246, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>72, :multiplier=>1.9745}}, :y=>{:fare=>1071, :count=>232, :pricing=>{:spread=>0.1959, :elasticity=>{:base=>0.0, :margin=>1.015, :anchor=>1.0}, :percent=>20, :multiplier=>1.327}}}}] 
 
   def sort_fares route
     sorted_fares = {
@@ -188,10 +196,10 @@ class Turn
       sorted_fares[:p].push(reformat[:p])
       sorted_fares[:y].push(reformat[:y])
     end
-    sorted_fares[:f].sort_by {|_key, value| value[:fare]}
-    sorted_fares[:j].sort_by {|_key, value| value[:fare]}
-    sorted_fares[:p].sort_by {|_key, value| value[:fare]}
-    sorted_fares[:y].sort_by {|_key, value| value[:fare]}
+    sorted_fares[:f].sort_by!{|value| value[:fare] }
+    sorted_fares[:j].sort_by!{|value| value[:fare] }
+    sorted_fares[:p].sort_by!{|value| value[:fare] }
+    sorted_fares[:y].sort_by!{|value| value[:fare] }
     sorted_fares
   end
 
