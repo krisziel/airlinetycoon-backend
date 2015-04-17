@@ -127,22 +127,22 @@ class Turn
       :cabins => {
         :f => {
           :fare => fares["f"].to_i,
-          :count => layout[:f][:count],
+          :count => (layout[:f][:count]*flight.frequencies)/7).round,
           :pricing => price_spread(market[:f][:fare],fares["f"])
         },
         :j => {
           :fare => fares["j"].to_i,
-          :count => layout[:j][:count],
+          :count => (layout[:j][:count]*flight.frequencies)/7).round,
           :pricing => price_spread(market[:j][:fare],fares["j"])
         },
         :p => {
           :fare => fares["p"].to_i,
-          :count => layout[:p][:count],
+          :count => (layout[:p][:count]*flight.frequencies)/7).round,
           :pricing => price_spread(market[:p][:fare],fares["p"])
         },
         :y => {
           :fare => fares["y"].to_i,
-          :count => layout[:y][:count],
+          :count => (layout[:y][:count]*flight.frequencies)/7).round,
           :pricing => price_spread(market[:y][:fare],fares["y"])
         }
       }
@@ -196,11 +196,11 @@ class Turn
       sorted_fares[:p].push(reformat[:p])
       sorted_fares[:y].push(reformat[:y])
     end
-    sorted_fares[:f].sort_by!{|value| value[:fare] }
-    sorted_fares[:j].sort_by!{|value| value[:fare] }
-    sorted_fares[:p].sort_by!{|value| value[:fare] }
-    sorted_fares[:y].sort_by!{|value| value[:fare] }
-    sorted_fares
+    sorted_fares[:f].sort_by!{|value| value[:fare] }.reverse!
+    sorted_fares[:j].sort_by!{|value| value[:fare] }.reverse!
+    sorted_fares[:p].sort_by!{|value| value[:fare] }.reverse!
+    sorted_fares[:y].sort_by!{|value| value[:fare] }.reverse!
+    { :market => route[:route], :fares => sorted_fares }
   end
 
   def reform_sort_flight flight
@@ -214,19 +214,48 @@ class Turn
       reformat[key] = {
         :id => flight[:id],
         :fare => cabin[:fare],
-        :pricing => cabin[:pricing],
-        :count => cabin[:count]
+        :multiplier => cabin[:pricing][:multiplier],
+        :count => cabin[:count],
+        :occupied => 0
       }
     end
     reformat
   end
-  # {:id=>48, :cabins=>{:f=>{:fare=>4535, :count=>10, :pricing=>{:spread=>0.2709, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25},
-  # :percent=>27, :multiplier=>1.469}}, :j=>{:fare=>1948, :count=>58, :pricing=>{:spread=>0.5824, :elasticity=>{:base=>0.4509, :margin=>1.009,
-  #   :anchor=>1.25}, :percent=>58, :multiplier=>1.7949}}, :p=>{:fare=>605, :count=>63, :pricing=>{:spread=>0.7359, :elasticity=>{:base=>0.4509,
-  #     :margin=>1.009, :anchor=>1.25}, :percent=>74, :multiplier=>1.9883}}, :y=>{:fare=>672, :count=>232, :pricing=>{:spread=>0.3984,
-  #       :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>40, :multiplier=>1.5845}}}}
-  def compare_demand route
 
+  def compare_demand route
+    route[:fares].each do |key, cabin|
+      total_pax = route[:market][:cabins][key.to_sym][:demand]
+      airlines = airlines_with_cabin(cabin)
+      airlines.each_with_index do |fare, index|
+        pax_at_fare = fare[:multiplier]*total_pax.round
+        airlines.each_with_index do |airline, i|
+          pax_per_airline = pax_at_fare/(airlines.length-i).round
+          open_seats = (airline[:count] - airline[:occupied])
+          if pax_per_airline > open_seats
+            pax_at_fare = pax_at_fare - open_seats
+            pax_on_airline = open_seats
+          else
+            pax_on_airline = pax_per_airline
+            pax_at_fare = (pax_at_fare - pax_on_airline)
+          end
+          airline[:occupied] = pax_on_airline
+        end
+      end
+    end
+    route
+  end
+
+  def airlines_with_cabin airlines
+    airline_list = []
+    airlines.each do |cabin|
+      if cabin[:count] > 0
+        airline_list.push(cabin)
+      end
+    end
+    airline_list
+  end
+
+  def distribute_passengers
   end
 
 end
