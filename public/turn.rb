@@ -39,16 +39,20 @@ class Turn
   @flights = {}
 
   def game_flights game_id
+    start = Time.now.to_f
     airlines = []
     Airline.where(game_id:game_id).each do |airline|
      airlines.push(airline.id) 
     end
     flights = Flight.where('airline_id IN (?)',airlines).order('route_id DESC')
+    total_flights = flights.length
     organized_routes = organize_flights flights
     @flights = organized_routes
-    organized_routes.each do |key,route|
+    organized_routes.each do |route|
+      flights = compare_demand(sort_fares(route))
+      prep_for_update(flights)
     end
-    ''
+    "Determining passengers for #{total_flights} flight on #{organized_routes.length} routes took #{Time.now.to_f - start} seconds"
   end
 
   def organize_flights flights
@@ -74,7 +78,7 @@ class Turn
         :market => route[:route][:cabins]
       })
       route[:flights] = flights
-      if route[:flights][0][:route_id] == 1186
+      if route[:flights][0][:id] == 24
         @flights2 = route
       end
       reformatted_routes.push(route)
@@ -150,8 +154,6 @@ class Turn
     flight
   end
 
-
-
   def price_spread market, fare
     demand = {
       :spread => 1.0,
@@ -186,10 +188,10 @@ class Turn
 
   def sort_fares route
     sorted_fares = {
-      f:[],
-      j:[],
-      p:[],
-      y:[]
+      :f => [],
+      :j => [],
+      :p => [],
+      :y => []
     }
     route[:flights].each do |flight|
       reformat = reform_sort_flight flight
@@ -225,8 +227,6 @@ class Turn
   end
 
   def compare_demand route
-    reset_route #work
-    route = @route # around
     route[:fares].each do |key, cabin|
       total_pax = route[:market][:cabins][key.to_sym][:demand]
       remaining_pax = total_pax
@@ -235,14 +235,9 @@ class Turn
       airlines.each_with_index do |fare, index|
         pax_at_fare = fare[:multiplier]*total_pax.round
         pax_at_fare = (pax_at_fare - placed_pax)
-        p "remaining_pax #{remaining_pax}"
-        p "pax_at_fare #{pax_at_fare}"
-        p "total_pax ---- #{total_pax}"
         airlines[index..-1].each_with_index do |airline, i|
           pax_per_airline = pax_at_fare/(airlines.length-index-i)
-          p "#{(airlines.length-index)} ---///--- #{pax_per_airline}"
           open_seats = (airline[:count] - airline[:occupied])
-          p "open_seats = #{open_seats}"
           if pax_per_airline > open_seats
             pax_at_fare = pax_at_fare - open_seats
             pax_on_airline = open_seats
@@ -250,11 +245,12 @@ class Turn
             pax_on_airline = pax_per_airline
             pax_at_fare = (pax_at_fare - pax_on_airline)
           end
-          p "pax_on_airline #{pax_on_airline}"
+          pax_on_airline = 0 if pax_on_airline < 0
           placed_pax += pax_on_airline
           remaining_pax -= pax_on_airline
           airline[:occupied] += pax_on_airline
         end
+        airlines[index][:occupied] = airlines[index][:occupied].round
       end
     end
     route
@@ -270,11 +266,64 @@ class Turn
     airline_list
   end
 
-  def distribute_passengers
+  def update_flight id, flight_data
+    flight = Flight.find(id)
+    cost = compute_cost flight.user_aircraft.aircraft, flight.route, flight.duration, flight.frequencies, flight.user_aircraft.aircraft_configuration
+    flight_data[:profit] = (flight_data[:total_revenue] - cost)
+    flight_data.delete(:total_revenue)
+    flight.update(flight_data)
+  end
+
+  def prep_for_update route
+    flights = {}
+    route[:fares].each do |cabin,flight_list|
+      flight_list.each do |flight|
+        id = flight[:id]
+        if !flights[id]
+          flights[id] = {}
+        end
+        flights[id][cabin.to_sym] = flight
+      end
+    end
+    flights.each do |id,flight|
+      format_for_update(id,flight)
+    end
+  end
+
+  def format_for_update id, flight
+    flight_data = {
+      :passengers => {},
+      :load => {},
+      :revenue => {},
+      :total_revenue => 0
+    }
+    flight.each do |cabin, data|
+      if data[:count] > 0
+        load = ((data[:occupied].to_f/data[:count].to_f)*100).round
+      else
+        load = 0
+      end
+      revenue = (data[:occupied]*7*data[:fare])
+      flight_data[:passengers][cabin.to_sym] = data[:occupied]*7
+      flight_data[:load][cabin.to_sym] = load
+      flight_data[:revenue][cabin.to_sym] = revenue
+      flight_data[:total_revenue] += revenue
+    end
+    update_flight id, flight_data
+  end
+
+  def compute_cost aircraft, route, duration, freq, config
+    gpm = (aircraft.fuel_capacity.to_f/aircraft.range.to_f)
+    fuel_cost = (gpm*route.distance*2*2.55*freq)
+    fa_cost = (((config[:y_count]/50).ceil+(config[:p_count]/24).ceil+(config[:j_count]/8).ceil+(config[:f_count]/4).ceil)*(1+((duration-240).abs/240).ceil))*freq*duration*2
+    service_cost = ((config[:y_count]*3)+(config[:p_count]*5)+(config[:j_count]*15)+(config[:f_count]*30))
+    pilot_cost = (duration*freq*(1+((duration-240).abs/240).ceil)*2.5)
+    total_cost = (fuel_cost+(fa_cost*2)+(pilot_cost)+(fuel_cost/3))
+    total_cost
   end
 
   def reset_route
-    @route = @route = {:market=>{:id=>1186, :cabins=>{:f=>{:fare=>6200, :demand=>18}, :j=>{:fare=>8850, :demand=>80}, :p=>{:fare=>3500, :demand=>150}, :y=>{:fare=>1332, :demand=>300}}}, :fares=>{:f=>[{:id=>76, :fare=>7228, :multiplier=>0.898, :count=>10, :occupied=>0}, {:id=>1, :fare=>7228, :multiplier=>0.923, :count=>10, :occupied=>0}, {:id=>83, :fare=>6120, :multiplier=>1.6797, :count=>7, :occupied=>0}], :j=>[{:id=>76, :fare=>3105, :multiplier=>1.8692, :count=>58, :occupied=>0}, {:id=>1, :fare=>3105, :multiplier=>1.8692, :count=>54, :occupied=>0}, {:id=>83, :fare=>3037, :multiplier=>1.8819, :count=>42, :occupied=>0}], :p=>[{:id=>83, :fare=>1851, :multiplier=>1.6688, :count=>55, :occupied=>0}, {:id=>1, :fare=>964, :multiplier=>1.9745, :count=>90, :occupied=>0}, {:id=>76, :fare=>964, :multiplier=>1.9745, :count=>63, :occupied=>0}], :y=>[{:id=>76, :fare=>1071, :multiplier=>1.327, :count=>232, :occupied=>0}, {:id=>1, :fare=>1071, :multiplier=>1.327, :count=>230, :occupied=>0}, {:id=>83, :fare=>750, :multiplier=>1.6259, :count=>201, :occupied=>0}]}}
+    @route = {:market=>{:id=>1186, :cabins=>{:f=>{:fare=>6200, :demand=>18}, :j=>{:fare=>8850, :demand=>80}, :p=>{:fare=>3500, :demand=>150}, :y=>{:fare=>1332, :demand=>300}}}, :fares=>{:f=>[{:id=>76, :fare=>7228, :multiplier=>0.898, :count=>10, :occupied=>0}, {:id=>1, :fare=>7228, :multiplier=>0.923, :count=>10, :occupied=>0}, {:id=>83, :fare=>6120, :multiplier=>1.6797, :count=>7, :occupied=>0}], :j=>[{:id=>76, :fare=>3105, :multiplier=>1.8692, :count=>58, :occupied=>0}, {:id=>1, :fare=>3105, :multiplier=>1.8692, :count=>54, :occupied=>0}, {:id=>83, :fare=>3037, :multiplier=>1.8819, :count=>42, :occupied=>0}], :p=>[{:id=>83, :fare=>1851, :multiplier=>1.6688, :count=>55, :occupied=>0}, {:id=>1, :fare=>964, :multiplier=>1.9745, :count=>90, :occupied=>0}, {:id=>76, :fare=>964, :multiplier=>1.9745, :count=>63, :occupied=>0}], :y=>[{:id=>76, :fare=>1071, :multiplier=>1.327, :count=>232, :occupied=>0}, {:id=>1, :fare=>1071, :multiplier=>1.327, :count=>230, :occupied=>0}, {:id=>83, :fare=>750, :multiplier=>1.6259, :count=>201, :occupied=>0}]}}
   end
 
 end

@@ -273,17 +273,22 @@ class RouteController < ApplicationController
           f:(pax[:f]*fare[:f])
         }
         total_revenue = revenue[:y]+revenue[:p]+revenue[:j]+revenue[:f]
-        gpm = (aircraft.fuel_capacity.to_f/aircraft.range.to_f)
-        fuel_cost = (gpm*route.distance*2*2.55*freq)
-        fa_cost = (((config[:y_count]/50).ceil+(config[:p_count]/24).ceil+(config[:j_count]/8).ceil+(config[:f_count]/4).ceil)*(1+((duration-240).abs/240).ceil))*freq*duration*2
-        service_cost = ((config[:y_count]*3)+(config[:p_count]*5)+(config[:j_count]*15)+(config[:f_count]*30))
-        pilot_cost = (duration*freq*(1+((duration-240).abs/240).ceil)*2.5)
-        total_cost = (fuel_cost+(fa_cost*2)+(pilot_cost)+(fuel_cost/3))
+        total_cost = compute_cost aircraft, route, duration, freq, config
         flight = Flight.new(route_id:route.id,user_aircraft_id:new_aircraft.id,duration:duration,passengers:pax,load:load,profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:freq,fare:fare,revenue:revenue,cost:total_cost,profit:(total_revenue-total_cost),airline_id:row[4])
         flight.save
       end
     end
     render json: Flight.all
+  end
+
+  def compute_cost aircraft, route, duration, freq, config
+    gpm = (aircraft.fuel_capacity.to_f/aircraft.range.to_f)
+    fuel_cost = (gpm*route.distance*2*2.55*freq)
+    fa_cost = (((config[:y_count]/50).ceil+(config[:p_count]/24).ceil+(config[:j_count]/8).ceil+(config[:f_count]/4).ceil)*(1+((duration-240).abs/240).ceil))*freq*duration*2
+    service_cost = ((config[:y_count]*3)+(config[:p_count]*5)+(config[:j_count]*15)+(config[:f_count]*30))
+    pilot_cost = (duration*freq*(1+((duration-240).abs/240).ceil)*2.5)
+    total_cost = (fuel_cost+(fa_cost*2)+(pilot_cost)+(fuel_cost/3))
+    total_cost
   end
 
   def single_flight_demand id
