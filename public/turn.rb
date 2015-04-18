@@ -127,28 +127,30 @@ class Turn
       :cabins => {
         :f => {
           :fare => fares["f"].to_i,
-          :count => (layout[:f][:count]*flight.frequencies)/7).round,
+          :count => ((layout[:f][:count]*flight.frequencies)/7).round,
           :pricing => price_spread(market[:f][:fare],fares["f"])
         },
         :j => {
           :fare => fares["j"].to_i,
-          :count => (layout[:j][:count]*flight.frequencies)/7).round,
+          :count => ((layout[:j][:count]*flight.frequencies)/7).round,
           :pricing => price_spread(market[:j][:fare],fares["j"])
         },
         :p => {
           :fare => fares["p"].to_i,
-          :count => (layout[:p][:count]*flight.frequencies)/7).round,
+          :count => ((layout[:p][:count]*flight.frequencies)/7).round,
           :pricing => price_spread(market[:p][:fare],fares["p"])
         },
         :y => {
           :fare => fares["y"].to_i,
-          :count => (layout[:y][:count]*flight.frequencies)/7).round,
+          :count => ((layout[:y][:count]*flight.frequencies)/7).round,
           :pricing => price_spread(market[:y][:fare],fares["y"])
         }
       }
     }
     flight
   end
+
+
 
   def price_spread market, fare
     demand = {
@@ -223,14 +225,24 @@ class Turn
   end
 
   def compare_demand route
+    reset_route #work
+    route = @route # around
     route[:fares].each do |key, cabin|
       total_pax = route[:market][:cabins][key.to_sym][:demand]
+      remaining_pax = total_pax
+      placed_pax = 0
       airlines = airlines_with_cabin(cabin)
       airlines.each_with_index do |fare, index|
         pax_at_fare = fare[:multiplier]*total_pax.round
-        airlines.each_with_index do |airline, i|
-          pax_per_airline = pax_at_fare/(airlines.length-i).round
+        pax_at_fare = (pax_at_fare - placed_pax)
+        p "remaining_pax #{remaining_pax}"
+        p "pax_at_fare #{pax_at_fare}"
+        p "total_pax ---- #{total_pax}"
+        airlines[index..-1].each_with_index do |airline, i|
+          pax_per_airline = pax_at_fare/(airlines.length-index-i)
+          p "#{(airlines.length-index)} ---///--- #{pax_per_airline}"
           open_seats = (airline[:count] - airline[:occupied])
+          p "open_seats = #{open_seats}"
           if pax_per_airline > open_seats
             pax_at_fare = pax_at_fare - open_seats
             pax_on_airline = open_seats
@@ -238,7 +250,10 @@ class Turn
             pax_on_airline = pax_per_airline
             pax_at_fare = (pax_at_fare - pax_on_airline)
           end
-          airline[:occupied] = pax_on_airline
+          p "pax_on_airline #{pax_on_airline}"
+          placed_pax += pax_on_airline
+          remaining_pax -= pax_on_airline
+          airline[:occupied] += pax_on_airline
         end
       end
     end
@@ -256,6 +271,10 @@ class Turn
   end
 
   def distribute_passengers
+  end
+
+  def reset_route
+    @route = @route = {:market=>{:id=>1186, :cabins=>{:f=>{:fare=>6200, :demand=>18}, :j=>{:fare=>8850, :demand=>80}, :p=>{:fare=>3500, :demand=>150}, :y=>{:fare=>1332, :demand=>300}}}, :fares=>{:f=>[{:id=>76, :fare=>7228, :multiplier=>0.898, :count=>10, :occupied=>0}, {:id=>1, :fare=>7228, :multiplier=>0.923, :count=>10, :occupied=>0}, {:id=>83, :fare=>6120, :multiplier=>1.6797, :count=>7, :occupied=>0}], :j=>[{:id=>76, :fare=>3105, :multiplier=>1.8692, :count=>58, :occupied=>0}, {:id=>1, :fare=>3105, :multiplier=>1.8692, :count=>54, :occupied=>0}, {:id=>83, :fare=>3037, :multiplier=>1.8819, :count=>42, :occupied=>0}], :p=>[{:id=>83, :fare=>1851, :multiplier=>1.6688, :count=>55, :occupied=>0}, {:id=>1, :fare=>964, :multiplier=>1.9745, :count=>90, :occupied=>0}, {:id=>76, :fare=>964, :multiplier=>1.9745, :count=>63, :occupied=>0}], :y=>[{:id=>76, :fare=>1071, :multiplier=>1.327, :count=>232, :occupied=>0}, {:id=>1, :fare=>1071, :multiplier=>1.327, :count=>230, :occupied=>0}, {:id=>83, :fare=>750, :multiplier=>1.6259, :count=>201, :occupied=>0}]}}
   end
 
 end
