@@ -1,6 +1,6 @@
-namespace :airline_tycoon do
+namespace :turn do
   desc "Monthly distribution of passengers"
-  task month_turn: :environment do
+  task month: :environment do
   	require 'turn'
   	turn = Turn.new
   	Game.all.each do |game|

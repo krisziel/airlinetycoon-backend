@@ -36,6 +36,7 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
+    chronic (0.10.2)
     coderay (1.1.0)
     daemons (1.2.2)
     database_cleaner (1.4.0)
@@ -127,6 +128,8 @@ GEM
     tilt (1.4.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    whenever (0.9.4)
+      chronic (>= 0.6.3)
 
 PLATFORMS
   ruby
@@ -146,3 +149,4 @@ DEPENDENCIES
   rspec-rails
   sdoc (~> 0.4.0)
   thin
+  whenever

@@ -21,3 +21,4 @@ gem 'em-websocket'
 gem 'dotenv-rails'
 gem 'rest-client'
 gem 'nokogiri'
+gem 'whenever', :require => false
