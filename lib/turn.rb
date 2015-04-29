@@ -52,7 +52,7 @@ class Turn
       flights = compare_demand(sort_fares(route))
       prep_for_update(flights)
     end
-    "Determining passengers for #{total_flights} flight on #{organized_routes.length} routes took #{Time.now.to_f - start} seconds"
+    "Determining passengers for #{total_flights} flights on #{organized_routes.length} routes took #{Time.now.to_f - start} seconds"
   end
 
   def organize_flights flights
@@ -183,9 +183,7 @@ class Turn
     multiplier = (demand[:elasticity][:margin]**exponent)+demand[:elasticity][:base]
     multiplier = multiplier.round(4)
   end
-  # {:fare=>7228, :count=>10, :pricing=>{:spread=>0.3874, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>39, :multiplier=>1.5744}}, :j=>{:fare=>3105, :count=>58, :pricing=>{:spread=>0.6492, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>65, :multiplier=>1.8692}}, :p=>{:fare=>964, :count=>63, :pricing=>{:spread=>0.7246, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>72, :multiplier=>1.9745}}, :y=>{:fare=>1071, :count=>232, :pricing=>{:spread=>0.1959, :elasticity=>{:base=>0.0, :margin=>1.015, :anchor=>1.0}, :percent=>20, :multiplier=>1.327}}}}, {:id=>1, :cabins=>{:f=>{:fare=>7228, :count=>10, :pricing=>{:spread=>0.3874, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>39, :multiplier=>1.5744}}, :j=>{:fare=>3105, :count=>54, :pricing=>{:spread=>0.6492, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>65, :multiplier=>1.8692}}, :p=>{:fare=>964, :count=>90, :pricing=>{:spread=>0.7246, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>72, :multiplier=>1.9745}}, :y=>{:fare=>1071, :count=>230, :pricing=>{:spread=>0.1959, :elasticity=>{:base=>0.0, :margin=>1.015, :anchor=>1.0}, :percent=>20, :multiplier=>1.327}}}}, {:id=>83, :cabins=>{:f=>{:fare=>"6120", :count=>7, :pricing=>{:spread=>0.4813, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>48, :multiplier=>1.6797}}, :j=>{:fare=>"3037", :count=>42, :pricing=>{:spread=>0.6568, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>66, :multiplier=>1.8819}}, :p=>{:fare=>"1851", :count=>55, :pricing=>{:spread=>0.4711, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>47, :multiplier=>1.6688}}, :y=>{:fare=>"750", :count=>201, :pricing=>{:spread=>0.4369, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>44, :multiplier=>1.6259}}}}]}
-  # [{:id=>1, :cabins=>{:f=>{:fare=>7228, :count=>10, :pricing=>{:spread=>0.3874, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>39, :multiplier=>1.5744}}, :j=>{:fare=>3105, :count=>54, :pricing=>{:spread=>0.6492, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>65, :multiplier=>1.8692}}, :p=>{:fare=>964, :count=>90, :pricing=>{:spread=>0.7246, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>72, :multiplier=>1.9745}}, :y=>{:fare=>1071, :count=>230, :pricing=>{:spread=>0.1959, :elasticity=>{:base=>0.0, :margin=>1.015, :anchor=>1.0}, :percent=>20, :multiplier=>1.327}}}}, {:id=>76, :cabins=>{:f=>{:fare=>7228, :count=>10, :pricing=>{:spread=>0.3874, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>39, :multiplier=>1.5744}}, :j=>{:fare=>3105, :count=>58, :pricing=>{:spread=>0.6492, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>65, :multiplier=>1.8692}}, :p=>{:fare=>964, :count=>63, :pricing=>{:spread=>0.7246, :elasticity=>{:base=>0.4509, :margin=>1.009, :anchor=>1.25}, :percent=>72, :multiplier=>1.9745}}, :y=>{:fare=>1071, :count=>232, :pricing=>{:spread=>0.1959, :elasticity=>{:base=>0.0, :margin=>1.015, :anchor=>1.0}, :percent=>20, :multiplier=>1.327}}}}] 
-
+  
   def sort_fares route
     sorted_fares = {
       :f => [],
@@ -270,6 +268,8 @@ class Turn
     flight = Flight.find(id)
     cost = compute_cost flight.user_aircraft.aircraft, flight.route, flight.duration, flight.frequencies, flight.user_aircraft.aircraft_configuration
     flight_data[:profit] = (flight_data[:total_revenue] - cost)
+    airline_money = flight.airline.money + flight_data[:profit]
+    flight.airline.update(money:airline_money)
     flight_data.delete(:total_revenue)
     flight.update(flight_data)
   end
