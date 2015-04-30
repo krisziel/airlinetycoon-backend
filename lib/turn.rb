@@ -265,7 +265,7 @@ class Turn
     flight = Flight.find(id)
     cost = compute_cost flight.user_aircraft.aircraft, flight.route, flight.duration, flight.frequencies, flight.user_aircraft.aircraft_configuration
     flight_data[:profit] = (flight_data[:total_revenue] - cost)
-    airline_money = flight.airline.money + flight_data[:profit]
+    airline_money = flight.airline.money + flight_data[:profit]*(52/12)
     flight.airline.update(money:airline_money)
     flight_data.delete(:total_revenue)
     flight.update(flight_data)
@@ -317,10 +317,6 @@ class Turn
     pilot_cost = (duration*freq*(1+((duration-240).abs/240).ceil)*2.5)
     total_cost = (fuel_cost+(fa_cost*2)+(pilot_cost)+(fuel_cost/3))
     total_cost
-  end
-
-  def reset_route
-    @route = {:market=>{:id=>1186, :cabins=>{:f=>{:fare=>6200, :demand=>18}, :j=>{:fare=>8850, :demand=>80}, :p=>{:fare=>3500, :demand=>150}, :y=>{:fare=>1332, :demand=>300}}}, :fares=>{:f=>[{:id=>76, :fare=>7228, :multiplier=>0.898, :count=>10, :occupied=>0}, {:id=>1, :fare=>7228, :multiplier=>0.923, :count=>10, :occupied=>0}, {:id=>83, :fare=>6120, :multiplier=>1.6797, :count=>7, :occupied=>0}], :j=>[{:id=>76, :fare=>3105, :multiplier=>1.8692, :count=>58, :occupied=>0}, {:id=>1, :fare=>3105, :multiplier=>1.8692, :count=>54, :occupied=>0}, {:id=>83, :fare=>3037, :multiplier=>1.8819, :count=>42, :occupied=>0}], :p=>[{:id=>83, :fare=>1851, :multiplier=>1.6688, :count=>55, :occupied=>0}, {:id=>1, :fare=>964, :multiplier=>1.9745, :count=>90, :occupied=>0}, {:id=>76, :fare=>964, :multiplier=>1.9745, :count=>63, :occupied=>0}], :y=>[{:id=>76, :fare=>1071, :multiplier=>1.327, :count=>232, :occupied=>0}, {:id=>1, :fare=>1071, :multiplier=>1.327, :count=>230, :occupied=>0}, {:id=>83, :fare=>750, :multiplier=>1.6259, :count=>201, :occupied=>0}]}}
   end
 
 end
