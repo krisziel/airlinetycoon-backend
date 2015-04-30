@@ -78,9 +78,6 @@ class Turn
         :market => route[:route][:cabins]
       })
       route[:flights] = flights
-      if route[:flights][0][:id] == 24
-        @flights2 = route
-      end
       reformatted_routes.push(route)
     end
     reformatted_routes
@@ -183,7 +180,7 @@ class Turn
     multiplier = (demand[:elasticity][:margin]**exponent)+demand[:elasticity][:base]
     multiplier = multiplier.round(4)
   end
-  
+
   def sort_fares route
     sorted_fares = {
       :f => [],
