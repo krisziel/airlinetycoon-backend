@@ -52,7 +52,7 @@ class Turn
       flights = compare_demand(sort_fares(route))
       prep_for_update(flights)
     end
-    "Determining passengers for #{total_flights} flights on #{organized_routes.length} routes took #{Time.now.to_f - start} seconds"
+    "Determined passengers for #{total_flights} flights on #{organized_routes.length} routes took #{Time.now.to_f - start} seconds"
   end
 
   def organize_flights flights

@@ -198,7 +198,7 @@ class RouteController < ApplicationController
     lat_b = dest.latitude.to_f
     lng_b = dest.longitude.to_f
 
-    mi = (gcm_distance([lat_a, lng_a], [lat_b, lng_b])*0.621371)
+    mi = gcm_distance([lat_a, lng_a], [lat_b, lng_b])
     min = {
       :y => (mi*0.1*0.3).round,
       :p => (mi*0.3*0.3).round,
@@ -227,7 +227,22 @@ class RouteController < ApplicationController
     Math.cos((lat1 * Math::PI / 180)) * Math.cos((lat2 * Math::PI / 180)) *
     Math.sin(dLon/2) * Math.sin(dLon/2);
     c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    d = 6371 * c;
+    d = 6371 * c
+    d = d*0.621371
+  end
+
+  def flight_distance
+    Route.all.each do |route|
+      distance = return_dist(route.origin, route.destination)
+      route.update(minfare:distance[:min],maxfare:distance[:max])
+      # origin = route.origin
+      # originll = [origin.latitude.to_f, origin.longitude.to_f]
+      # destination = route.destination
+      # destinationll = [destination.latitude.to_f, destination.longitude.to_f]
+      # distance = gcm_distance(originll, destinationll)
+      # p distance
+      # route.update(distance:distance)
+    end
   end
 
   def construct
