@@ -322,4 +322,15 @@ class RealData
     File.open("/Users/Kris/Desktop/Dropbox/route.csv", 'w') {|f| f.write(Route.all.as_csv) }
   end
 
+  def jump_routes
+    routes = Route.all
+    # routes = Route.where(id:950)
+    routes.each do |route|
+      jumper = RouteJumper.find_by(origin_id:route.origin_id,destination_id:route.destination_id)
+      if jumper
+        route.update(distance:jumper.distance,minfare:jumper.minfare,maxfare:jumper.maxfare,price:jumper.price,demand:jumper.demand)
+      end
+    end
+  end
+
 end

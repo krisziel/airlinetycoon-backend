@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150531081411) do
+ActiveRecord::Schema.define(version: 20150601051452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -241,6 +241,17 @@ ActiveRecord::Schema.define(version: 20150531081411) do
     t.boolean  "read"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "route_jumpers", force: true do |t|
+    t.integer "origin_id"
+    t.integer "destination_id"
+    t.integer "distance"
+    t.json    "minfare"
+    t.json    "maxfare"
+    t.json    "price"
+    t.json    "demand"
+    t.json    "elasticity"
   end
 
   create_table "routes", force: true do |t|
