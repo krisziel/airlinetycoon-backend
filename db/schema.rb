@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150414093236) do
+ActiveRecord::Schema.define(version: 20150531081411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -233,6 +233,15 @@ ActiveRecord::Schema.define(version: 20150414093236) do
 
   add_index "messages", ["airline_id"], name: "index_messages_on_airline_id", using: :btree
   add_index "messages", ["type_id"], name: "index_messages_on_type_id", using: :btree
+
+  create_table "notifications", force: true do |t|
+    t.integer  "flight_id"
+    t.integer  "route_id"
+    t.string   "text"
+    t.boolean  "read"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "routes", force: true do |t|
     t.integer  "origin_id"
