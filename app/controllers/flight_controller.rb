@@ -58,6 +58,7 @@ class FlightController < ApplicationController
       flight = Flight.new(flight_params)
       if flight.save
         UserAircraft.find(params[:flight][:user_aircraft_id]).update(inuse:true)
+        create_notification(airline,flight)
         flight = flight.full_data
       else
         flight = flight.errors.message
@@ -172,6 +173,16 @@ class FlightController < ApplicationController
       end
     end
     errors.length > 0 ? errors : true
+  end
+
+  def create_notification(creator, flight)
+    route = Route.find_by(id:flight.route_id)
+    text = "#{airline.name} launched #{flight.frequencies}/week #{flight.user_aircraft.aircraft.full_name} flights on #{route.origin.iata}-#{route.destination.iata}"
+    airlines = route.flights.where('airline_id != ?',creator.id)
+    airlines.each do |airline|
+      notification = Notification.new(route_id:route.id,flight_id:flight.id,airline_id:airline.id,text:text,read:false)
+      notification.save
+    end
   end
 
 end

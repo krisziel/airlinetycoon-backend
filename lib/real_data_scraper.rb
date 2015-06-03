@@ -324,13 +324,15 @@ class RealData
 
   def jump_routes
     routes = Route.all
-    # routes = Route.where(id:950)
+    jumped = 0
     routes.each do |route|
       jumper = RouteJumper.find_by(origin_id:route.origin_id,destination_id:route.destination_id)
       if jumper
         route.update(distance:jumper.distance,minfare:jumper.minfare,maxfare:jumper.maxfare,price:jumper.price,demand:jumper.demand)
+        jumped = jumped + 1
       end
     end
+    p jumped
   end
 
 end
