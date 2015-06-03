@@ -1,4 +1,4 @@
-class CreateRouteJumpers < ActiveRecord::Migration
+class CreateRouteJumper < ActiveRecord::Migration
   def change
     create_table :route_jumpers do |t|
     	t.integer :origin_id
