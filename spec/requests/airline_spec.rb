@@ -24,7 +24,8 @@ describe 'airtycoon API -- airline#' do
       'airline[icao]' => 'INO',
       'airline[game_id]' => 1
     }
-    Airline.create!(name:"Maru Airways",icao:"MRU",game_id:1,user_id:1,money:3)
+    User.create!(name:"Kris", email:"k.ziel@mac.com", username:"k.ziel", password:"k.ziel")
+    Airline.create!(name:"Maru Airways",icao:"MRU",game_id:1,user_id:2,money:3)
     get 'airline/'
     airlines = JSON.parse(response.body)
     expect(airlines[1]["name"]).to eq("Maru Airways")
@@ -38,7 +39,8 @@ describe 'airtycoon API -- airline#' do
       'airline[icao]' => 'INO',
       'airline[game_id]' => 1
     }
-    Airline.create!(name:"Maru Airways",icao:"MRU",game_id:1,user_id:1,money:3)
+    User.create!(name:"Kris", email:"k.ziel@mac.com", username:"k.ziel", password:"k.ziel")
+    Airline.create!(name:"Maru Airways",icao:"MRU",game_id:1,user_id:2,money:3)
     get 'airline/'
     airlines = JSON.parse(response.body)
     expect(airlines.length).to eq(2)
