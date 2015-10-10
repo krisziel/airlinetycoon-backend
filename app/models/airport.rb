@@ -39,6 +39,7 @@ class Airport < ActiveRecord::Base
       name:name,
       id:id
     }
+    import
   end
 
 end
