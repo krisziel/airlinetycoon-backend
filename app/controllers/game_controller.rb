@@ -1,5 +1,5 @@
 class GameController < ApplicationController
-  before_action :airline
+  before_action :airline, :user
 
   def all
     regions = {
@@ -13,7 +13,6 @@ class GameController < ApplicationController
     }
     games = Game.all
     game_list = []
-    user = User.find(cookies.signed[:airtycoon_user])
     airlines = user.airlines
     user_games = {}
     user_game_ids = []
@@ -42,9 +41,9 @@ class GameController < ApplicationController
   end
 
   def show
-    if cookies.signed[:airtycoon_user]
+    if user
       game = Game.find(params[:id])
-      airline = game.airlines.find_by(user_id:cookies.signed[:airtycoon_user])
+      airline = game.airlines.find_by(user_id:user)
       airlines = []
       game.airlines.each do |airline|
         airline = {
@@ -84,7 +83,7 @@ class GameController < ApplicationController
   def manual_login
     cookies.signed[:airtycoon_game] = 1
     render json: {
-      game_id: cookies.signed[:airtycoon_game]
+      game_id: game
     }
   end
 
