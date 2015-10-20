@@ -182,3 +182,17 @@ Aircraft.create(name:"E195",manufacturer:"Embraer",iata:"E95",capacity:122,speed
 
 ######### VRD
 # AircraftConfiguration.create(name:"Domestic",aircraft_id:19,airline_id:5,f_count:0,j_count:16,p_count:24,y_count:97,f_seat:9,j_seat:6,p_seat:2,y_seat:1) # 321T
+
+######### For testing fares with connections
+# UserAircraft.create(airline_id:3,aircraft_id:29,age:1,aircraft_configuration_id:11,inuse:false)
+# Flight.create(route_id:1428,user_aircraft_id:64,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
+# Flight.create(route_id:1181,user_aircraft_id:65,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
+# Flight.create(route_id:1219,user_aircraft_id:66,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
+# Flight.create(route_id:1645,user_aircraft_id:67,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
+# Flight.create(route_id:1657,user_aircraft_id:68,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
+# Flight.create(route_id:1097,user_aircraft_id:69,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
+# Flight.create(route_id:1109,user_aircraft_id:70,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
+# Flight.create(route_id:872,user_aircraft_id:71,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
+# Flight.create(route_id:856,user_aircraft_id:72,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
+# Flight.create(route_id:2584,user_aircraft_id:73,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
+# Flight.create(route_id:1657,user_aircraft_id:74,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
