@@ -15,10 +15,3 @@ class Fare < ActiveRecord::Base
   end
 
 end
-
-t.integer  "airline_id"
-t.integer  "route_id"
-t.json     "fare"
-t.json     "passengers"
-t.json     "revenue"
-t.json     "routing"

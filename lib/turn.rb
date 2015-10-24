@@ -1,4 +1,3 @@
-# class TurnController < ApplicationController
 class Turn
 
   def initialize
@@ -42,7 +41,7 @@ class Turn
     start = Time.now.to_f
     airlines = []
     Airline.where(game_id:game_id).each do |airline|
-     airlines.push(airline.id) 
+     airlines.push(airline.id)
     end
     flights = Flight.where('airline_id IN (?)',airlines).order('route_id DESC')
     total_flights = flights.length
