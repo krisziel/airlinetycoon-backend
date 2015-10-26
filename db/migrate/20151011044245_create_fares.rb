@@ -6,7 +6,7 @@ class CreateFares < ActiveRecord::Migration
       t.json :fare
       t.json :passengers
       t.json :revenue
-      t.json :routing
+      t.text :routings, array:true, default: []
       t.timestamps
     end
   end

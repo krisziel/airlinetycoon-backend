@@ -178,7 +178,7 @@ ActiveRecord::Schema.define(version: 20151022083206) do
     t.json     "fare"
     t.json     "passengers"
     t.json     "revenue"
-    t.json     "routing"
+    t.text     "routings",   default: [], array: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end

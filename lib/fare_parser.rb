@@ -5,7 +5,7 @@ class FareParser
     airline = fare.airline
     route = fare.route
     routes_data = []
-    routings = fare.routing
+    routings = fare.routings
     routings.each do |routing|
       duration = (route.distance/smallestPlane(route.distance).speed.to_f)*60
       routes_data.push({
@@ -29,7 +29,7 @@ class FareParser
   end
 
   def get_routing_capacity airline, route_id, routing
-    segment_flights = airline.flights.where('route_id IN (?)', routing).select(:user_aircraft_id, :route_id).order(:route_id)
+    segment_flights = airline.flights.where('route_id IN (?)', routing).select(:user_aircraft_id, :route_id, :frequencies).order(:route_id)
     capacity = {
       :y => 99999,
       :p => 99999,
@@ -42,7 +42,7 @@ class FareParser
       if(!capacities[route])
         capacities[route] = {:y=>0, :p=>0, :j=>0, :f=>0}
       end
-      capacities[route] = add_capacity(capacities[route], flight.user_aircraft.aircraft_configuration)
+      capacities[route] = add_capacity(capacities[route], flight.frequencies, flight.user_aircraft.aircraft_configuration)
     end
     capacities.each do |route, segment_capacity|
       segment_capacity.each do |cabin, seats|
@@ -52,11 +52,11 @@ class FareParser
     capacity
   end
 
-  def add_capacity existing, flight
-    existing[:y] += flight.y_count
-    existing[:p] += flight.p_count
-    existing[:j] += flight.j_count
-    existing[:f] += flight.f_count
+  def add_capacity existing, frequencies, flight
+    existing[:y] += flight.y_count*frequencies
+    existing[:p] += flight.p_count*frequencies
+    existing[:j] += flight.j_count*frequencies
+    existing[:f] += flight.f_count*frequencies
     existing
   end
 
