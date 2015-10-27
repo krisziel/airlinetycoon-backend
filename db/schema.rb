@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151022083206) do
+ActiveRecord::Schema.define(version: 20151027002905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,6 +170,14 @@ ActiveRecord::Schema.define(version: 20151022083206) do
   end
 
   create_table "fare_averages", force: true do |t|
+  end
+
+  create_table "fare_routings", force: true do |t|
+    t.integer "fare_id"
+    t.json    "market_fare"
+    t.json    "capacity"
+    t.json    "excess_capacity"
+    t.text    "routing",         default: [], array: true
   end
 
   create_table "fares", force: true do |t|

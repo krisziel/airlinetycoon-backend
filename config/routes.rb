@@ -55,6 +55,10 @@ Rails.application.routes.draw do
   get 'route/:o/:d' => 'route#show' # rspec passing
   get 'route/:id' => 'route#show' # rspec passing
 
+  get 'fare/:o/:d' => 'fare#show'
+  get 'fare/:id' => 'fare#show'
+  post 'fare' => 'fare#create'
+
   get 'flight' => 'flight#all' # rspec passing
   get 'flight/aircraft/:iata' => 'flight#aircraft' # rspec passing
   get 'flight/:id' => 'flight#show' # rspec passing
