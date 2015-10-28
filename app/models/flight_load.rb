@@ -1,6 +1,5 @@
 class FlightLoad < ActiveRecord::Base
-  belongs_to :airline
-  belongs_to :flight
-  belongs_to :fare
-  
+  belongs_to :route
+  belongs_to :fare_routing, dependent: :destroy
+
 end

@@ -192,13 +192,10 @@ ActiveRecord::Schema.define(version: 20151027002905) do
   end
 
   create_table "flight_loads", force: true do |t|
-    t.integer  "airline_id"
-    t.integer  "fare_id"
-    t.integer  "flight_id"
-    t.json     "revenue"
-    t.json     "passengers"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "fare_routing_id"
+    t.integer "route_id"
+    t.json    "revenue"
+    t.json    "passengers"
   end
 
   create_table "flights", force: true do |t|

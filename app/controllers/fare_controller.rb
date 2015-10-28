@@ -2,7 +2,6 @@ class FareController < ApplicationController
   before_action :game, :airline
 
   def show
-    airline = Airline.find(3)
     if airline
       routings_data = get_routings params[:o], params[:d]
       route_data = extract_routes routings_data
@@ -16,7 +15,31 @@ class FareController < ApplicationController
   end
 
   def create
-
+    if airline
+      modified_routings = []
+      price = JSON.parse(params[:fare])
+      routings = JSON.parse(params[:routings])
+      route_id = params[:route_id]
+      fare = airline.fares.new(route_id:route_id, fare:price)
+      if fare.save
+        routings.each do |routing|
+          new_routing = fare.fare_routings.new(routing:routing)
+          modified_routing = [0,0,0]
+          if new_routing.save
+            routing.each_with_index do |route, i|
+              modified_routing[i] = route
+              new_routing.flight_loads.create(route_id: route)
+            end
+          end
+          modified_routings.push(modified_routing)
+        end
+        puts modified_routings
+        fare.update(routings:modified_routings)
+      end
+      render json: fare
+    else
+      render json: {}
+    end
   end
 
   def routes
@@ -34,7 +57,6 @@ class FareController < ApplicationController
   def extract_routes routings
     routes = {}
     airports = {}
-    puts "%%%%%%%%%%%%%%%% #{routings}"
     routings.each do |routing|
       routing.each do |route_id|
         route = Route.find(route_id)
@@ -96,10 +118,6 @@ class FareController < ApplicationController
         origin = flight.route.origin_id
         dest = flight.route.destination_id
         connection = (origin == airport ? dest : origin)
-        puts origin
-        puts "$$$$$$$$$$$$$$ #{connection} $$$$$$$$$$$$$$$$$"
-        puts dest
-        puts destination_pairs
         route_list.push([route, flight.route.id, destination_pairs[connection]])
       end
     end
@@ -119,11 +137,7 @@ class FareController < ApplicationController
       origin = flight.route.origin_id
       origin == airport.to_i ? airport_id = dest : airport_id = origin
       return_data[airport_id] = flight.route.id
-      # airport_list.push(airport_id)
-      # route_list.push(flight.route.id)
     end
-    # return_data = { airports:airport_list.uniq, routes:route_list.uniq }
-    puts return_data
     return return_data
   end
 

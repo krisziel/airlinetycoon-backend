@@ -1,5 +1,7 @@
 class Route < ActiveRecord::Base
   has_many :flights
+  has_many :fares
+  has_many :flight_loads
 
   def origin
     Airport.find(origin_id)
