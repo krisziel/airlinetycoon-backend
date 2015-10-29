@@ -22,19 +22,14 @@ class FareController < ApplicationController
       route_id = params[:route_id]
       fare = airline.fares.new(route_id:route_id, fare:price)
       if fare.save
+        capacity = fare_capacity routings
         routings.each do |routing|
           new_routing = fare.fare_routings.new(routing:routing)
-          modified_routing = [0,0,0]
           if new_routing.save
-            routing.each_with_index do |route, i|
-              modified_routing[i] = route
-              new_routing.flight_loads.create(route_id: route)
-            end
+            modified_routings.push(new_routing.id)
           end
-          modified_routings.push(modified_routing)
         end
-        puts modified_routings
-        fare.update(routings:modified_routings)
+        fare.update(routings:modified_routings, capacity:capcaity)
       end
       render json: fare
     else
@@ -53,6 +48,53 @@ class FareController < ApplicationController
   end
 
   private
+
+  def fare_capacity routings
+    routes = {}
+    total_capacity = { :f=>0, :j=>0, :p=>0, :y=>0 }
+    routings.each do |routing| # for every individual routing
+      capacity = { :f=>[], :j=>[], :p=>[], :y=>[], :route=>[] }
+      routing.each do |route| # for each route within the routing
+        if routes[route] # if the capacity has already been set, that's the avail seats
+          route_capacity = routes[route]
+        else
+          route_capacity = route_capacity route # otherwise, get total capacity on route
+          routes[route] = route_capacity # and set the routes hash with it
+        end
+        route_capacity.each do |cabin, seats| # for each cabin in the route's capacity
+          capacity[cabin.to_sym].push(seats) # dump it into an array for that cabin to do .min on later
+        end
+      end
+      total_capacity.each do |cabin, seats| # for each cabin pull out the array to get the minimum
+        total_capacity[cabin.to_sym] += capacity[cabin.to_sym].min # route A can't sell more seats than route B has
+      end
+      routes = route_remaining(routes, routing, capacity) # subtract the seats just added from the pool of avail seats
+    end
+    total_capacity
+  end
+
+  def route_remaining new_routes, routing, capacity
+    routing.each do |route| # for each route within the routing
+      [:y, :p, :j, :f].each do |cabin| # go through each cabin and
+        new_routes[route][cabin] -= capacity[cabin].min # remove the number of seats available on that route
+      end
+    end
+    new_routes
+  end
+
+  def route_capacity route
+    airline = Airline.find(3)
+    capacity = { :f=>0, :j=>0, :p=>0, :y=>0, :route=>route }
+    flights = airline.flights.where(route_id:route)
+    flights.each do |flight|
+      flight_capacity = flight.user_aircraft.aircraft_configuration
+      capacity[:f] += (flight.frequencies * flight_capacity.f_count)
+      capacity[:j] += (flight.frequencies * flight_capacity.j_count)
+      capacity[:p] += (flight.frequencies * flight_capacity.p_count)
+      capacity[:y] += (flight.frequencies * flight_capacity.y_count)
+    end
+    capacity
+  end
 
   def extract_routes routings
     routes = {}

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151027002905) do
+ActiveRecord::Schema.define(version: 20151029083352) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -189,6 +189,7 @@ ActiveRecord::Schema.define(version: 20151027002905) do
     t.text     "routings",   default: [], array: true
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.json     "capacity"
   end
 
   create_table "flight_loads", force: true do |t|
