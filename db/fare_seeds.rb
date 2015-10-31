@@ -1,58 +1,310 @@
+# this is the data to create a few games with a fair amount of preloaded data
 
-#
-# AircraftConfiguration.create(name:"High Density",aircraft_id:1,airline_id:1,f_count:0,j_count:0,p_count:80,y_count:400,f_seat:0,j_seat:0,p_seat:2,y_seat:1)
-# AircraftConfiguration.create(name:"High Density",aircraft_id:2,airline_id:1,f_count:0,j_count:0,p_count:80,y_count:300,f_seat:0,j_seat:0,p_seat:2,y_seat:1)
-# AircraftConfiguration.create(name:"High Density",aircraft_id:3,airline_id:1,f_count:0,j_count:0,p_count:80,y_count:400,f_seat:0,j_seat:0,p_seat:2,y_seat:1)
-# AircraftConfiguration.create(name:"High Density",aircraft_id:4,airline_id:1,f_count:0,j_count:0,p_count:80,y_count:300,f_seat:0,j_seat:0,p_seat:2,y_seat:1)
+User.create!([
+  {name: "Kris", username: "kziel", password: "kziel", email: "krisziel@mac.com"},
+  {name: "Kristian", username: "krisziel", password: "krisziel", email: "kz@kziel.com"}
+])
 
-# reset id index: ActiveRecord::Base.connection.reset_pk_sequence!('')
+Game.create!([
+  {region: "all", year: "2Q2015", name: "Rory Beautiful"},
+  {region: "NA", year: "1989", name: "Murica"},
+  {region: "asia", year: "1989", name: "Asia"}
+])
 
-# Game.create(region:'all',name:'Worldwide',year:2015)
-# User.create(name:'United Airlines',username:'ual',password:'ual',email:'krisziel@mac.com')
-# User.create(name:'American Airlines',username:'aal',password:'aal',email:'kz@kziel.com')
-# User.create(name:'Delta Air Lines',username:'dal',password:'dal',email:'kris@kziel.com')
-# User.create(name:'JetBlue Airways',username:'jbu',password:'jbu',email:'me@kziel.com')
-# User.create(name:'Virgin America',username:'vrd',password:'vaa',email:'k.ziel@icloud.com')
-# Airline.create(name:'United Airlines',icao:'UAL',money:5000000000,game_id:1,user_id:1)
-# Airline.create(name:'American Airlines',icao:'AAL',money:5000000000,game_id:1,user_id:2)
-# Airline.create(name:'Delta Air Lines',icao:'DAL',money:5000000000,game_id:1,user_id:3)
-# Airline.create(name:'JetBlue Airways',icao:'JBU',money:5000000000,game_id:1,user_id:4)
-# Airline.create(name:'Virgin America',icao:'VRD',money:5000000000,game_id:1,user_id:5)
+Airline.create!([
+  {name: "INnoVation Airlines", icao: "INO", money: 5000000000, game_id: 2, user_id: 1},
+  {name: "BALLER", icao: "BAL", money: 5000000000, game_id: 2, user_id: 1},
+  {name: "United Airlines", icao: "UAL", money: 5000000000, game_id: 2, user_id: 1},
+  {name: "INnoVation Airlines", icao: "INO", money: 5000000000, game_id: 3, user_id: 1},
+  {name: "Maru Airways", icao: "MRU", money: 4829349549, game_id: 1, user_id: 1},
+  {name: "JinAir", icao: "JNX", money: 4959527679, game_id: 2, user_id: 1}
+])
 
-########### UAL
-# AircraftConfiguration.create(name:"International",aircraft_id:13,airline_id:1,f_count:10,j_count:58,p_count:63,y_count:232,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 77W
-# AircraftConfiguration.create(name:"International",aircraft_id:4,airline_id:1,f_count:10,j_count:54,p_count:90,y_count:230,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 744
-# AircraftConfiguration.create(name:"International",aircraft_id:6,airline_id:1,f_count:0,j_count:16,p_count:48,y_count:116,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 752 intl
-# AircraftConfiguration.create(name:"Domestic",aircraft_id:6,airline_id:1,f_count:0,j_count:16,p_count:60,y_count:96,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 752 dom
-# AircraftConfiguration.create(name:"p.s.",aircraft_id:6,airline_id:1,f_count:8,j_count:24,p_count:55,y_count:30,f_seat:9,j_seat:6,p_seat:2,y_seat:1)
-# AircraftConfiguration.create(name:"International",aircraft_id:9,airline_id:1,f_count:6,j_count:36,p_count:62,y_count:129,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 763
-# AircraftConfiguration.create(name:"International",aircraft_id:15,airline_id:1,f_count:6,j_count:40,p_count:60,y_count:188,f_seat:0,j_seat:0,p_seat:2,y_seat:1) # 789
+UserAircraft.create!([
+  {aircraft_id: 1, airline_id: 1, aircraft_configuration_id: 1, age: 1, inuse: false},
+  {aircraft_id: 2, airline_id: 1, aircraft_configuration_id: 1, age: 1, inuse: false},
+  {aircraft_id: 1, airline_id: 1, aircraft_configuration_id: 2, age: 1, inuse: true},
+  {aircraft_id: 2, airline_id: 1, aircraft_configuration_id: 3, age: 1, inuse: true},
+  {aircraft_id: 3, airline_id: 1, aircraft_configuration_id: 4, age: 1, inuse: true},
+  {aircraft_id: 4, airline_id: 1, aircraft_configuration_id: 5, age: 1, inuse: true},
+  {aircraft_id: 5, airline_id: 1, aircraft_configuration_id: 6, age: 1, inuse: true},
+  {aircraft_id: 1, airline_id: 1, aircraft_configuration_id: 1, age: 1, inuse: true},
+  {aircraft_id: 1, airline_id: 1, aircraft_configuration_id: 1, age: 1, inuse: true},
+  {aircraft_id: 2, airline_id: 1, aircraft_configuration_id: 3, age: 1, inuse: true},
+  {aircraft_id: 3, airline_id: 1, aircraft_configuration_id: 4, age: 1, inuse: true},
+  {aircraft_id: 4, airline_id: 1, aircraft_configuration_id: 5, age: 1, inuse: true},
+  {aircraft_id: 5, airline_id: 1, aircraft_configuration_id: 6, age: 1, inuse: true},
+  {aircraft_id: 3, airline_id: 1, aircraft_configuration_id: 4, age: 1, inuse: true},
+  {aircraft_id: 4, airline_id: 1, aircraft_configuration_id: 5, age: 1, inuse: true},
+  {aircraft_id: 5, airline_id: 1, aircraft_configuration_id: 6, age: 1, inuse: true},
+  {aircraft_id: 1, airline_id: 1, aircraft_configuration_id: 2, age: 1, inuse: true},
+  {aircraft_id: 1, airline_id: 1, aircraft_configuration_id: 2, age: 1, inuse: true},
+  {aircraft_id: 2, airline_id: 1, aircraft_configuration_id: 3, age: 1, inuse: true},
+  {aircraft_id: 3, airline_id: 1, aircraft_configuration_id: 4, age: 1, inuse: true},
+  {aircraft_id: 4, airline_id: 1, aircraft_configuration_id: 5, age: 1, inuse: true},
+  {aircraft_id: 5, airline_id: 1, aircraft_configuration_id: 6, age: 1, inuse: true},
+  {aircraft_id: 1, airline_id: 1, aircraft_configuration_id: 1, age: 1, inuse: true},
+  {aircraft_id: 1, airline_id: 1, aircraft_configuration_id: 2, age: 1, inuse: true},
+  {aircraft_id: 2, airline_id: 1, aircraft_configuration_id: 3, age: 1, inuse: true},
+  {aircraft_id: 1, airline_id: 1, aircraft_configuration_id: 2, age: 1, inuse: false},
+  {aircraft_id: 1, airline_id: 1, aircraft_configuration_id: 2, age: 1, inuse: false},
+  {aircraft_id: 2, airline_id: 1, aircraft_configuration_id: 3, age: 1, inuse: false},
+  {aircraft_id: 1, airline_id: 1, aircraft_configuration_id: 1, age: 1, inuse: false},
+  {aircraft_id: 2, airline_id: 1, aircraft_configuration_id: 3, age: 1, inuse: false},
+  {aircraft_id: 1, airline_id: 2, aircraft_configuration_id: 1, age: 1, inuse: true},
+  {aircraft_id: 1, airline_id: 2, aircraft_configuration_id: 2, age: 1, inuse: true},
+  {aircraft_id: 2, airline_id: 2, aircraft_configuration_id: 3, age: 1, inuse: true},
+  {aircraft_id: 1, airline_id: 2, aircraft_configuration_id: 7, age: 0, inuse: false},
+  {aircraft_id: 1, airline_id: 2, aircraft_configuration_id: 7, age: 0, inuse: false},
+  {aircraft_id: 1, airline_id: 2, aircraft_configuration_id: 7, age: 0, inuse: false},
+  {aircraft_id: 15, airline_id: 2, aircraft_configuration_id: 8, age: 0, inuse: false},
+  {aircraft_id: 15, airline_id: 2, aircraft_configuration_id: 8, age: 0, inuse: false},
+  {aircraft_id: 15, airline_id: 2, aircraft_configuration_id: 8, age: 0, inuse: false},
+  {aircraft_id: 15, airline_id: 1, aircraft_configuration_id: 9, age: 0, inuse: true},
+  {aircraft_id: 15, airline_id: 1, aircraft_configuration_id: 9, age: 0, inuse: true},
+  {aircraft_id: 15, airline_id: 1, aircraft_configuration_id: 9, age: 0, inuse: true},
+  {aircraft_id: 15, airline_id: 1, aircraft_configuration_id: 9, age: 0, inuse: true},
+  {aircraft_id: 3, airline_id: 1, aircraft_configuration_id: 10, age: 0, inuse: false},
+  {aircraft_id: 3, airline_id: 1, aircraft_configuration_id: 10, age: 0, inuse: false},
+  {aircraft_id: 3, airline_id: 1, aircraft_configuration_id: 10, age: 0, inuse: false},
+  {aircraft_id: 3, airline_id: 1, aircraft_configuration_id: 10, age: 0, inuse: false},
+  {aircraft_id: 3, airline_id: 1, aircraft_configuration_id: 10, age: 0, inuse: false},
+  {aircraft_id: 3, airline_id: 1, aircraft_configuration_id: 10, age: 0, inuse: false},
+  {aircraft_id: 3, airline_id: 1, aircraft_configuration_id: 10, age: 0, inuse: false},
+  {aircraft_id: 3, airline_id: 1, aircraft_configuration_id: 10, age: 0, inuse: false},
+  {aircraft_id: 3, airline_id: 1, aircraft_configuration_id: 10, age: 0, inuse: true},
+  {aircraft_id: 3, airline_id: 1, aircraft_configuration_id: 10, age: 0, inuse: true},
+  {aircraft_id: 1, airline_id: 2, aircraft_configuration_id: 2, age: 1, inuse: true},
+  {aircraft_id: 1, airline_id: 2, aircraft_configuration_id: 2, age: 1, inuse: true},
+  {aircraft_id: 1, airline_id: 2, aircraft_configuration_id: 6, age: 0, inuse: true},
+  {aircraft_id: 15, airline_id: 2, aircraft_configuration_id: 8, age: 0, inuse: true},
+  {aircraft_id: 15, airline_id: 2, aircraft_configuration_id: 8, age: 0, inuse: true},
+  {aircraft_id: 1, airline_id: 2, aircraft_configuration_id: 7, age: 0, inuse: true},
+  {aircraft_id: 15, airline_id: 2, aircraft_configuration_id: 8, age: 0, inuse: true},
+  {aircraft_id: 1, airline_id: 2, aircraft_configuration_id: 6, age: 0, inuse: true},
+  {aircraft_id: 1, airline_id: 1, aircraft_configuration_id: 1, age: 1, inuse: false},
+  {aircraft_id: 15, airline_id: 1, aircraft_configuration_id: 9, age: 0, inuse: true},
+  {aircraft_id: 29, airline_id: 3, aircraft_configuration_id: 11, age: 1, inuse: false},
+  {aircraft_id: 29, airline_id: 3, aircraft_configuration_id: 11, age: 1, inuse: false},
+  {aircraft_id: 29, airline_id: 3, aircraft_configuration_id: 11, age: 1, inuse: false},
+  {aircraft_id: 29, airline_id: 3, aircraft_configuration_id: 11, age: 1, inuse: false},
+  {aircraft_id: 29, airline_id: 3, aircraft_configuration_id: 11, age: 1, inuse: false},
+  {aircraft_id: 29, airline_id: 3, aircraft_configuration_id: 11, age: 1, inuse: false},
+  {aircraft_id: 29, airline_id: 3, aircraft_configuration_id: 11, age: 1, inuse: false},
+  {aircraft_id: 29, airline_id: 3, aircraft_configuration_id: 11, age: 1, inuse: false},
+  {aircraft_id: 29, airline_id: 3, aircraft_configuration_id: 11, age: 1, inuse: false},
+  {aircraft_id: 29, airline_id: 3, aircraft_configuration_id: 11, age: 1, inuse: false},
+  {aircraft_id: 29, airline_id: 3, aircraft_configuration_id: 11, age: 1, inuse: false},
+  {aircraft_id: 29, airline_id: 3, aircraft_configuration_id: 11, age: 1, inuse: false},
+  {aircraft_id: 20, airline_id: 3, aircraft_configuration_id: 12, age: 1, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: true},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: true},
+  {aircraft_id: 29, airline_id: 3, aircraft_configuration_id: 11, age: 1, inuse: true},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: true},
+  {aircraft_id: 13, airline_id: 3, aircraft_configuration_id: 13, age: 0, inuse: true},
+  {aircraft_id: 13, airline_id: 3, aircraft_configuration_id: 13, age: 0, inuse: true},
+  {aircraft_id: 13, airline_id: 3, aircraft_configuration_id: 13, age: 0, inuse: true},
+  {aircraft_id: 13, airline_id: 3, aircraft_configuration_id: 13, age: 0, inuse: true},
+  {aircraft_id: 13, airline_id: 3, aircraft_configuration_id: 13, age: 0, inuse: true},
+  {aircraft_id: 13, airline_id: 3, aircraft_configuration_id: 13, age: 0, inuse: true},
+  {aircraft_id: 13, airline_id: 3, aircraft_configuration_id: 13, age: 0, inuse: true},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: true},
+  {aircraft_id: 13, airline_id: 3, aircraft_configuration_id: 13, age: 0, inuse: true},
+  {aircraft_id: 13, airline_id: 3, aircraft_configuration_id: 13, age: 0, inuse: true},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: true},
+  {aircraft_id: 13, airline_id: 3, aircraft_configuration_id: 13, age: 0, inuse: true},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: true},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: true},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: true},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: true},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: true},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: true},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: false},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: true},
+  {aircraft_id: 8, airline_id: 3, aircraft_configuration_id: 14, age: 0, inuse: true},
+  {aircraft_id: 2, airline_id: 3, aircraft_configuration_id: 15, age: 0, inuse: false},
+  {aircraft_id: 2, airline_id: 3, aircraft_configuration_id: 15, age: 0, inuse: false},
+  {aircraft_id: 2, airline_id: 3, aircraft_configuration_id: 15, age: 0, inuse: false},
+  {aircraft_id: 2, airline_id: 3, aircraft_configuration_id: 15, age: 0, inuse: true}
+])
 
-######### AAL
-# AircraftConfiguration.create(name:"International",aircraft_id:13,airline_id:2,f_count:10,j_count:58,p_count:63,y_count:232,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 77W
-# AircraftConfiguration.create(name:"Transcon",aircraft_id:20,airline_id:2,f_count:8,j_count:26,p_count:24,y_count:57,f_seat:9,j_seat:6,p_seat:2,y_seat:1) # 321T
+Flight.create!([
+  {airline_id: 1, route_id: 1, user_aircraft_id: 2, duration: 100, frequencies: 21, fare: {"y"=>510, "p"=>1200, "j"=>3310, "f"=>4620}, passengers: {"f"=>0, "j"=>0, "p"=>189, "y"=>5439}, revenue: {"f"=>0, "j"=>0, "p"=>226800, "y"=>2773890}, load: {"f"=>0, "j"=>0, "p"=>11, "y"=>65}, cost: 72000, profit: -2092766},
+  {airline_id: 1, route_id: 1, user_aircraft_id: 1, duration: 500, frequencies: 7, fare: {"y"=>"500", "p"=>"1000", "j"=>"3300", "f"=>"4600"}, passengers: {"f"=>0, "j"=>0, "p"=>560, "y"=>2800}, revenue: {"f"=>0, "j"=>0, "p"=>560000, "y"=>1400000}, load: {"f"=>0, "j"=>0, "p"=>100, "y"=>100}, cost: 75000, profit: -24582},
+  {airline_id: 1, route_id: 2, user_aircraft_id: 53, duration: 561, frequencies: 4, fare: {"f"=>"1000", "j"=>"1350", "p"=>"1150", "y"=>"520"}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>1995}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>1037400}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>100}, cost: 71000, profit: -158291},
+  {airline_id: 1, route_id: 18, user_aircraft_id: 21, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 120000, profit: -2969596},
+  {airline_id: 1, route_id: 17, user_aircraft_id: 20, duration: 560, frequencies: 12, fare: {"y"=>570, "p"=>1800, "j"=>3370, "f"=>4680}, passengers: {"f"=>0, "j"=>0, "p"=>434, "y"=>4795}, revenue: {"f"=>0, "j"=>0, "p"=>781200, "y"=>2733150}, load: {"f"=>0, "j"=>0, "p"=>45, "y"=>100}, cost: 97000, profit: -906286},
+  {airline_id: 1, route_id: 16, user_aircraft_id: 19, duration: 550, frequencies: 2, fare: {"y"=>560, "p"=>1700, "j"=>3360, "f"=>4670}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 75600, profit: -748543},
+  {airline_id: 1, route_id: 15, user_aircraft_id: 18, duration: 540, frequencies: 4, fare: {"y"=>550, "p"=>1600, "j"=>3350, "f"=>4660}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 73000, profit: -1492087},
+  {airline_id: 1, route_id: 14, user_aircraft_id: 17, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 120000, profit: -4191983},
+  {airline_id: 1, route_id: 12, user_aircraft_id: 13, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 120000, profit: -3946375},
+  {airline_id: 1, route_id: 11, user_aircraft_id: 12, duration: 560, frequencies: 12, fare: {"y"=>570, "p"=>1800, "j"=>3370, "f"=>4680}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 97000, profit: -1772517},
+  {airline_id: 1, route_id: 10, user_aircraft_id: 11, duration: 550, frequencies: 2, fare: {"y"=>560, "p"=>1700, "j"=>3360, "f"=>4670}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 75600, profit: -734912},
+  {airline_id: 1, route_id: 9, user_aircraft_id: 10, duration: 540, frequencies: 4, fare: {"y"=>550, "p"=>1600, "j"=>3350, "f"=>4660}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 73000, profit: -1457527},
+  {airline_id: 1, route_id: 8, user_aircraft_id: 16, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 120000, profit: -3946375},
+  {airline_id: 1, route_id: 8, user_aircraft_id: 9, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 120000, profit: -7353037},
+  {airline_id: 1, route_id: 7, user_aircraft_id: 8, duration: 560, frequencies: 12, fare: {"y"=>570, "p"=>1800, "j"=>3370, "f"=>4680}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 97000, profit: -2499230},
+  {airline_id: 1, route_id: 7, user_aircraft_id: 15, duration: 560, frequencies: 12, fare: {"y"=>570, "p"=>1800, "j"=>3370, "f"=>4680}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 97000, profit: -1772517},
+  {airline_id: 1, route_id: 6, user_aircraft_id: 7, duration: 550, frequencies: 2, fare: {"y"=>560, "p"=>1700, "j"=>3360, "f"=>4670}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 75600, profit: -389317},
+  {airline_id: 1, route_id: 6, user_aircraft_id: 14, duration: 550, frequencies: 2, fare: {"y"=>560, "p"=>1700, "j"=>3360, "f"=>4670}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 75600, profit: -413878},
+  {airline_id: 1, route_id: 5, user_aircraft_id: 6, duration: 540, frequencies: 4, fare: {"y"=>550, "p"=>1600, "j"=>3350, "f"=>4660}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>1197}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>658350}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>100}, cost: 73000, profit: 73670},
+  {airline_id: 1, route_id: 4, user_aircraft_id: 5, duration: 250, frequencies: 5, fare: {"y"=>540, "p"=>1500, "j"=>3340, "f"=>4650}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>1995}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>1077300}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>100}, cost: 10000, profit: 778643},
+  {airline_id: 1, route_id: 3, user_aircraft_id: 4, duration: 520, frequencies: 14, fare: {"y"=>530, "p"=>1400, "j"=>3330, "f"=>4640}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>5600}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>2968000}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>100}, cost: 95000, profit: -2140410},
+  {airline_id: 1, route_id: 1705, user_aircraft_id: 59, duration: 61, frequencies: 7, fare: {"f"=>"1104", "j"=>"802", "p"=>"681", "y"=>"561"}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: nil, profit: -47895},
+  {airline_id: 1, route_id: 1271, user_aircraft_id: 50, duration: 71, frequencies: 8, fare: {"f"=>"1281", "j"=>"891", "p"=>"734", "y"=>"578"}, passengers: {"f"=>42, "j"=>315, "p"=>0, "y"=>0}, revenue: {"f"=>53802, "j"=>280665, "p"=>0, "y"=>0}, load: {"f"=>100, "j"=>100, "p"=>0, "y"=>0}, cost: nil, profit: 166338},
+  {airline_id: 1, route_id: 1255, user_aircraft_id: 52, duration: 151, frequencies: 1, fare: {"f"=>"2145", "j"=>"1323", "p"=>"994", "y"=>"665"}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: nil, profit: -44329},
+  {airline_id: 1, route_id: 1255, user_aircraft_id: 26, duration: 156, frequencies: 1, fare: {"f"=>"2145", "j"=>"1323", "p"=>"994", "y"=>"665"}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: nil, profit: -58438},
+  {airline_id: 1, route_id: 1182, user_aircraft_id: 49, duration: 194, frequencies: 5, fare: {"f"=>"2619", "j"=>"1560", "p"=>"1136", "y"=>"712"}, passengers: {"f"=>0, "j"=>196, "p"=>294, "y"=>938}, revenue: {"f"=>0, "j"=>305760, "p"=>333984, "y"=>667856}, load: {"f"=>0, "j"=>100, "p"=>100, "y"=>100}, cost: nil, profit: 1022213},
+  {airline_id: 1, route_id: 957, user_aircraft_id: 60, duration: 26, frequencies: 14, fare: {"f"=>"761", "j"=>"631", "p"=>"578", "y"=>"526"}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: nil, profit: -41269},
+  {airline_id: 1, route_id: 956, user_aircraft_id: 25, duration: 281, frequencies: 4, fare: {"f"=>"3467", "j"=>"1984", "p"=>"1390", "y"=>"797"}, passengers: {"f"=>0, "j"=>154, "p"=>238, "y"=>1596}, revenue: {"f"=>0, "j"=>305536, "p"=>330820, "y"=>1272012}, load: {"f"=>0, "j"=>100, "p"=>100, "y"=>100}, cost: nil, profit: 1481324},
+  {airline_id: 1, route_id: 956, user_aircraft_id: 51, duration: 273, frequencies: 12, fare: {"f"=>"3467", "j"=>"1984", "p"=>"1390", "y"=>"797"}, passengers: {"f"=>70, "j"=>476, "p"=>714, "y"=>2254}, revenue: {"f"=>242690, "j"=>944384, "p"=>992460, "y"=>1796438}, load: {"f"=>100, "j"=>100, "p"=>100, "y"=>100}, cost: nil, profit: 3015915},
+  {airline_id: 1, route_id: 19, user_aircraft_id: 22, duration: 550, frequencies: 2, fare: {"y"=>560, "p"=>1700, "j"=>3360, "f"=>4670}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>434}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>243040}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>100}, cost: 75600, profit: -146277},
+  {airline_id: 1, route_id: 9, user_aircraft_id: 24, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 120000, profit: -7353037},
+  {airline_id: 1, route_id: 7, user_aircraft_id: 23, duration: 560, frequencies: 12, fare: {"y"=>570, "p"=>1800, "j"=>3370, "f"=>4680}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 97000, profit: -2499230},
+  {airline_id: 2, route_id: 956, user_aircraft_id: 36, duration: 281, frequencies: 7, fare: {"f"=>"3467", "j"=>"1984", "p"=>"1390", "y"=>"797"}, passengers: {"f"=>0, "j"=>280, "p"=>420, "y"=>2800}, revenue: {"f"=>0, "j"=>555520, "p"=>583800, "y"=>2231600}, load: {"f"=>0, "j"=>100, "p"=>100, "y"=>100}, cost: nil, profit: 2623593},
+  {airline_id: 2, route_id: 956, user_aircraft_id: 35, duration: 281, frequencies: 7, fare: {"f"=>"3467", "j"=>"1984", "p"=>"1390", "y"=>"797"}, passengers: {"f"=>0, "j"=>280, "p"=>420, "y"=>2800}, revenue: {"f"=>0, "j"=>555520, "p"=>583800, "y"=>2231600}, load: {"f"=>0, "j"=>100, "p"=>100, "y"=>100}, cost: nil, profit: 2623593},
+  {airline_id: 2, route_id: 956, user_aircraft_id: 43, duration: 273, frequencies: 1, fare: {"f"=>"3467", "j"=>"1984", "p"=>"1390", "y"=>"797"}, passengers: {"f"=>0, "j"=>28, "p"=>77, "y"=>203}, revenue: {"f"=>0, "j"=>55552, "p"=>107030, "y"=>161791}, load: {"f"=>0, "j"=>100, "p"=>100, "y"=>100}, cost: nil, profit: 244368},
+  {airline_id: 2, route_id: 956, user_aircraft_id: 39, duration: 281, frequencies: 1, fare: {"f"=>"3467", "j"=>"1984", "p"=>"1390", "y"=>"797"}, passengers: {"f"=>28, "j"=>63, "p"=>35, "y"=>0}, revenue: {"f"=>97076, "j"=>124992, "p"=>48650, "y"=>0}, load: {"f"=>100, "j"=>100, "p"=>100, "y"=>0}, cost: nil, profit: 162833},
+  {airline_id: 2, route_id: 956, user_aircraft_id: 45, duration: 273, frequencies: 7, fare: {"f"=>"3467", "j"=>"1984", "p"=>"1390", "y"=>"797"}, passengers: {"f"=>42, "j"=>196, "p"=>560, "y"=>1428}, revenue: {"f"=>145614, "j"=>388864, "p"=>778400, "y"=>1138116}, load: {"f"=>100, "j"=>100, "p"=>100, "y"=>100}, cost: nil, profit: 1890961},
+  {airline_id: 2, route_id: 956, user_aircraft_id: 44, duration: 273, frequencies: 7, fare: {"f"=>"3467", "j"=>"1984", "p"=>"1390", "y"=>"797"}, passengers: {"f"=>42, "j"=>196, "p"=>560, "y"=>1428}, revenue: {"f"=>145614, "j"=>388864, "p"=>778400, "y"=>1138116}, load: {"f"=>100, "j"=>100, "p"=>100, "y"=>100}, cost: nil, profit: 1890961},
+  {airline_id: 2, route_id: 956, user_aircraft_id: 41, duration: 281, frequencies: 7, fare: {"f"=>"3467", "j"=>"1984", "p"=>"1390", "y"=>"797"}, passengers: {"f"=>126, "j"=>539, "p"=>0, "y"=>0}, revenue: {"f"=>436842, "j"=>1069376, "p"=>0, "y"=>0}, load: {"f"=>60, "j"=>100, "p"=>0, "y"=>0}, cost: nil, profit: 751023},
+  {airline_id: 2, route_id: 956, user_aircraft_id: 42, duration: 281, frequencies: 1, fare: {"f"=>"3467", "j"=>"1984", "p"=>"1390", "y"=>"797"}, passengers: {"f"=>28, "j"=>77, "p"=>0, "y"=>0}, revenue: {"f"=>97076, "j"=>152768, "p"=>0, "y"=>0}, load: {"f"=>100, "j"=>100, "p"=>0, "y"=>0}, cost: nil, profit: 141959},
+  {airline_id: 2, route_id: 19, user_aircraft_id: 32, duration: 550, frequencies: 2, fare: {"y"=>560, "p"=>1700, "j"=>3360, "f"=>4670}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>798}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>446880}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>100}, cost: 75600, profit: -284063},
+  {airline_id: 2, route_id: 18, user_aircraft_id: 31, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 120000, profit: -7386326},
+  {airline_id: 2, route_id: 17, user_aircraft_id: 30, duration: 560, frequencies: 12, fare: {"y"=>570, "p"=>1800, "j"=>3370, "f"=>4680}, passengers: {"f"=>0, "j"=>0, "p"=>434, "y"=>4795}, revenue: {"f"=>0, "j"=>0, "p"=>781200, "y"=>2733150}, load: {"f"=>0, "j"=>0, "p"=>45, "y"=>100}, cost: 97000, profit: -884392},
+  {airline_id: 2, route_id: 9, user_aircraft_id: 34, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 120000, profit: -7386326},
+  {airline_id: 2, route_id: 7, user_aircraft_id: 33, duration: 560, frequencies: 12, fare: {"y"=>570, "p"=>1800, "j"=>3370, "f"=>4680}, passengers: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, revenue: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, load: {"f"=>0, "j"=>0, "p"=>0, "y"=>0}, cost: 97000, profit: -4506262},
+  {airline_id: 2, route_id: 1428, user_aircraft_id: 37, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 2, route_id: 1181, user_aircraft_id: 38, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 2, route_id: 1219, user_aircraft_id: 40, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 2, route_id: 1645, user_aircraft_id: 46, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 2, route_id: 1657, user_aircraft_id: 47, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 3, route_id: 1428, user_aircraft_id: 64, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 3, route_id: 1181, user_aircraft_id: 65, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 3, route_id: 1219, user_aircraft_id: 66, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 3, route_id: 1645, user_aircraft_id: 67, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 3, route_id: 1657, user_aircraft_id: 68, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 3, route_id: 1097, user_aircraft_id: 69, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 3, route_id: 1109, user_aircraft_id: 70, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 3, route_id: 872, user_aircraft_id: 71, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 3, route_id: 856, user_aircraft_id: 72, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 3, route_id: 2584, user_aircraft_id: 73, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 5, route_id: 4032, user_aircraft_id: 75, duration: 570, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 3, route_id: 1109, user_aircraft_id: 76, duration: 300, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 3, route_id: 1097, user_aircraft_id: 77, duration: 400, frequencies: 20, fare: {"y"=>580, "p"=>1900, "j"=>3380, "f"=>4690}, passengers: {"y"=>700, "p"=>200, "j"=>170, "f"=>30}, revenue: 98000, load: {"y"=>96, "j"=>86, "p"=>88, "f"=>65}, cost: 120000, profit: nil},
+  {airline_id: 3, route_id: 1469, user_aircraft_id: 113, duration: 109, frequencies: 25, fare: {"f"=>"1608", "j"=>"1054", "p"=>"833", "y"=>"611"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 956, user_aircraft_id: 115, duration: 292, frequencies: 13, fare: {"f"=>"3467", "j"=>"1984", "p"=>"1390", "y"=>"797"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 1069, user_aircraft_id: 103, duration: 289, frequencies: 13, fare: {"f"=>"3444", "j"=>"1972", "p"=>"1383", "y"=>"795"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 969, user_aircraft_id: 102, duration: 410, frequencies: 10, fare: {"f"=>"4670", "j"=>"2585", "p"=>"1751", "y"=>"917"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 997, user_aircraft_id: 74, duration: 742, frequencies: 5, fare: {"f"=>"8470", "j"=>"4485", "p"=>"2891", "y"=>"1297"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 1681, user_aircraft_id: 101, duration: 70, frequencies: 31, fare: {"f"=>"1221", "j"=>"861", "p"=>"716", "y"=>"572"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 1629, user_aircraft_id: 80, duration: 531, frequencies: 5, fare: {"f"=>"6099", "j"=>"3300", "p"=>"2180", "y"=>"1060"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 2651, user_aircraft_id: 84, duration: 354, frequencies: 6, fare: {"f"=>"4242", "j"=>"2371", "p"=>"1623", "y"=>"875"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 743, user_aircraft_id: 83, duration: 650, frequencies: 1, fare: {"f"=>"7353", "j"=>"3927", "p"=>"2556", "y"=>"1186"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 1947, user_aircraft_id: 81, duration: 1148, frequencies: 3, fare: {"f"=>"12607", "j"=>"6554", "p"=>"4132", "y"=>"1711"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 5017, user_aircraft_id: 82, duration: 513, frequencies: 5, fare: {"f"=>"5916", "j"=>"3208", "p"=>"2125", "y"=>"1042"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 1724, user_aircraft_id: 86, duration: 846, frequencies: 5, fare: {"f"=>"9423", "j"=>"4961", "p"=>"3177", "y"=>"1393"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 1406, user_aircraft_id: 85, duration: 937, frequencies: 3, fare: {"f"=>"10387", "j"=>"5444", "p"=>"3466", "y"=>"1489"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 737, user_aircraft_id: 90, duration: 519, frequencies: 8, fare: {"f"=>"5783", "j"=>"3141", "p"=>"2085", "y"=>"1029"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 2042, user_aircraft_id: 87, duration: 816, frequencies: 5, fare: {"f"=>"9107", "j"=>"4804", "p"=>"3082", "y"=>"1361"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 804, user_aircraft_id: 79, duration: 606, frequencies: 6, fare: {"f"=>"6892", "j"=>"3696", "p"=>"2418", "y"=>"1140"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 1690, user_aircraft_id: 92, duration: 380, frequencies: 8, fare: {"f"=>"4364", "j"=>"2432", "p"=>"1659", "y"=>"887"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 1030, user_aircraft_id: 78, duration: 542, frequencies: 4, fare: {"f"=>"6221", "j"=>"3360", "p"=>"2217", "y"=>"1072"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 1252, user_aircraft_id: 91, duration: 271, frequencies: 7, fare: {"f"=>"3255", "j"=>"1877", "p"=>"1327", "y"=>"776"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 1473, user_aircraft_id: 96, duration: 441, frequencies: 4, fare: {"f"=>"4982", "j"=>"2741", "p"=>"1845", "y"=>"948"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 4983, user_aircraft_id: 95, duration: 465, frequencies: 7, fare: {"f"=>"5226", "j"=>"2863", "p"=>"1918", "y"=>"973"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 771, user_aircraft_id: 94, duration: 174, frequencies: 1, fare: {"f"=>"2268", "j"=>"1384", "p"=>"1030", "y"=>"677"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 621, user_aircraft_id: 97, duration: 442, frequencies: 6, fare: {"f"=>"4998", "j"=>"2749", "p"=>"1850", "y"=>"950"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 1730, user_aircraft_id: 98, duration: 512, frequencies: 5, fare: {"f"=>"5705", "j"=>"3103", "p"=>"2062", "y"=>"1021"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil},
+  {airline_id: 3, route_id: 1975, user_aircraft_id: 118, duration: 527, frequencies: 4, fare: {"f"=>"6061", "j"=>"3280", "p"=>"2168", "y"=>"1056"}, passengers: nil, revenue: nil, load: nil, cost: nil, profit: nil}
+])
 
-######### DAL
-# AircraftConfiguration.create(name:"International",aircraft_id:9,airline_id:3,f_count:6,j_count:36,p_count:62,y_count:129,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 763
-# AircraftConfiguration.create(name:"International",aircraft_id:6,airline_id:3,f_count:0,j_count:16,p_count:60,y_count:96,f_seat:9,j_seat:6,p_seat:3,y_seat:1) # 752 dom
+AircraftConfiguration.create!([
+  {name: "High Density", aircraft_id: 1, airline_id: 2, f_count: 0, j_count: 20, p_count: 80, y_count: 400, f_seat: 0, j_seat: 3, p_seat: 2, y_seat: 1},
+  {name: "High Density", aircraft_id: 2, airline_id: 2, f_count: 0, j_count: 40, p_count: 60, y_count: 400, f_seat: 0, j_seat: 3, p_seat: 2, y_seat: 1},
+  {name: "High Density", aircraft_id: 3, airline_id: 2, f_count: 0, j_count: 0, p_count: 80, y_count: 400, f_seat: 0, j_seat: 0, p_seat: 2, y_seat: 1},
+  {name: "High Density", aircraft_id: 4, airline_id: 2, f_count: 0, j_count: 0, p_count: 80, y_count: 300, f_seat: 0, j_seat: 0, p_seat: 2, y_seat: 1},
+  {name: "Suites", aircraft_id: 1, airline_id: 2, f_count: 12, j_count: 52, p_count: 80, y_count: 220, f_seat: 8, j_seat: 5, p_seat: 3, y_seat: 1},
+  {name: "Hyper Premium", aircraft_id: 1, airline_id: 2, f_count: 30, j_count: 77, p_count: 0, y_count: 0, f_seat: 0, j_seat: 3, p_seat: 2, y_seat: 1},
+  {name: "Mostly Premium", aircraft_id: 1, airline_id: 2, f_count: 30, j_count: 64, p_count: 36, y_count: 0, f_seat: 0, j_seat: 3, p_seat: 2, y_seat: 1},
+  {name: "TPAC", aircraft_id: 15, airline_id: 2, f_count: 6, j_count: 28, p_count: 80, y_count: 204, f_seat: 9, j_seat: 6, p_seat: 3, y_seat: 1},
+  {name: "International 787-9", aircraft_id: 15, airline_id: 1, f_count: 6, j_count: 40, p_count: 60, y_count: 188, f_seat: 9, j_seat: 6, p_seat: 3, y_seat: 1},
+  {name: "High Density", aircraft_id: 3, airline_id: 1, f_count: 0, j_count: 0, p_count: 0, y_count: 149, f_seat: 8, j_seat: 5, p_seat: 2, y_seat: 1},
+  {name: "High Density", aircraft_id: 29, airline_id: 3, f_count: 0, j_count: 0, p_count: 80, y_count: 300, f_seat: 0, j_seat: 0, p_seat: 2, y_seat: 1},
+  {name: "Domestic", aircraft_id: 20, airline_id: 3, f_count: 0, j_count: 16, p_count: 24, y_count: 97, f_seat: 9, j_seat: 6, p_seat: 2, y_seat: 1},
+  {name: "premium", aircraft_id: 13, airline_id: 3, f_count: 6, j_count: 42, p_count: 55, y_count: 208, f_seat: 9, j_seat: 6, p_seat: 3, y_seat: 1},
+  {name: "p.s.", aircraft_id: 8, airline_id: 3, f_count: 0, j_count: 28, p_count: 48, y_count: 84, f_seat: 8, j_seat: 5, p_seat: 2, y_seat: 1},
+  {name: "premium", aircraft_id: 2, airline_id: 3, f_count: 9, j_count: 53, p_count: 69, y_count: 248, f_seat: 9, j_seat: 6, p_seat: 3, y_seat: 1}
+])
 
-######### JBU
-# AircraftConfiguration.create(name:"Mint",aircraft_id:20,airline_id:4,f_count:0,j_count:24,p_count:24,y_count:116,f_seat:9,j_seat:6,p_seat:2,y_seat:1) # 321T
+Fare.create!([
+  {airline_id: 3, route_id: 1975, fare: {"y"=>700, "p"=>1800, "j"=>5000, "f"=>10000}, passengers: nil, revenue: nil, routings: ["38", "39", "40", "41", "42", "43", "44", "45", "46"], capacity: {"f"=>66, "j"=>562, "p"=>929, "y"=>3364}}
+])
 
-######### VRD
-# AircraftConfiguration.create(name:"Domestic",aircraft_id:19,airline_id:5,f_count:0,j_count:16,p_count:24,y_count:97,f_seat:9,j_seat:6,p_seat:2,y_seat:1) # 321T
+FareRouting.create!([
+  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1975"]},
+  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1947", "2584"]},
+  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1947", "1629", "1657"]},
+  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1947", "2651", "5017"]},
+  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1406", "1181", "1219"]},
+  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1406", "1473", "4983"]},
+  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["737", "771"]},
+  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["2042", "5017"]},
+  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["2042", "2651", "2584"]}
+])
 
-######### For testing fares with connections
-# UserAircraft.create(airline_id:3,aircraft_id:29,age:1,aircraft_configuration_id:11,inuse:false)
-# Flight.create(route_id:1428,user_aircraft_id:64,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
-# Flight.create(route_id:1181,user_aircraft_id:65,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
-# Flight.create(route_id:1219,user_aircraft_id:66,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
-# Flight.create(route_id:1645,user_aircraft_id:67,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
-# Flight.create(route_id:1657,user_aircraft_id:68,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
-# Flight.create(route_id:1097,user_aircraft_id:69,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
-# Flight.create(route_id:1109,user_aircraft_id:70,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
-# Flight.create(route_id:872,user_aircraft_id:71,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
-# Flight.create(route_id:856,user_aircraft_id:72,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
-# Flight.create(route_id:2584,user_aircraft_id:73,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
-# Flight.create(route_id:1657,user_aircraft_id:74,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
-# Flight.create(route_id:4032,user_aircraft_id:75,duration:570,passengers:{y:700,p:200,j:170,f:30},load:{:y=>96,:j=>86,:p=>88,:f=>65},profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:3)
+FlightLoad.create!([
+  {fare_routing_id: 10, route_id: 1975, revenue: nil, passengers: nil},
+  {fare_routing_id: 11, route_id: 1947, revenue: nil, passengers: nil},
+  {fare_routing_id: 11, route_id: 2584, revenue: nil, passengers: nil},
+  {fare_routing_id: 12, route_id: 1947, revenue: nil, passengers: nil},
+  {fare_routing_id: 12, route_id: 1629, revenue: nil, passengers: nil},
+  {fare_routing_id: 12, route_id: 1657, revenue: nil, passengers: nil},
+  {fare_routing_id: 13, route_id: 1947, revenue: nil, passengers: nil},
+  {fare_routing_id: 13, route_id: 2651, revenue: nil, passengers: nil},
+  {fare_routing_id: 13, route_id: 5017, revenue: nil, passengers: nil},
+  {fare_routing_id: 14, route_id: 1406, revenue: nil, passengers: nil},
+  {fare_routing_id: 14, route_id: 1181, revenue: nil, passengers: nil},
+  {fare_routing_id: 14, route_id: 1219, revenue: nil, passengers: nil},
+  {fare_routing_id: 15, route_id: 1406, revenue: nil, passengers: nil},
+  {fare_routing_id: 15, route_id: 1473, revenue: nil, passengers: nil},
+  {fare_routing_id: 15, route_id: 4983, revenue: nil, passengers: nil},
+  {fare_routing_id: 16, route_id: 737, revenue: nil, passengers: nil},
+  {fare_routing_id: 16, route_id: 771, revenue: nil, passengers: nil},
+  {fare_routing_id: 17, route_id: 2042, revenue: nil, passengers: nil},
+  {fare_routing_id: 17, route_id: 5017, revenue: nil, passengers: nil},
+  {fare_routing_id: 18, route_id: 2042, revenue: nil, passengers: nil},
+  {fare_routing_id: 18, route_id: 2651, revenue: nil, passengers: nil},
+  {fare_routing_id: 18, route_id: 2584, revenue: nil, passengers: nil}
+])
+
+Notification.create!([
+  {flight_id: 45, route_id: 956, text: "JinAir launched 1/week Boeing 777-200ER flights on JFK-SFO", read: false, airline_id: 30},
+  {flight_id: 45, route_id: 956, text: "JinAir launched 1/week Boeing 777-200ER flights on JFK-SFO", read: false, airline_id: 31},
+  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 31},
+  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 30},
+  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 39},
+  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 38},
+  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 44},
+  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 43},
+  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 42},
+  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 41},
+  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 40},
+  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 45}
+])

@@ -39,9 +39,9 @@ class Turn
 
   def game_flights game_id
     start = Time.now.to_f
-    fares = Fare.where(airline_id:Airline.where(game_id:game_id)).order('route_id DESC')
+    fares = Fare.where(airline_id:Airline.where(game_id:game_id)).order('route_id DESC') # get every fare belonging to every airline in the game
     total_fares = fares.length
-    organized_routes = organize_routes fares
+    organized_routes = organize_fares fares # organize fares by route id
     @routes = organized_routes
     organized_routes.each do |route|
       flights = compare_demand(sort_fares(route))
@@ -50,7 +50,7 @@ class Turn
     "Determined passengers for #{total_fares} flights on #{organized_routes.length} routes took #{Time.now.to_f - start} seconds"
   end
 
-  def organize_routes fares
+  def organize_fares fares
     routes = {}
     fares.each do |fare|
       if routes[fare.route_id]
