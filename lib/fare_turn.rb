@@ -1,4 +1,4 @@
-class Turn
+class FareTurn
 
   def initialize
     @elasticity = {
@@ -37,30 +37,100 @@ class Turn
   @routes = {}
   @fares = {}
 
-  def game_flights game_id
+  def game_fares game_id
     start = Time.now.to_f
     fares = Fare.where(airline_id:Airline.where(game_id:game_id)).order('route_id DESC') # get every fare belonging to every airline in the game
     total_fares = fares.length
     organized_routes = organize_fares fares # organize fares by route id
+    puts organized_routes
     @routes = organized_routes
     organized_routes.each do |route|
       flights = compare_demand(sort_fares(route))
       prep_for_update(flights)
     end
-    "Determined passengers for #{total_fares} flights on #{organized_routes.length} routes took #{Time.now.to_f - start} seconds"
+    puts "Determined passengers for #{total_fares} flights on #{organized_routes.length} routes took #{Time.now.to_f - start} seconds"
   end
 
   def organize_fares fares
     routes = {}
     fares.each do |fare|
       if routes[fare.route_id]
-        routes[fare.route_id].push(fare)
+        routes[fare.route_id] = routes[fare.route_id] + routings_for_fare(fare)
       else
-        routes[fare.route_id] = [fare]
+        routes[fare.route_id] = routings_for_fare(fare)
       end
     end
     routes
   end
+
+  def routings_for_fare fare
+    routings = []
+    fare.fare_routings.each do |routing|
+      routings.push(routing)
+      puts routing.inspect
+    end
+    routings
+  end
+
+  def sort_flight_reformat fare
+    reformatted = {
+      f:{},
+      j:{},
+      p:{},
+      y:{}
+    }
+    fare[:cabins].each do |key,cabin|
+      reformatted[key] = {
+        :id => fare[:id],
+        :fare => cabin[:fare],
+        :multiplier => cabin[:pricing][:multiplier],
+        :count => cabin[:count],
+        :occupied => 0
+      }
+    end
+    reformatted
+  end
+
+  def compare_demand route
+    route[:fares].each do |key, cabin|
+      total_pax = route[:market][:cabins][key.to_sym][:demand]
+      remaining_pax = total_pax
+      placed_pax = 0
+      airlines = airlines_with_cabin(cabin)
+      airlines.each_with_index do |fare, index|
+        pax_at_fare = fare[:multiplier]*total_pax.round
+        pax_at_fare = (pax_at_fare - placed_pax)
+        airlines[index..-1].each_with_index do |airline, i|
+          pax_per_airline = pax_at_fare/(airlines.length-index-i)
+          open_seats = (airline[:count] - airline[:occupied])
+          if pax_per_airline > open_seats
+            pax_at_fare = pax_at_fare - open_seats
+            pax_on_airline = open_seats
+          else
+            pax_on_airline = pax_per_airline
+            pax_at_fare = (pax_at_fare - pax_on_airline)
+          end
+          pax_on_airline = 0 if pax_on_airline < 0
+          placed_pax += pax_on_airline
+          remaining_pax -= pax_on_airline
+          airline[:occupied] += pax_on_airline
+        end
+        airlines[index][:occupied] = airlines[index][:occupied].round
+      end
+    end
+    route
+  end
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -324,7 +394,7 @@ class Turn
 
   def compute_cost aircraft, route, duration, freq, config
     gpm = (aircraft.fuel_capacity.to_f/aircraft.range.to_f)
-    fuel_cost = (gpm*route.distance*2*2.55*freq)
+    fuel_cost = (gpm*route.distance*2*2.25*freq)
     fa_cost = (((config[:y_count]/50).ceil+(config[:p_count]/24).ceil+(config[:j_count]/8).ceil+(config[:f_count]/4).ceil)*(1+((duration-240).abs/240).ceil))*freq*duration*2
     service_cost = ((config[:y_count]*3)+(config[:p_count]*5)+(config[:j_count]*15)+(config[:f_count]*30))
     pilot_cost = (duration*freq*(1+((duration-240).abs/240).ceil)*2.5)

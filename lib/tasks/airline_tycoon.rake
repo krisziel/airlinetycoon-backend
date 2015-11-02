@@ -8,4 +8,10 @@ namespace :turn do
   	end
   end
 
+  task fares: :environment do
+  	require 'fare_turn'
+  	turn = FareTurn.new
+  	turn.game_fares(2)
+  end
+
 end
