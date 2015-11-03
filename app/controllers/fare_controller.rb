@@ -1,4 +1,5 @@
 class FareController < ApplicationController
+  require 'fare_parser'
   before_action :game, :airline
 
   def show
@@ -24,7 +25,10 @@ class FareController < ApplicationController
       if fare.save
         capacity = fare_capacity routings # grab the total capacity for all selected routings
         routings.each do |routing|
-          new_routing = fare.fare_routings.new(routing:routing) # create a new fare routing for each routing within fare
+          fare_parser = FareParser.new
+          market_fare = fare_parser.get_routing_price(airline, route_id, routing, price)
+          route_capacity = fare_parser.get_routing_capacity(airline, route_id, routing)
+          new_routing = fare.fare_routings.new(routing:routing, market_fare:market_fare, capacity:route_capacity) # create a new fare routing for each routing within fare
           if new_routing.save
             modified_routings.push(new_routing.id) # push the new fare routing into array for the fare
           end

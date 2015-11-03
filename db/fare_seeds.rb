@@ -13,11 +13,10 @@ Game.create!([
 
 Airline.create!([
   {name: "INnoVation Airlines", icao: "INO", money: 5000000000, game_id: 2, user_id: 1},
-  {name: "BALLER", icao: "BAL", money: 5000000000, game_id: 2, user_id: 1},
-  {name: "United Airlines", icao: "UAL", money: 5000000000, game_id: 2, user_id: 1},
+  {name: "BALLER", icao: "BAL", money: 5000000000, game_id: 3, user_id: 2},
+  {name: "United Airlines", icao: "UAL", money: 5000000000, game_id: 2, user_id: 2},
   {name: "INnoVation Airlines", icao: "INO", money: 5000000000, game_id: 3, user_id: 1},
   {name: "Maru Airways", icao: "MRU", money: 4829349549, game_id: 1, user_id: 1},
-  {name: "JinAir", icao: "JNX", money: 4959527679, game_id: 2, user_id: 1}
 ])
 
 UserAircraft.create!([
