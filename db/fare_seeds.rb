@@ -253,57 +253,42 @@ AircraftConfiguration.create!([
 ])
 
 Fare.create!([
-  {airline_id: 3, route_id: 1975, fare: {"y"=>700, "p"=>1800, "j"=>5000, "f"=>10000}, passengers: nil, revenue: nil, routings: ["38", "39", "40", "41", "42", "43", "44", "45", "46"], capacity: {"f"=>66, "j"=>562, "p"=>929, "y"=>3364}}
+  {airline_id: 3, route_id: 1975, fare: {"y"=>700, "p"=>1800, "j"=>5000, "f"=>10000}, passengers: nil, revenue: nil, routings: ["1", "2", "3", "4", "5", "6", "7", "8", "9"], capacity: {"f"=>66, "j"=>562, "p"=>929, "y"=>3364}}
 ])
 
 FareRouting.create!([
-  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1975"]},
-  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1947", "2584"]},
-  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1947", "1629", "1657"]},
-  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1947", "2651", "5017"]},
-  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1406", "1181", "1219"]},
-  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1406", "1473", "4983"]},
-  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["737", "771"]},
-  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["2042", "5017"]},
-  {fare_id: 10, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["2042", "2651", "2584"]}
+  {fare_id: 1, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1975"]},
+  {fare_id: 1, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1947", "2584"]},
+  {fare_id: 1, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1947", "1629", "1657"]},
+  {fare_id: 1, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1947", "2651", "5017"]},
+  {fare_id: 1, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1406", "1181", "1219"]},
+  {fare_id: 1, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["1406", "1473", "4983"]},
+  {fare_id: 1, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["737", "771"]},
+  {fare_id: 1, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["2042", "5017"]},
+  {fare_id: 1, market_fare: nil, capacity: nil, excess_capacity: nil, routing: ["2042", "2651", "2584"]}
 ])
 
 FlightLoad.create!([
-  {fare_routing_id: 10, route_id: 1975, revenue: nil, passengers: nil},
-  {fare_routing_id: 11, route_id: 1947, revenue: nil, passengers: nil},
-  {fare_routing_id: 11, route_id: 2584, revenue: nil, passengers: nil},
-  {fare_routing_id: 12, route_id: 1947, revenue: nil, passengers: nil},
-  {fare_routing_id: 12, route_id: 1629, revenue: nil, passengers: nil},
-  {fare_routing_id: 12, route_id: 1657, revenue: nil, passengers: nil},
-  {fare_routing_id: 13, route_id: 1947, revenue: nil, passengers: nil},
-  {fare_routing_id: 13, route_id: 2651, revenue: nil, passengers: nil},
-  {fare_routing_id: 13, route_id: 5017, revenue: nil, passengers: nil},
-  {fare_routing_id: 14, route_id: 1406, revenue: nil, passengers: nil},
-  {fare_routing_id: 14, route_id: 1181, revenue: nil, passengers: nil},
-  {fare_routing_id: 14, route_id: 1219, revenue: nil, passengers: nil},
-  {fare_routing_id: 15, route_id: 1406, revenue: nil, passengers: nil},
-  {fare_routing_id: 15, route_id: 1473, revenue: nil, passengers: nil},
-  {fare_routing_id: 15, route_id: 4983, revenue: nil, passengers: nil},
-  {fare_routing_id: 16, route_id: 737, revenue: nil, passengers: nil},
-  {fare_routing_id: 16, route_id: 771, revenue: nil, passengers: nil},
-  {fare_routing_id: 17, route_id: 2042, revenue: nil, passengers: nil},
-  {fare_routing_id: 17, route_id: 5017, revenue: nil, passengers: nil},
-  {fare_routing_id: 18, route_id: 2042, revenue: nil, passengers: nil},
-  {fare_routing_id: 18, route_id: 2651, revenue: nil, passengers: nil},
-  {fare_routing_id: 18, route_id: 2584, revenue: nil, passengers: nil}
-])
-
-Notification.create!([
-  {flight_id: 45, route_id: 956, text: "JinAir launched 1/week Boeing 777-200ER flights on JFK-SFO", read: false, airline_id: 30},
-  {flight_id: 45, route_id: 956, text: "JinAir launched 1/week Boeing 777-200ER flights on JFK-SFO", read: false, airline_id: 31},
-  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 31},
-  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 30},
-  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 39},
-  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 38},
-  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 44},
-  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 43},
-  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 42},
-  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 41},
-  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 40},
-  {flight_id: 65, route_id: 956, text: "United Airlines launched 13/week Boeing 757-200 flights on JFK-SFO", read: false, airline_id: 45}
+  {fare_routing_id: 1, route_id: 1975, revenue: nil, passengers: nil},
+  {fare_routing_id: 2, route_id: 1947, revenue: nil, passengers: nil},
+  {fare_routing_id: 2, route_id: 2584, revenue: nil, passengers: nil},
+  {fare_routing_id: 3, route_id: 1947, revenue: nil, passengers: nil},
+  {fare_routing_id: 3, route_id: 1629, revenue: nil, passengers: nil},
+  {fare_routing_id: 3, route_id: 1657, revenue: nil, passengers: nil},
+  {fare_routing_id: 4, route_id: 1947, revenue: nil, passengers: nil},
+  {fare_routing_id: 4, route_id: 2651, revenue: nil, passengers: nil},
+  {fare_routing_id: 4, route_id: 5017, revenue: nil, passengers: nil},
+  {fare_routing_id: 5, route_id: 1406, revenue: nil, passengers: nil},
+  {fare_routing_id: 5, route_id: 1181, revenue: nil, passengers: nil},
+  {fare_routing_id: 5, route_id: 1219, revenue: nil, passengers: nil},
+  {fare_routing_id: 6, route_id: 1406, revenue: nil, passengers: nil},
+  {fare_routing_id: 6, route_id: 1473, revenue: nil, passengers: nil},
+  {fare_routing_id: 6, route_id: 4983, revenue: nil, passengers: nil},
+  {fare_routing_id: 7, route_id: 737, revenue: nil, passengers: nil},
+  {fare_routing_id: 7, route_id: 771, revenue: nil, passengers: nil},
+  {fare_routing_id: 8, route_id: 2042, revenue: nil, passengers: nil},
+  {fare_routing_id: 8, route_id: 5017, revenue: nil, passengers: nil},
+  {fare_routing_id: 9, route_id: 2042, revenue: nil, passengers: nil},
+  {fare_routing_id: 9, route_id: 2651, revenue: nil, passengers: nil},
+  {fare_routing_id: 9, route_id: 2584, revenue: nil, passengers: nil}
 ])

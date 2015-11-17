@@ -42,7 +42,8 @@ class FareTurn
     fares = Fare.where(airline_id:Airline.where(game_id:game_id)).order('route_id DESC') # get every fare belonging to every airline in the game
     total_fares = fares.length # just for logging
     organized_routes = organize_fares(fares) # organize fares by route id
-    @routes = organized_routes # instance variable
+    @routes = organized_routes
+    puts @routes
     organized_routes.each do |route, routings| # for each route
       flights = compare_demand(sort_fares(routings)) # go through the demand for the route and determine passenger distribution
       prep_for_update(flights) # prepare data to update database
@@ -53,6 +54,7 @@ class FareTurn
   def organize_fares fares # put every fare into an array where the key is the route id
     routes = {} # empty hash
     fares.each do |fare| # for every single fare within the game
+      puts fare.fare_routings
       if routes[fare.route_id] # if there is already an array within the hash for this route id
         routes[fare.route_id] = routes[fare.route_id] + fare.fare_routings # add all the fare routings for the fare to the array
       else
@@ -107,6 +109,10 @@ class FareTurn
   end
 
   def sort_fares routings
+    puts routings
+    if routings.length == 0
+      return false
+    end
     market = routings[0].fare.route.demand
     sorted_fares = { :f=>[], :j=>[], :p=>[], :y=>[] }
     routings.each do |routing|
@@ -161,7 +167,7 @@ class FareTurn
         end
       end
       multiplier = compute_multiplier(demand)
-      if multiplier < 0.25 # if the multiplier is below .25, probably not worth giving the routing any passengers
+      if multiplier >= 0.25 # if the multiplier is below .25, probably not worth giving the routing any passengers
         demand[:multiplier] = multiplier
       end
     end
