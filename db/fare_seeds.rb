@@ -6,7 +6,7 @@ User.create!([
 ])
 
 Game.create!([
-  {region: "all", year: "2Q2015", name: "Rory Beautiful"},
+  {region: "all", year: "2Q2015", name: "Worldwide"},
   {region: "NA", year: "1989", name: "Murica"},
   {region: "asia", year: "1989", name: "Asia"}
 ])
