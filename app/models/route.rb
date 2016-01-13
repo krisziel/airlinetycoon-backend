@@ -1,5 +1,6 @@
 class Route < ActiveRecord::Base
   has_many :flights
+  has_many :market_sizes, as: :marketable
 
   def origin
     Airport.find(origin_id)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150603082304) do
+ActiveRecord::Schema.define(version: 20160113044303) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -172,6 +172,33 @@ ActiveRecord::Schema.define(version: 20150603082304) do
   create_table "fare_averages", force: true do |t|
   end
 
+  create_table "fare_routings", force: true do |t|
+    t.integer "fare_id"
+    t.json    "market_fare"
+    t.json    "capacity"
+    t.json    "excess_capacity"
+    t.text    "routing",         default: [], array: true
+  end
+
+  create_table "fares", force: true do |t|
+    t.integer  "airline_id"
+    t.integer  "route_id"
+    t.json     "fare"
+    t.json     "passengers"
+    t.json     "revenue"
+    t.text     "routings",   default: [], array: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.json     "capacity"
+  end
+
+  create_table "flight_loads", force: true do |t|
+    t.integer "fare_routing_id"
+    t.integer "route_id"
+    t.json    "revenue"
+    t.json    "passengers"
+  end
+
   create_table "flights", force: true do |t|
     t.integer  "airline_id"
     t.integer  "route_id"
@@ -219,6 +246,20 @@ ActiveRecord::Schema.define(version: 20150603082304) do
     t.integer  "net_income"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "market_sizes", force: true do |t|
+    t.integer  "flights"
+    t.integer  "seats"
+    t.integer  "asm"
+    t.integer  "rpm"
+    t.integer  "load_factor"
+    t.integer  "airline_id"
+    t.integer  "game_id"
+    t.integer  "marketable_id"
+    t.string   "marketable_type"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   create_table "messages", force: true do |t|
