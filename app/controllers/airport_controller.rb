@@ -10,7 +10,7 @@ class AirportController < ApplicationController
       city = "%#{city}%"
       airports = Airport.where("citycode LIKE ?", city)
     else
-      airports = Airport.all
+      airports = Airport.where("population > 0")
     end
     airport_list = []
     airports.each do |airport|

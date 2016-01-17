@@ -6,7 +6,6 @@ class FlightValidator < ActiveModel::Validator
 
 end
 
-
 class Flight < ActiveRecord::Base
   belongs_to :route
   belongs_to :airline
