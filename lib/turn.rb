@@ -1,4 +1,5 @@
 class Turn
+  require 'market_share'
 
   def initialize
     @elasticity = {
@@ -51,7 +52,9 @@ class Turn
       flights = compare_demand(sort_fares(route))
       prep_for_update(flights)
     end
-    "Determined passengers for #{total_flights} flights on #{organized_routes.length} routes took #{Time.now.to_f - start} seconds"
+    shares = ShareComputer.new game_id
+    shares.parse_routes
+    puts "Determined passengers for #{total_flights} flights on #{organized_routes.length} routes took #{Time.now.to_f - start} seconds"
   end
 
   def organize_flights flights

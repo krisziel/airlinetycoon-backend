@@ -3,9 +3,10 @@ namespace :turn do
   task month: :environment do
   	require 'turn'
   	turn = Turn.new
-  	Game.all.each do |game|
-  		turn.game_flights(game.id)
-  	end
+  	turn.game_flights(2)
+  	# Game.all.each do |game|
+  	# 	turn.game_flights(game.id)
+  	# end
   end
 
 end

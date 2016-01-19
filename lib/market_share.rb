@@ -1,51 +1,91 @@
 class ShareComputer
 
-  def init game_id
-    @active_routes = Flight.where(game_id).select("DISTINCT route_id").map(&:route_id)
-    @airports = Airport.all
+  def initialize game_id
+    @active_routes = Flight.where("airline_id IN (?)", Airline.where(game_id: game_id).pluck(:id)).select("DISTINCT route_id").map(&:route_id)
+    @airlines = Game.find(game_id).airlines.map(&:id).map{|x| [x, {}]}.to_h # makes hash with key for each airline, value is empty hash
+    parse_routes
+    parse_airports
   end
 
   def parse_routes
     @active_routes.each do |route_id|
       route = Route.select(:distance).find(route_id)
-      route_flights = Flight.where(route_id: route_id)
+      route_flights = Flight.where("route_id = ? AND airline_id IN (?)", route_id, @airlines.keys)
       airlines = {}
       route_flights.each do |flight|
-        aircraft_configuration = flight.user_aircraft.configuration
+        aircraft_configuration = flight.user_aircraft.aircraft_configuration
         flight_passengers = flight.passengers
         seats = (flight.frequencies*(aircraft_configuration.f_count + aircraft_configuration.j_count + aircraft_configuration.p_count + aircraft_configuration.y_count))
         passengers = (flight_passengers["f"] + flight_passengers["j"] + flight_passengers["p"] + flight_passengers["y"])
         asm = (seats * route.distance)
         rpm = (passengers * route.distance)
-        if airlines[id]
-          airline = airlines[id]
-          airline["frequencies"] += flight.frequencies
-          airline["passengers"] += passengers
-          airline["seats"] += seats
-          airline["asm"] += asm
-          airline["rpm"] += rpm
-          load_factor = (airline["rpm"]/airline["asm"])
-          airline["load_factor"] = load_factor
+        load_factor = (rpm/asm)
+        data  = {
+          frequencies: flight.frequencies,
+          passengers: passengers,
+          seats: seats,
+          asm: asm,
+          rpm: rpm,
+          load_factor: load_factor
+        }
+        add_flight_to_airport flight, data
+        if airlines[flight.airline_id]
+          airline = airlines[flight.airline_id]
+          airline[:frequencies] += flight.frequencies
+          airline[:passengers] += passengers
+          airline[:seats] += seats
+          airline[:asm] += asm
+          airline[:rpm] += rpm
+          load_factor = (airline[:rpm]/airline[:asm])
+          airline[:load_factor] = load_factor
         else
-          load_factor = (rpm/asm)
-          airlines[id] = {
-            frequencies: flight.frequencies,
-            passengers: passengers,
-            seats: seats,
-            asm: asm,
-            rpm: rpm,
-            load_factor: load_factor
-          }
+          airlines[flight.airline_id] = data
         end
       end
-      airlines.each do |airline|
-        existing_market = MarketSize.find_by(route_id: route_id, airline_id: flight.airline_id)
+      airlines.each do |airline, share|
+        existing_market = MarketSize.find_by(marketable_id: route_id, marketable_type: 'Route', airline_id: airline)
         if(existing_market)
-          existing_market.update(frequencies: (frequencies/7).round, passengers: (passengers/7).round, seats: (seats/7).round, asm: (asm/7).round, rpm: (rpm/7).round, load_factor: load_factor)
+          existing_market.update(flights: (share[:frequencies]/7).round, passengers: (share[:passengers]/7).round, seats: (share[:seats]/7).round, asm: (share[:asm]/7).round, rpm: (share[:rpm]/7).round, load_factor: share[:load_factor])
         else
-          Route.find(route_id).market_sizes.new(frequencies: (frequencies/7).round, passengers: (passengers/7).round, seats: (seats/7).round, asm: (asm/7).round, rpm: (rpm/7).round, load_factor: load_factor, airline_id: flight.airline_id)
+          new_market = Route.find(route_id).market_sizes.new(flights: (share[:frequencies]/7).round, passengers: (share[:passengers]/7).round, seats: (share[:seats]/7).round, asm: (share[:asm]/7).round, rpm: (share[:rpm]/7).round, load_factor: share[:load_factor], airline_id: airline).save
         end
       end
+    end
+  end
+
+  def parse_airports
+    @airlines.each do |airline, shares|
+      shares.each do |airport, share|
+        existing_market = MarketSize.find_by(marketable_id: airport, marketable_type: 'Airport', airline_id: airline)
+        if(existing_market)
+          existing_market.update(flights: (share[:frequencies]/7).round, passengers: (share[:passengers]/7).round, seats: (share[:seats]/7).round, asm: (share[:asm]/7).round, rpm: (share[:rpm]/7).round, destinations: share[:destinations].count)
+        else
+          new_market = Airport.find(airport).market_sizes.new(flights: (share[:frequencies]/7).round, passengers: (share[:passengers]/7).round, seats: (share[:seats]/7).round, asm: (share[:asm]/7).round, rpm: (share[:rpm]/7).round, destinations: share[:destinations].count, airline_id: airline).save
+        end
+      end
+    end
+  end
+
+  def add_flight_to_airport flight, data
+    airports = [flight.route.origin_id, flight.route.destination_id]
+    airports.each do |airport|
+      if !@airlines[flight.airline_id][airport]
+        @airlines[flight.airline_id][airport] = {
+          frequencies: 0,
+          passengers: 0,
+          seats: 0,
+          destinations: {},
+          asm: 0,
+          rpm: 0
+        }
+      end
+      airport_data = @airlines[flight.airline_id][airport]
+      airport_data[:frequencies] += data[:frequencies]
+      airport_data[:passengers] += data[:passengers]
+      airport_data[:seats] += data[:seats]
+      airport_data[:destinations][flight.route_id] = 1
+      airport_data[:asm] += data[:asm]
+      airport_data[:rpm] += data[:rpm]
     end
   end
 

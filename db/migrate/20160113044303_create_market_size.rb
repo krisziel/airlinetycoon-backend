@@ -2,9 +2,11 @@ class CreateMarketSize < ActiveRecord::Migration
   def change
     create_table :market_sizes do |t|
       t.integer :flights
+      t.integer :passengers
       t.integer :seats
       t.integer :asm
       t.integer :rpm
+      t.integer :destinations
       t.integer :load_factor
       t.integer :airline_id
       t.integer :game_id
