@@ -43,4 +43,13 @@ class Airport < ActiveRecord::Base
     import
   end
 
+  def market_share_data game_id
+    airport_shares = self.market_sizes.where("airline_id IN (?)", Game.find(game_id).airlines.pluck(:id))
+    all_shares = []
+    airport_shares.each do |share|
+      all_shares.push share.data
+    end
+    all_shares
+  end
+
 end

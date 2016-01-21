@@ -1,5 +1,5 @@
 class RouteController < ApplicationController
-  before_action :airline
+  before_action :airline, :game
   require 'csv'
 
   def show
@@ -10,7 +10,7 @@ class RouteController < ApplicationController
       elsif params[:o] && params[:d]
         route = Route.find_by('(origin_id=? AND destination_id=?) OR (origin_id=? AND destination_id=?)',params[:o],params[:d],params[:d],params[:o])
         if route
-          route = route.serialize_flights
+          route = route.serialize_flights game.id
         else
           route = {
             error: 'no route'

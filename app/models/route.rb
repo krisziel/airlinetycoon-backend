@@ -45,13 +45,13 @@ class Route < ActiveRecord::Base
     }
   end
 
-  def serialize_flights
+  def serialize_flights game_id
     flight_list = Flight.where(route_id:id)
     flights = []
     flight_list.each do |flight|
       flights.push(flight.route_serialize)
     end
-    route = {
+    route_data = {
       origin:origin.basic_data,
       destination:destination.basic_data,
       minfare:minfare,
@@ -60,6 +60,19 @@ class Route < ActiveRecord::Base
       distance:distance,
       id:id
     }
+    if game_id
+      route_data["marketShares"] = market_share_data game_id
+    end
+    route_data
+  end
+
+  def market_share_data game_id
+    airport_shares = self.market_sizes.where("airline_id IN (?)", Game.find(game_id).airlines.pluck(:id))
+    all_shares = []
+    airport_shares.each do |share|
+      all_shares.push share.data
+    end
+    all_shares
   end
 
 end

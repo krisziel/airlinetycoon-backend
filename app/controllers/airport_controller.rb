@@ -1,4 +1,5 @@
 class AirportController < ApplicationController
+  before_action :game, :airline
 
   def all
     if params[:region]
@@ -22,13 +23,16 @@ class AirportController < ApplicationController
   def show
     airport = Airport.find(params[:icao])
     if airport
-      airport = airport.serialize
+      airport_data = airport.serialize
     else
-      airport = {
-        error:'#params[:icao] not found'
+      airport_data = {
+        error:'#{params[:icao]} not found'
       }
     end
-    render json: airport
+    if game
+      airport_data["marketShares"] = airport.market_share_data game.id
+    end
+    render json: airport_data
   end
 
 end
