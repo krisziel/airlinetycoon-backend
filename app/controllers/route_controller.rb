@@ -6,7 +6,7 @@ class RouteController < ApplicationController
     if airline
       if params[:id]
         route = Route.find(params[:id])
-        route = route.serialize_flights
+        route = route.serialize_flights game.id
       elsif params[:o] && params[:d]
         route = Route.find_by('(origin_id=? AND destination_id=?) OR (origin_id=? AND destination_id=?)',params[:o],params[:d],params[:d],params[:o])
         if route
