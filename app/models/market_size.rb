@@ -15,4 +15,14 @@ class MarketSize < ActiveRecord::Base
     share_data
   end
 
+  def airport_data
+    share_data = {
+      airlines: seats,
+      passengers: passengers,
+      flights: flights,
+      destinations: destinations
+    }
+    share_data
+  end
+
 end
