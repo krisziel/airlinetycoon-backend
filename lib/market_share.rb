@@ -22,6 +22,9 @@ class ShareComputer
         passengers = (flight_passengers["f"] + flight_passengers["j"] + flight_passengers["p"] + flight_passengers["y"])
         asm = (seats * route.distance)
         rpm = (passengers * route.distance)
+        if asm == 0 || rpm == 0
+          next
+        end
         load_factor = (rpm/asm)
         data  = {
           frequencies: flight.frequencies,
