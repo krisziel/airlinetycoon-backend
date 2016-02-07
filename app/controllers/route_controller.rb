@@ -225,7 +225,7 @@ class RouteController < ApplicationController
     dLon = (((lon2-lon1)*Math::PI) / 180);
     a = Math.sin(dLat/2) * Math.sin(dLat/2) +
     Math.cos((lat1 * Math::PI / 180)) * Math.cos((lat2 * Math::PI / 180)) *
-    Math.sin(dLon/2) * Math.sin(dLon/2);
+    Math.sin(dLon/2) * Math.sin(dLon/2)
     c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     d = 6371 * c
     d = d*0.621371
@@ -233,15 +233,15 @@ class RouteController < ApplicationController
 
   def flight_distance
     Route.all.each do |route|
-      distance = return_dist(route.origin, route.destination)
-      route.update(minfare:distance[:min],maxfare:distance[:max])
-      # origin = route.origin
-      # originll = [origin.latitude.to_f, origin.longitude.to_f]
-      # destination = route.destination
-      # destinationll = [destination.latitude.to_f, destination.longitude.to_f]
-      # distance = gcm_distance(originll, destinationll)
-      # p distance
-      # route.update(distance:distance)
+      # distance = return_dist(route.origin, route.destination)
+      # route.update(minfare:distance[:min],maxfare:distance[:max])
+      origin = route.origin
+      originll = [origin.latitude.to_f, origin.longitude.to_f]
+      destination = route.destination
+      destinationll = [destination.latitude.to_f, destination.longitude.to_f]
+      distance = gcm_distance(originll, destinationll)
+      p distance
+      route.update(distance:distance)
     end
   end
 
