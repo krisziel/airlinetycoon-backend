@@ -1,11 +1,8 @@
 class ChatController < ApplicationController
   before_action :game, :airline
 
-  @clients = {
-    alliance:{},
-    game:{},
-    conversation:{}
-  }
+  @clients = []
+  @conversations = []
   EM.run do
     EM::WebSocket.start(host: ENV['WEBSOCKET_HOST'], port: ENV['WEBSOCKET_PORT']) do |ws|
       crypt = ActiveSupport::MessageEncryptor.new(ENV['SECRET_KEY_BASE'])
@@ -16,27 +13,25 @@ class ChatController < ApplicationController
           game_id:crypt.decrypt_and_verify(params["game_cookie"])
         }
         airline = Airline.find_by(user_id:user_data[:user_id],game_id:user_data[:game_id])
-        client = {socket: ws}
         alliance = airline.alliance
         game = airline.game
-        if alliance
-          if @clients[:alliance][alliance.id]
-            @clients[:alliance][alliance.id].push(client)
-          else
-            @clients[:alliance][alliance.id] = [client]
-          end
-        end
-        if @clients[:game][game.id]
-          @clients[:game][game.id].push(client)
-        else
-          @clients[:game][game.id] = [client]
-        end
-        ws.send '{"status":"successful"}'
+        client = {
+          socket: ws,
+          id: airline.id,
+          alliance: alliance.id,
+          game: game.id
+        }
+        @clients.push(client)
       end
 
       ws.onclose do
-        ws.send "Closed."
-        @clients.delete ws
+        ws.send '{"status":"closed"}'
+        client = @clients.find {|client| client["socket"] == ws }
+        @clients.delete client
+        conversations = @conversations.find {|conversation| conversation["airlines"].include?(client.id) }
+        conversations.each do |conversation|
+          @conversations.delete conversation
+        end
       end
 
       ws.onmessage do |data|
