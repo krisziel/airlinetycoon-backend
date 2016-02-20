@@ -18,7 +18,7 @@ class ChatController < ApplicationController
         client = {
           socket: ws,
           id: airline.id,
-          alliance: alliance.id,
+          alliance: (alliance ? alliance.id : nil),
           game: game.id
         }
         @clients.push(client)
@@ -26,11 +26,13 @@ class ChatController < ApplicationController
 
       ws.onclose do
         ws.send '{"status":"closed"}'
-        client = @clients.find {|client| client["socket"] == ws }
+        client = @clients.find {|client| client[:socket] == ws }
         @clients.delete client
-        conversations = @conversations.find {|conversation| conversation["airlines"].include?(client.id) }
-        conversations.each do |conversation|
-          @conversations.delete conversation
+        conversations = @conversations.find {|conversation| conversation[:airlines].include?(client.id) }
+        if conversations
+          conversations.each do |conversation|
+            @conversations.delete conversation
+          end
         end
       end
 
@@ -68,6 +70,15 @@ class ChatController < ApplicationController
         else
 
         end
+      end
+    end
+    timer = EventMachine::PeriodicTimer.new(5) do
+      require 'notificationcenter'
+      puts @clients
+      notification_center = NotificationCenter.new
+      @clients.each do |client|
+        notifications = notification_center.messages(client[:id])
+        puts notifications
       end
     end
   end
