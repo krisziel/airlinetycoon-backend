@@ -19,7 +19,8 @@ class ChatController < ApplicationController
           socket: ws,
           id: airline.id,
           alliance: (alliance ? alliance.id : nil),
-          game: game.id
+          game: game.id,
+          last_update: airline.last_update
         }
         @clients.push(client)
       end
@@ -37,38 +38,48 @@ class ChatController < ApplicationController
       end
 
       ws.onmessage do |data|
-        data = data.split("lIlIlIIlIlIl")
-        data[-1] = data[-1].gsub(/\?/,'')
-        params = Rack::Utils.parse_nested_query(data[-1])
-        user_data = {
-          user_id:crypt.decrypt_and_verify(params["user_cookie"]),
-          game_id:crypt.decrypt_and_verify(params["game_cookie"])
-        }
-        airline = Airline.find_by(user_id:user_data[:user_id],game_id:user_data[:game_id])
-        message_data = JSON.parse(data[0])
-        type_id = message_data["type_id"]
-        message_type = message_data["message_type"]
-        body = message_data["body"]
-        if airline.alliance.id == message_data["type_id"].to_i
-          date = Time.now-15
-          date = date.to_datetime
-          dupe = Message.find_by('created_at > ? AND body=? AND type_id=?', date, body, type_id)
-          if dupe
+        message_data = JSON.parse(data) rescue nil
+        if message_data
+          user_id = message_data[:user_id] ? message_data[:user_id] : ""
+          game_id = message_data[:game_id] ? message_data[:game_id] : ""
+          user_data = {
+            user_id:(crypt.decrypt_and_verify(user_id) rescue nil),
+            game_id:(crypt.decrypt_and_verify(game_id) rescue nil)
+          }
+          if ((user_data[:user_id] == nil)||(user_data[:game_id] == nil))
+            response = {
+              error:"bad auth"
+            }
           else
-            new_message = Message.new(body:body, airline_id:airline.id, message_type:message_type, type_id:type_id)
-            if new_message.save
-              recipients = @clients[message_type.to_sym][type_id.to_i]
-              recipients.each do |socket|
-                socket[:socket].send new_message.serialize.to_json
-              end
-            else
-              if socket[:conv_info][:user_id] == conversation[:user_id]
-                socket[:socket].send new_message.errors.to_json
-              end
-            end
           end
-        else
-
+          puts '****************************************************'
+          puts data
+          puts '****************************************************'
+          # airline = Airline.find_by(user_id:user_data[:user_id],game_id:user_data[:game_id])
+          # type_id = message_data["type_id"]
+          # message_type = message_data["message_type"]
+          # body = message_data["body"]
+          # if airline.alliance.id == message_data["type_id"].to_i
+          #   date = Time.now-15
+          #   date = date.to_datetime
+          #   dupe = Message.find_by('created_at > ? AND body=? AND type_id=?', date, body, type_id)
+          #   if dupe
+          #   else
+          #     new_message = Message.new(body:body, airline_id:airline.id, message_type:message_type, type_id:type_id)
+          #     if new_message.save
+          #       recipients = @clients[message_type.to_sym][type_id.to_i]
+          #       recipients.each do |socket|
+          #         socket[:socket].send new_message.serialize.to_json
+          #       end
+          #     else
+          #       if socket[:conv_info][:user_id] == conversation[:user_id]
+          #         socket[:socket].send new_message.errors.to_json
+          #       end
+          #     end
+          #   end
+          # else
+          #
+          # end
         end
       end
     end
@@ -77,8 +88,9 @@ class ChatController < ApplicationController
       puts @clients
       notification_center = NotificationCenter.new
       @clients.each do |client|
-        notifications = notification_center.messages(client[:id])
-        puts notifications
+        notifications = notification_center.notifications(client[:id], client[:last_update])
+        client[:socket].send notifications.to_json
+        puts notifications.to_json
       end
     end
   end

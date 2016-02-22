@@ -1,5 +1,5 @@
 class Notification < ActiveRecord::Base
-	has_one :airline
+	belongs_to :airline
 	has_one :route
 	has_one :flight
 end
