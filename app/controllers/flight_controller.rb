@@ -177,7 +177,7 @@ class FlightController < ApplicationController
 
   def create_notification(creator, flight)
     route = Route.find_by(id:flight.route_id)
-    text = "#{airline.name} launched #{flight.frequencies}/week #{flight.user_aircraft.aircraft.full_name} flights on #{route.origin.iata}-#{route.destination.iata}"
+    text = "#{airline.name} launched #{flight.frequencies}/week #{flight.user_aircraft.aircraft.full_name}s flights on #{route.origin.iata}-#{route.destination.iata}"
     airlines = route.flights.where('airline_id != ?',creator.id)
     airlines.each do |airline|
       notification = Notification.new(route_id:route.id,flight_id:flight.id,airline_id:airline.id,text:text,read:false)

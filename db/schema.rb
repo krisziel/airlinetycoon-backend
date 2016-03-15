@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160222082447) do
+ActiveRecord::Schema.define(version: 20160315051115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -231,6 +231,7 @@ ActiveRecord::Schema.define(version: 20160222082447) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
+    t.datetime "next_turn"
   end
 
   create_table "income_statements", force: true do |t|
@@ -287,6 +288,8 @@ ActiveRecord::Schema.define(version: 20160222082447) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "airline_id"
+    t.string   "notificationable_type"
+    t.integer  "notificationable_id"
   end
 
   create_table "route_jumpers", force: true do |t|
