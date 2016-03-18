@@ -3,6 +3,7 @@ class ChatController < ApplicationController
 
   @clients = []
   @conversations = []
+
   EM.run do
     EM::WebSocket.start(host: ENV['WEBSOCKET_HOST'], port: ENV['WEBSOCKET_PORT']) do |ws|
       crypt = ActiveSupport::MessageEncryptor.new(ENV['SECRET_KEY_BASE'])
@@ -31,6 +32,7 @@ class ChatController < ApplicationController
             @clients.push(client)
           end
         end
+        ws.send '{"status":"opened"}'
       end
 
       ws.onclose do
