@@ -4,7 +4,8 @@ class ChatController < ApplicationController
   @clients = {
     alliance:{},
     game:{},
-    conversation:{}
+    conversation:{},
+    airline:{}
   }
   EM.run do
     EM::WebSocket.start(host: ENV['WEBSOCKET_HOST'], port: ENV['WEBSOCKET_PORT']) do |ws|
@@ -19,6 +20,7 @@ class ChatController < ApplicationController
         client = {socket: ws}
         alliance = airline.alliance
         game = airline.game
+        @clients[:airline][airline.id] = client
         if alliance
           if @clients[:alliance][alliance.id]
             @clients[:alliance][alliance.id].push(client)
@@ -31,11 +33,11 @@ class ChatController < ApplicationController
         else
           @clients[:game][game.id] = [client]
         end
-        ws.send '{"status":"successful"}'
+        ws.send '{"status":"opened"}'
       end
 
       ws.onclose do
-        ws.send "Closed."
+        ws.send '{"status":"closed"}'
         @clients.delete ws
       end
 

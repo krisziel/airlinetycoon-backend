@@ -1,5 +1,5 @@
-# class TurnController < ApplicationController
 class Turn
+  require 'market_share'
 
   def initialize
     @elasticity = {
@@ -42,7 +42,7 @@ class Turn
     start = Time.now.to_f
     airlines = []
     Airline.where(game_id:game_id).each do |airline|
-     airlines.push(airline.id) 
+     airlines.push(airline.id)
     end
     flights = Flight.where('airline_id IN (?)',airlines).order('route_id DESC')
     total_flights = flights.length
@@ -52,7 +52,9 @@ class Turn
       flights = compare_demand(sort_fares(route))
       prep_for_update(flights)
     end
-    "Determined passengers for #{total_flights} flights on #{organized_routes.length} routes took #{Time.now.to_f - start} seconds"
+    shares = ShareComputer.new game_id
+    shares.parse_routes
+    puts "Determined passengers for #{total_flights} flights on #{organized_routes.length} routes took #{Time.now.to_f - start} seconds"
   end
 
   def organize_flights flights
