@@ -41,6 +41,7 @@ class FlightController < ApplicationController
       if flight.update(flight_params)
         UserAircraft.find(old_aircraft).update(inuse:false)
         UserAircraft.find(params[:flight][:user_aircraft_id]).update(inuse:true)
+        create_notification(airline, flight, 'update')
         flight = flight.full_data
       else
         flight = flight.errors.messages
@@ -58,7 +59,7 @@ class FlightController < ApplicationController
       flight = Flight.new(flight_params)
       if flight.save
         UserAircraft.find(params[:flight][:user_aircraft_id]).update(inuse:true)
-        create_notification(airline,flight)
+        create_notification(airline, flight, 'new')
         flight = flight.full_data
       else
         flight = flight.errors.message
@@ -175,12 +176,21 @@ class FlightController < ApplicationController
     errors.length > 0 ? errors : true
   end
 
-  def create_notification(creator, flight)
+  def create_notification(creator, flight, type)
     route = Route.find_by(id:flight.route_id)
-    text = "#{airline.name} launched #{flight.frequencies}/week #{flight.user_aircraft.aircraft.full_name}s flights on #{route.origin.iata}-#{route.destination.iata}"
+    route_id = route.id
+    origin = route.origin.iata
+    destination = route.destination.iata
+    if type == "new"
+      header = "New competiton on #{origin}-#{destination}"
+      text = "#{airline.name} launched #{flight.frequencies}/week #{flight.user_aircraft.aircraft.full_name} flights on #{origin}-#{destination}"
+    elsif type == "update"
+      header = "Competitor adjustment on #{origin}-#{destination}"
+      text = "#{airline.name} launched #{flight.frequencies}/week #{flight.user_aircraft.aircraft.full_name} flights on #{origin}-#{destination}"
+    end
     airlines = route.flights.where('airline_id != ?',creator.id)
     airlines.each do |airline|
-      notification = Notification.new(route_id:route.id,flight_id:flight.id,airline_id:airline.id,text:text,read:false)
+      notification = Notification.new(route_id:route, flight_id:flight.id, airline_id:airline.id, text:text, header:header, read:false, notificationable_type: "Route", notificationable_id: route)
       notification.save
     end
   end

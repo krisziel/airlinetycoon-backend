@@ -113,7 +113,6 @@ class ChatController < ApplicationController
 
     timer = EventMachine::PeriodicTimer.new(5) do
       require 'notificationcenter'
-      # puts @clients
       notification_center = NotificationCenter.new
       @clients.each do |client|
         notifications = notification_center.notifications(client[:id], client[:last_update])

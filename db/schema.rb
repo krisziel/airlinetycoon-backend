@@ -290,6 +290,7 @@ ActiveRecord::Schema.define(version: 20160315051115) do
     t.integer  "airline_id"
     t.string   "notificationable_type"
     t.integer  "notificationable_id"
+    t.string   "header"
   end
 
   create_table "route_jumpers", force: true do |t|
