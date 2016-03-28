@@ -70,8 +70,8 @@ class ChatController < ApplicationController
             if type == "Alliance"
               type_id = (airline.alliance ? airline.alliance.id : nil)
             elsif type == "Airline"
-              # type_id = get_conversation_id airline.id, type_id
-              airline = (Game.find(user_data[:game_id]).airlines.find(message_data["type_id"]).id rescue nil)
+              type_id = get_conversation_id airline.id, type_id
+              airline_id = (Game.find(user_data[:game_id]).airlines.find(message_data["type_id"]).id rescue nil)
             elsif type == "Game"
               type_id = user_data[:game_id]
             end
@@ -96,7 +96,7 @@ class ChatController < ApplicationController
                     end
                   end
                 elsif message.message_type == "Airline"
-                  recipient_airline = @clients.select {|client| client[:id] == type_id }
+                  recipient_airline = @clients.select {|client| client[:id] == airline_id }
                   if recipient_airline.length > 0
                     recipient_airline[0][:socket].send message.serialize.to_json
                   end
