@@ -111,7 +111,7 @@ class ChatController < ApplicationController
       end
       # ws://localhost:3001?user_cookie=NThWZExFQlVoUzVubTNaVXN5SllQUT09LS0weTlCbEhYZ0tXMHkzQTFQR0l2cU1BPT0=--40387434903cf41f0385c5a1756ec1029f7da12c&game_cookie=L1N4aE9wZnlxT1puL0RWS3RpMWRDUT09LS1HdjdiMzVnd2E4WjQ1Q1NPT21vbVR3PT0=--d86d8807568aae3e57698e02b42d30b720bb754c
       # ws://localhost:3001?user_cookie=Y2ZKNE9TS3dERGE3RERtMlAwSE11Zz09LS1YVk4wSzY2M3BWd1hFSDJja3o4TkRRPT0=--575eb75ed9fb751c9ce6afbf21e91fae4b0778fa&game_cookie=L1N4aE9wZnlxT1puL0RWS3RpMWRDUT09LS1HdjdiMzVnd2E4WjQ1Q1NPT21vbVR3PT0=--d86d8807568aae3e57698e02b42d30b720bb754c
-      return msg_status.to_json
+      # return msg_status.to_json
     end
 
     timer = EventMachine::PeriodicTimer.new(5) do
@@ -125,9 +125,6 @@ class ChatController < ApplicationController
         end
       end
     end
-  end
-
-  def send_message message_data, user_data
   end
 
   def join
@@ -158,47 +155,5 @@ class ChatController < ApplicationController
       end
     end
   end
-
-  # def test
-  #   airlines = [27, 36, 37, 28, 30, 33, 40, 31, 38, 35, 39, 26, 32, 34, 29]
-  #   start = Time.now
-  #   10000.times do |i|
-  #     sender = airlines.sample
-  #     recipient = airlines.sample
-  #     conversation = get_conversation_id sender, recipient
-  #   end
-  #   finish = Time.now
-  #   puts "TOOK #{(finish - start)} SECONDS"
-  # end
-  #
-  # def test2
-  #   airlines = [27, 36, 37, 28, 30, 33, 40, 31, 38, 35, 39, 26, 32, 34, 29]
-  #   start = Time.now
-  #   500.times do |i|
-  #     @conversations[i] = {
-  #       sender:airlines.sample,
-  #       recipient:airlines.sample
-  #     }
-  #   end
-  #   10000.times do |i|
-  #     s = airlines.sample
-  #     r = airlines.sample
-  #     convo = @conversations.select {|id, conversation| (((conversation[:recipient] == s)&&(conversation[:sender] == r))||((conversation[:sender] == s)&&(conversation[:recipient] == r))) }
-  #     @conversations.each do |id, conversation|
-  #       puts conversation[:recipient]
-  #       puts "#{conversation[:recipient]} - #{s} // #{conversation[:sender]} - #{r}"
-  #       a = (conversation[:recipient] == s)
-  #       b = (conversation[:recipient] == r)
-  #       c = (conversation[:sender] == s)
-  #       d = (conversation[:sender] == r)
-  #       puts "#{a} - #{b} - #{c} - #{d}"
-  #       if ((a&&d)||(b&&c))
-  #         break
-  #       end
-  #     end
-  #   end
-  #   finish = Time.now
-  #   puts "TOOK #{(finish - start)} SECONDS"
-  # end
 
 end

@@ -69,7 +69,6 @@ class UserController < ApplicationController
           cookie = crypt.encrypt_and_sign(user.id)
         end
         response = {loggedin:'true',cookie:cookie}
-        airline.update(last_update: Time.now)
       else
         response = {error:'invalid password'}
       end

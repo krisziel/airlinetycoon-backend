@@ -1,13 +1,21 @@
 class ConversationController < ApplicationController
-  before_action :airline
+  before_action :game, :airline
 
   def all
-    conversation_list = Conversation.where("recipient_id=? OR sender_id=?", airline.id, airline.id)
-    conversations = []
-    conversation_list.each do |conversation|
-      conversations.push(conversation.last_message)
+    if airline
+      conversation_list = airline.conversations
+      conversations = []
+      conversations.push(airline.game.last_message)
+      if airline.alliance
+        conversations.push(airline.alliance.last_message)
+      end
+      conversation_list.each do |conversation|
+        conversations.push(conversation.last_message)
+      end
+      render json: conversations
+    else
+      render json: {error:'no airline'}, status: :unauthorized
     end
-    render json: conversations
   end
 
   def create

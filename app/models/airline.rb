@@ -7,6 +7,7 @@ class Airline < ActiveRecord::Base
   has_many :flights
   has_many :notifications
   has_many :market_sizes
+  has_many :conversations
   has_one :alliance_membership
   has_one :alliance, through: :alliance_membership
 

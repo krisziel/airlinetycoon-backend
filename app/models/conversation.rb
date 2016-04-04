@@ -8,7 +8,7 @@ class Conversation < ActiveRecord::Base
   end
 
   def last_message
-    message = messages.last
+    message = Message.find_by(message_type:"Conversation", type_id:id)
     if message
       message = {
         body:message.body,
@@ -24,7 +24,6 @@ class Conversation < ActiveRecord::Base
     end
     conversation = {
       message:message,
-      sender:sender.basic_info,
       recipient:recipient.basic_info,
     }
     conversation
