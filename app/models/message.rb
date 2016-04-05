@@ -19,4 +19,15 @@ class Message < ActiveRecord::Base
      message
    end
 
+   def message_info perspective
+     sender = perspective == airline_id ? true : false
+     message = {
+       body:body,
+       sent:created_at.to_i,
+       sender:sender,
+       id:id
+     }
+     message
+   end
+
 end

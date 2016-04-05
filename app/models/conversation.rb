@@ -25,6 +25,7 @@ class Conversation < ActiveRecord::Base
     conversation = {
       message:message,
       recipient:recipient.basic_info,
+      id:id
     }
     conversation
   end

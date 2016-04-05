@@ -50,30 +50,54 @@ class ChatController < ApplicationController
 
       ws.onmessage do |data|
         message_data = JSON.parse(data) rescue nil
-        if message_data
-          user_id = message_data["user_id"] ? message_data["user_id"] : ""
-          game_id = message_data["game_id"] ? message_data["game_id"] : ""
-          user_data = {
-            user_id:(crypt.decrypt_and_verify(user_id) rescue nil),
-            game_id:(crypt.decrypt_and_verify(game_id) rescue nil)
+        airline = @clients.select {|client| client[:socket] == ws }
+        puts message_data
+        if message_data && (airline.size == 1)
+          airline = airline[0]
+          airline_data = {
+            airline_id:airline[:id],
+            game_id:airline[:game]
           }
-          puts user_data
-          if ((user_data[:user_id] == nil)||(user_data[:game_id] == nil))
+          if ((airline_data[:airline_id] == nil)||(airline_data[:game_id] == nil))
             response = {
               error:"bad auth"
             }
           else
             msg_status = {status:'Error sending message'}
-            airline = Airline.find_by(user_id:user_data[:user_id],game_id:user_data[:game_id])
+            airline = Airline.find(airline_data[:airline_id])
             type = message_data["message_type"]
             type_id = nil
             if type == "Alliance"
               type_id = (airline.alliance ? airline.alliance.id : nil)
             elsif type == "Airline"
-              type_id = get_conversation_id airline.id, type_id
-              airline_id = (Game.find(user_data[:game_id]).airlines.find(message_data["type_id"]).id rescue nil)
+              sender = airline.id
+              recipient = message_data["type_id"]
+              existing_conversation = @conversations.select {|id, conversation| (((conversation[:recipient] == sender)&&(conversation[:sender] == recipient))||((conversation[:sender] == sender)&&(conversation[:recipient] == recipient))) }
+              if existing_conversation.length > 0
+                type_id = existing_conversation.first[0]
+              else
+                conversation = Conversation.find_by("(conversations.sender_id = ? AND conversations.recipient_id = ?) OR (conversations.sender_id = ? AND conversations.recipient_id = ?)", sender, recipient, recipient, sender)
+                if conversation
+                  type_id = conversation.id
+                else
+                  sender_airline = (Airline.find(sender) rescue nil)
+                  recipient_airline = (Airline.find(recipient) rescue nil)
+                  if ((sender_airline)&&(recipient_airline)&&(sender_airline.game == recipient_airline.game))
+                    new_conversation = Conversation.new(sender_id:sender_airline.id, recipient_id:recipient_airline.id)
+                    if new_conversation.save
+                      type_id = new_conversation.id
+                    else
+                      type_id = nil
+                    end
+                  else
+                    type_id = nil
+                  end
+                end
+              end
+              airline_id = (Game.find(airline_data[:game_id]).airlines.find(message_data["type_id"]).id rescue nil)
+              type = "Conversation"
             elsif type == "Game"
-              type_id = user_data[:game_id]
+              type_id = airline_data[:game_id]
             end
             if type_id != nil
               body = message_data["body"]
@@ -95,7 +119,7 @@ class ChatController < ApplicationController
                       end
                     end
                   end
-                elsif message.message_type == "Airline"
+                elsif message.message_type == "Conversation"
                   recipient_airline = @clients.select {|client| client[:id] == airline_id }
                   if recipient_airline.length > 0
                     recipient_airline[0][:socket].send message.serialize.to_json
@@ -111,6 +135,7 @@ class ChatController < ApplicationController
       end
       # ws://localhost:3001?user_cookie=NThWZExFQlVoUzVubTNaVXN5SllQUT09LS0weTlCbEhYZ0tXMHkzQTFQR0l2cU1BPT0=--40387434903cf41f0385c5a1756ec1029f7da12c&game_cookie=L1N4aE9wZnlxT1puL0RWS3RpMWRDUT09LS1HdjdiMzVnd2E4WjQ1Q1NPT21vbVR3PT0=--d86d8807568aae3e57698e02b42d30b720bb754c
       # ws://localhost:3001?user_cookie=Y2ZKNE9TS3dERGE3RERtMlAwSE11Zz09LS1YVk4wSzY2M3BWd1hFSDJja3o4TkRRPT0=--575eb75ed9fb751c9ce6afbf21e91fae4b0778fa&game_cookie=L1N4aE9wZnlxT1puL0RWS3RpMWRDUT09LS1HdjdiMzVnd2E4WjQ1Q1NPT21vbVR3PT0=--d86d8807568aae3e57698e02b42d30b720bb754c
+      # {"message_type":"Airline","type_id":37","body":"hey mang"}
       # return msg_status.to_json
     end
 

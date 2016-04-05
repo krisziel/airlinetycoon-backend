@@ -14,7 +14,7 @@ class ConversationController < ApplicationController
       end
       render json: conversations
     else
-      render json: {error:'no airline'}, status: :unauthorized
+      render json: { error:'no airline' }, status: :unauthorized
     end
   end
 
@@ -41,36 +41,55 @@ class ConversationController < ApplicationController
 
   def show
     if airline
-      conversation = Conversation.find(params[:id])
-      if conversation.sender_id == airline.id || conversation.recipient_id == airline.id
-        messages = conversation.messages
-        message_list = []
-        offset = params[:offset] || 0
-        limit = params[:limit] || 20
-        if params[:since]
-          date =  Time.at(params[:since].to_i).to_datetime
-          chats = conversation.messages.order(created_at: :asc).offset(offset).where('created_at > ?', date)
+      message_list = []
+      offset = params[:offset] || 0
+      limit = params[:limit] || 20
+      id = params[:id]
+      query = nil
+      if id == "alliance"
+        alliance = airline.alliance
+        if alliance
+          query = Message.where(message_type:"Alliance", type_id:alliance.id)
+          info = {
+            id:alliance.id,
+            type:"alliance",
+            recipient:alliance.name
+          }
         else
-          chats = conversation.messages.order(created_at: :asc).offset(offset)
+          render json: { error:'no alliance' }, status: :unauthorized
         end
-        chats.each do |chat|
-          message_list.push(chat.serialize)
+      elsif id == "game"
+        query = Message.where(message_type:"Game", type_id:game.id)
+        info = {
+          id:game.id,
+          type:"game",
+          recipient:game.name
+        }
+      elsif Conversation.find(id)
+        conversation = Conversation.find(id)
+        if conversation.sender_id == airline.id || conversation.recipient_id == airline.id
+          query = Message.where(message_type:"Conversation", type_id:id)
+          recipient_id = conversation.sender_id == airline.id ? conversation.recipient_id : conversation.sender_id
+          recipient = Airline.find(recipient_id)
+          info = {
+            id:conversation.id,
+            type:"airline",
+            recipient:recipient.basic_info
+          }
+        else
+          render json: { error:'no permission' }, status: :unauthorized
         end
-        messages = message_list
       else
-        messages = {error:'conversation does not belong to user'}
+        render json: { error:'no request' }, status: :unauthorized
       end
+      messages = query.order(created_at: :asc).offset(offset).limit(limit)
+      if messages
+        messages = messages.map{|m| m.message_info airline.id }
+      end
+      render json: { info:info, messages:messages }
     else
-      messages = {
-        error: "no airline"
-      }
+      render json: { error:'no airline' }, status: :unauthorized
     end
-    render json: messages
-  end
-
-  private
-  def conversation_params
-    params.require(:conversation).permit(:recipient_id)
   end
 
 end
