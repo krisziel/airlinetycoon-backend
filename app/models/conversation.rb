@@ -7,13 +7,14 @@ class Conversation < ActiveRecord::Base
     where("(conversations.sender_id = ? AND conversations.recipient_id =?) OR (conversations.sender_id = ? AND conversations.recipient_id =?)", sender_id, recipient_id, recipient_id, sender_id)
   end
 
-  def last_message
+  def last_message perspective
     message = Message.find_by(message_type:"Conversation", type_id:id)
     if message
       message = {
         body:message.body,
         sender:message.airline.basic_info,
-        sent:message.created_at.to_i
+        sent:message.created_at.to_i,
+        read:message.read
       }
     else
       message = {
@@ -24,7 +25,7 @@ class Conversation < ActiveRecord::Base
     end
     conversation = {
       message:message,
-      recipient:recipient.basic_info,
+      recipient:(perspective == recipient_id ? sender.basic_info : recipient.basic_info),
       id:id
     }
     conversation

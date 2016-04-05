@@ -39,7 +39,7 @@ Rails.application.routes.draw do
   post 'chat/alliance' => 'alliance_chat#create' # rspec passing
   get 'chat/game' => 'game_chat#all' # rspec passing
   post 'chat/game' => 'game_chat#create' # rspec passing
-  get 'chat/conversation' => 'conversation#all' # rspec passing
+  get 'chat/conversations' => 'conversation#all' # rspec passing
   post 'chat/conversation' => 'conversation#create' # rspec passing
   get 'chat/conversation/:id' => 'conversation#show' # rspec passing
   post 'chat/conversation/:id/message' => 'message#create' # rspec passing

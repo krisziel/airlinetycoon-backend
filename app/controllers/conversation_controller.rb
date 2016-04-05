@@ -10,9 +10,9 @@ class ConversationController < ApplicationController
         conversations.push(airline.alliance.last_message)
       end
       conversation_list.each do |conversation|
-        conversations.push(conversation.last_message)
+        conversations.push(conversation.last_message airline.id)
       end
-      render json: conversations
+      render json: conversations.sort_by { |c| c[:message][:sent] }.reverse
     else
       render json: { error:'no airline' }, status: :unauthorized
     end

@@ -20,7 +20,10 @@ class Game < ActiveRecord::Base
     end
     conversation = {
       message:message,
-      recipient:basic_info,
+      recipient:{
+        name:"#{name} Game Chat",
+        id:id
+      },
     }
     conversation
   end
