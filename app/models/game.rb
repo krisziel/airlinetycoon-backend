@@ -24,6 +24,7 @@ class Game < ActiveRecord::Base
         name:"#{name} Game Chat",
         id:id
       },
+      id:"game"
     }
     conversation
   end

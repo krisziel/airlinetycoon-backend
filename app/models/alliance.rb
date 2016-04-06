@@ -24,6 +24,7 @@ class Alliance < ActiveRecord::Base
     conversation = {
       message:message,
       recipient:basic_info,
+      id:"alliance"
     }
     conversation
   end

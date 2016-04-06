@@ -7,13 +7,15 @@ class Message < ActiveRecord::Base
    end
 
    def serialize
-     sender_airline = Airline.find(airline_id).basic_info
+     sender_airline = airline.basic_info
+     header = "Message from #{sender_airline[:name]}"
      message = {
        body:body,
        sender:sender_airline,
        sent:created_at.to_i,
        type:message_type,
        typeId:type_id,
+       header:header,
        id:id
      }
      message
@@ -21,6 +23,9 @@ class Message < ActiveRecord::Base
 
    def message_info perspective
      sender = perspective == airline_id ? true : false
+     if message_type != "Conversation" && !sender
+       sender = airline.basic_info
+     end
      message = {
        body:body,
        sent:created_at.to_i,
