@@ -9,6 +9,7 @@ class Message < ActiveRecord::Base
    def serialize
      sender_airline = airline.basic_info
      header = "Message from #{sender_airline[:name]}"
+     description = message_type == "Conversation" ? (body.length > 40 ? "#{body[0,40]}…" : body) : (message_type == "Alliance" ? "Message in alliance chat" : "Message in game chat")
      message = {
        body:body,
        sender:sender_airline,
@@ -16,8 +17,11 @@ class Message < ActiveRecord::Base
        type:message_type,
        typeId:type_id,
        header:header,
+       description:description,
        id:id
      }
+     puts message
+     puts "^^^^^^^^^^^^^"
      message
    end
 
