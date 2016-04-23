@@ -1,5 +1,6 @@
 class Airport < ActiveRecord::Base
   has_many :market_sizes, as: :marketable
+  belongs_to :city
 
   def serialize
     airport = {

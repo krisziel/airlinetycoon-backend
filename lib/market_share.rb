@@ -11,6 +11,8 @@ class ShareComputer
   end
 
   def parse_routes
+    # active_markets has that has key as market id and value as hash that holds the data like it does for active routes?
+    # all computations are done on the route, but the bucket of passengers is combined amongst all routes serving the market?
     @active_routes.each do |route_id|
       route = Route.select(:distance).find(route_id)
       route_flights = Flight.where("route_id = ? AND airline_id IN (?)", route_id, @airlines.keys)

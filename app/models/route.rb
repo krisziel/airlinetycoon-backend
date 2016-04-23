@@ -1,4 +1,5 @@
 class Route < ActiveRecord::Base
+  belongs_to :market
   has_many :flights
   has_many :market_sizes, as: :marketable
 
