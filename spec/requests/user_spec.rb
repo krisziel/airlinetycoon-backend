@@ -43,7 +43,6 @@ describe 'airtycoon API -- user#' do
   it 'can create an user' do
     post '/user/', {
       user:{
-        email: 'kz@kziel.com',
         name: 'Kris',
         username: 'kziel',
         email: 'krisziel@mac.com',

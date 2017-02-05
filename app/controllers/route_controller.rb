@@ -289,7 +289,7 @@ class RouteController < ApplicationController
         }
         total_revenue = revenue[:y]+revenue[:p]+revenue[:j]+revenue[:f]
         total_cost = compute_cost aircraft, route, duration, freq, config
-        flight = Flight.new(route_id:route.id,user_aircraft_id:new_aircraft.id,duration:duration,passengers:pax,load:load,profit:{:y=>20000,:p=>8600,:j=>8800,:f=>7300},frequencies:freq,fare:fare,revenue:revenue,cost:total_cost,profit:(total_revenue-total_cost),airline_id:row[4])
+        flight = Flight.new(route_id:route.id,user_aircraft_id:new_aircraft.id,duration:duration,passengers:pax,load:load,frequencies:freq,fare:fare,revenue:revenue,cost:total_cost,profit:(total_revenue-total_cost),airline_id:row[4])
         flight.save
       end
     end
@@ -345,7 +345,7 @@ class RouteController < ApplicationController
     service_cost = ((config[:y_count]*3)+(config[:p_count]*5)+(config[:j_count]*15)+(config[:f_count]*30))
     pilot_cost = (duration*freq*(1+((duration-240).abs/240).ceil)*2.5)
     total_cost = (fuel_cost+(fa_cost*2)+(pilot_cost)+(fuel_cost/3))
-    flight.update(load:load,passengers:pax,revenue:revenue,revenue:revenue,cost:total_cost,profit:(total_revenue-total_cost))
+    flight.update(load:load,passengers:pax,revenue:revenue,cost:total_cost,profit:(total_revenue-total_cost))
   end
 
   def time(distance,speed)
