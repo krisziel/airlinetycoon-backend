@@ -1,5 +1,5 @@
 class AirlineController < ApplicationController
-  before_action :airline, :game
+  before_action :airline, :game, :user
 
   def all
     airlines = Airline.where(game_id:game.id)
@@ -24,7 +24,7 @@ class AirlineController < ApplicationController
   end
 
   def create
-    params[:airline][:user_id] = cookies.signed[:airtycoon_user]
+    params[:airline][:user_id] = user.id
     airline = Airline.new(airline_params)
     airline.money = 1000000000
     if airline.save

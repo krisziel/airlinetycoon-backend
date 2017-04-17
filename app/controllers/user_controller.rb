@@ -1,7 +1,8 @@
 class UserController < ApplicationController
+  before_action :user
 
   def autologin
-    user_id = cookies.signed[:airtycoon_user] || 0
+    user_id = user.id || 0
     if user_id > 0
       user = User.find(user_id)
       airline = Airline.where({user_id: user_id, game_id: cookies.signed[:airtycoon_game]})
@@ -50,9 +51,8 @@ class UserController < ApplicationController
         id: user.id,
         name: user.name,
         username: user.username,
-        cookie:cookie
+        username_key:cookie
       }
-      cookies.signed[:airtycoon_user] = user.id
     else
       response = user.errors.messages
     end

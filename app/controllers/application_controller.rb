@@ -8,22 +8,25 @@ class ApplicationController < ActionController::Base
 
   def cookie
     crypt = ActiveSupport::MessageEncryptor.new(ENV['SECRET_KEY_BASE'])
-    if params[:user_cookie]
-      cookies.signed[:airtycoon_user] = crypt.decrypt_and_verify(params[:user_cookie])
+    airline = request.headers['X-AIRLINE-KEY']
+    username = request.headers['X-USERNAME-KEY']
+    game = request.headers['X-GAME-KEY']
+    if username
+      @@username = crypt.decrypt_and_verify(username)
     end
-    if params[:game_cookie]
-      cookies.signed[:airtycoon_game] = crypt.decrypt_and_verify(params[:game_cookie])
+    if game
+      @@game = crypt.decrypt_and_verify(game)
     end
-    if params[:airline_cookie]
-      cookies.signed[:airtycoon_airline] = crypt.decrypt_and_verify(params[:airline_cookie])
+    if airline
+      @@airline = crypt.decrypt_and_verify(airline)
     end
   end
 
   def airline
-    if cookies.signed[:airtycoon_game]
-      if cookies.signed[:airtycoon_user]
-        user = User.find(cookies.signed[:airtycoon_user])
-        airline = user.airlines.find_by(game_id:cookies.signed[:airtycoon_game])
+    if @@game
+      if @@username
+        user = User.find(@@username)
+        airline = user.airlines.find_by(game_id:@@game)
       end
     else
       airline = nil
@@ -32,14 +35,23 @@ class ApplicationController < ActionController::Base
   end
 
   def game
-    if cookies.signed[:airtycoon_game]
-      game = Game.find(cookies.signed[:airtycoon_game])
+    if @@game
+      game = Game.find(@@game)
     else
       game = nil
     end
     game
   end
 
-  helper_method :airline, :game, :cookie
+  def user
+    if @@username
+      user = User.find(@@username)
+    else
+      user = nil
+    end
+    user
+  end
+
+  helper_method :airline, :game, :cookie, :user
 
 end

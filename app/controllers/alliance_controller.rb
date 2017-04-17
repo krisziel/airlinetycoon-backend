@@ -1,5 +1,5 @@
 class AllianceController < ApplicationController
-  before_action :airline, :game
+  before_action :airline, :game, :user
 
   def all
     alliances = Alliance.where(game_id:game.id)
@@ -64,7 +64,7 @@ class AllianceController < ApplicationController
     end
     if alliance
       admin = false
-      user_airline = User.find(cookies.signed[:airtycoon_user]).airlines.find_by({game_id:alliance.game_id})
+      user_airline = User.find(user).airlines.find_by({game_id:alliance.game_id})
       airlines = []
       alliance.airlines.each do |airline|
         this_airline = airline.alliance_info
@@ -109,7 +109,7 @@ class AllianceController < ApplicationController
 
   def request_membership
     alliance = Alliance.find(params[:id])
-    airline = User.find(cookies.signed[:airtycoon_user]).airlines.where({game_id:alliance.game_id})[0]
+    airline = User.find(user).airlines.where({game_id:alliance.game_id})[0]
     if airline.alliance
       if airline.alliance_membership.status
         alliance = {
@@ -137,7 +137,7 @@ class AllianceController < ApplicationController
 
   def approve_membership
     alliance = Alliance.find(params[:id])
-    airline = User.find(cookies.signed[:airtycoon_user]).airlines.where({game_id:alliance.game_id})[0]
+    airline = User.find(user).airlines.where({game_id:alliance.game_id})[0]
     if airline.alliance_membership.status && airline.alliance_membership.position == 1
       member = AllianceMembership.find(params[:membership_id])
       requestor = Airline.find(member.airline_id)
@@ -170,7 +170,7 @@ class AllianceController < ApplicationController
 
   def reject_membership
     alliance = Alliance.find(params[:id])
-    airline = User.find(cookies.signed[:airtycoon_user]).airlines.where({game_id:alliance.game_id})[0]
+    airline = User.find(user).airlines.where({game_id:alliance.game_id})[0]
     if airline.alliance_membership.status && airline.alliance_membership.position == 1
       member = AllianceMembership.find(params[:membership_id])
       requestor = Airline.find(member.airline_id)
@@ -201,7 +201,7 @@ class AllianceController < ApplicationController
 
   def end_membership
     alliance = Alliance.find(params[:id])
-    airline = User.find(cookies.signed[:airtycoon_user]).airlines.where({game_id:alliance.game_id})[0]
+    airline = User.find(user).airlines.where({game_id:alliance.game_id})[0]
     if airline.alliance_membership.status && (airline.alliance_membership.position == 1 || airline.alliance_membership.id == params[:membership_id].to_i)
       member = AllianceMembership.find(params[:membership_id])
       requestor = Airline.find(member.airline_id)
